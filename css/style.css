@@ -11,8 +11,8 @@ body::before {
 
 @font-face {
     font-family: 'ChillRoundFRegular';
-    src: url(../fonts/ChillRoundFRegular.ttf);
-    font-display: block;
+    src: url(../fonts/ChillRoundFRegular.woff2);
+    font-display: swap;
 }
 
 h1 {
