@@ -1,0 +1,79 @@
+{
+    "homeTexts": [
+        {
+            "title": "Carrotour",
+            "description": "English description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tristique nulla nec erosiaculis, non auctor eros consectetur. Curabitur at tincidunt ipsum. Suspendisse utquam nec ligula tincidunt euismod vel non risus. Donec elementum eu nisi sediaculis. Integer at lorem vel nulla feugiat facilisis sit amet vel nisi. Etiammaximus venenatis ligula, at tempor dui placerat sed. Nulla facilisi. Curabiturinterdum metus vel libero hendrerit, id malesuada magna elementum."
+        },
+        {
+            "title": "邏蔔巡蘿",
+            "description": "繁體描述 from json"
+        },
+        {
+            "title": "逻卜巡萝",
+            "description": "简体描述 from json"
+        }
+    ],
+    "carouselTexts": [
+        [
+            {
+                "title": "Unfamiliar Leaper Movements",
+                "description": "In this game, you don't just move up, down, left and right! Instead, you move as \"leapers\". They move in a specific angle about an axis, a fixed distance each time, and cannot be blocked. Think about the knight in chess, which is a classic leaper! Getting use to the move patterns is the key to victory."
+            },
+            {
+                "title": "Fun Traps and Items",
+                "description": "On the map of each level, all kinds of traps and items are waiting for you. We got spikes, portals, crates, springs and many more! They interact with each other in unique ways. Understand and use them to your advantage!"
+            },
+            {
+                "title": "Intense Boss Fights",
+                "description": "Want some different experience? Behold, boss fights! In boss levels, you don't have to carefully come up with a solution to a puzzle. What you have to do is dodge the boss's rapid attacks, and grab carrots to strike back!"
+            }
+        ],
+        [
+            {
+                "title": "特殊的移動方式",
+                "description": "在此遊戲中，你不只會上、下、左、右，而是會用一種特別的方式移動。每次移動會和水平線或鉛直線形成一個特定的角度，距離固定，且不會被阻擋，就好像象棋中的馬一樣，只不過沒有拐馬腳！熟悉這些移動的特性是勝利的關鍵。"
+            },
+            {
+                "title": "有趣的陷阱和機關",
+                "description": "在每個關卡中，有許多陷阱和機關在等待著你。除了尖刺、傳送門、箱子、彈簧以外，還有許多精彩！而且各種機關之間會有獨特的互動關係，只要理解它們，就能善用它們！"
+            },
+            {
+                "title": "緊張刺激的魔王戰",
+                "description": "想要新鮮的體驗嗎？那一定不能忘了魔王戰！在魔王關中，你不需要仔細思考謎題的解答。你要做的，是躲避魔王的快速攻擊，並吃到蘿蔔以發動反擊！"
+            }
+        ],
+        [
+            {
+                "title": "特殊的移动方式",
+                "description": "在此游戏中，你不只会上、下、左、右，而是会用一种特别的方式移动。每次移动会和水平线或铅直线形成一个特定的角度，距离固定，且不会被阻挡，就好像象棋中的马一样，只不过没有拐马脚！熟悉这些移动的特性是胜利的关键。"
+            },
+            {
+                "title": "有趣的陷阱和机关",
+                "description": "在每个关卡中，有许多陷阱和机关在等待着你。除了尖刺、传送门、箱子、弹簧以外，还有许多精彩！而且各种机关之间会有独特的互动关系，只要理解它们，就能善用它们！"
+            },
+            {
+                "title": "紧张刺激的魔王战",
+                "description": "想要新鲜的体验吗？那一定不能忘了魔王战！在魔王关中，你不需要仔细思考谜题的解答。你要做的，是躲避魔王的快速攻击，并吃到萝卜以发动反击！"
+            }
+        ]
+    ],
+    "characterNameList": [
+        ["Rabbit", "Horse", "Camel", "Elephant", "Humel", "Alphil", "Marquus"],
+        ["Rabbit", "Horse", "Camel", "Elephant", "Humel", "Alphil", "Marquus"],
+        ["Rabbit", "Horse", "Camel", "Elephant", "Humel", "Alphil", "Marquus"]
+    ],
+    "characterDescriptionList": [
+        ["Decription", "Decription", "Decription", "Decription", "Decription", "Decription", "Decription"],
+        ["Decription", "Decription", "Decription", "Decription", "Decription", "Decription", "Decription"],
+        ["Decription", "Decription", "Decription", "Decription", "Decription", "Decription", "Decription"]
+    ],
+    "navbarTexts": [
+        {"home": "Home", "introduction": "Introduction", "language": "Language"},
+        {"home": "主頁", "introduction": "介紹", "language": "語言"},
+        {"home": "主页", "introduction": "介绍", "language": "语言"}
+    ],
+    "links": {
+        "steam": "https://store.steampowered.com/?l=tchinese",
+        "discord": "https://discord.com/"
+    }
+}
