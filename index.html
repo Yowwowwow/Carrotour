@@ -261,7 +261,7 @@
 
                 carouselText.classList.add('fade-animation');
                 vue.carouselIndex = e.to;
-                // 动画结束后移除动画类
+                // 设置动画结束后移除动画类，方便重新触发动画
                 carouselText.addEventListener('animationend', () => {
                     carouselText.classList.remove('fade-animation');
                 });
