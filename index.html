@@ -169,7 +169,7 @@
                 <div>
                     <div class="d-flex justify-content-center">
                         <div class="container mt-3 d-flex justify-content-center">
-                            <img class="me-5 img-fluid" :src="characterImageSrc"
+                            <img class="me-5 img-fluid" :src="characterImageSrcs[characterIndex]"
                                 style="width: 153.5px; height: 202.5px;">
                             <div class="scrollable-container bg-light">
                                 <p>
@@ -201,7 +201,7 @@
                     characterNameList: [],
                     characterDescriptionList: [],
                     characters: ["Characters", "角色", "角色"],
-                    characterImageSrc: '',
+                    characterImageSrcs: [],
                     homeTexts: [],
                     homeText: '',
                     navbarTexts: [],
@@ -221,7 +221,7 @@
                     else {
                         if (this.characterIndex > 0) this.characterIndex--
                     }
-                    this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
+                    // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
                 },
                 languageToggle(event) {
                     if (this.language !== event.target.dataset.lid) {
@@ -251,9 +251,13 @@
                         vue.characterNameList = data.characterNameList
                         vue.characterDescriptionList = data.characterDescriptionList
                         vue.navbarTexts = data.navbarTexts
-                        vue.characterImageSrc = `./pictures/character/${vue.characterNameList[vue.language][vue.characterIndex]}.png`
+                        vue.characterImageSrcs = data.characterNameList[0].map(element => {
+                            return `./pictures/character/${element}.png`
+                        })
                         vue.links = data.links
                         vue.typeWriterEffect(vue.homeTexts[vue.language].description)
+
+                        preloadImages(vue.characterImageSrcs)
                     })
                     .catch(error => console.error('Error loading JSON:', error));
             }
@@ -278,6 +282,12 @@
             })
         }, 2000);
 
+        function preloadImages(imageUrls) {
+            imageUrls.forEach(url => {
+                const img = new Image();  // 创建新的 Image 对象
+                img.src = url;  // 设置图片源，浏览器会开始加载图片
+            });
+        }
 
     </script>
 </body>
