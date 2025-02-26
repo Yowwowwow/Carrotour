@@ -1,18 +1,281 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="description" content="Carrotour website.">
-        <title>Carrotour Website</title>
-        <link rel="icon" href="icon.jpg">
-    </head>
-    <style>
-        
-    </style>
-    <body style="margin-top: 2px;">
-        <p style="font-size: 24px; font-family: Arial, sans-serif; margin-top: 0; margin-bottom: 10px;">
-            Carrotour website.<br>
-            Under construction!!!!!11
-        </p>
-    </body>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body style="background-color: rgb(235, 233, 230);">
+    <div id="app">
+        <!-- 头部 -->
+        <section>
+            <div class="container">
+                <nav class="navbar navbar-expand-md fixed-top bg-white">
+                    <div class="container-fluid">
+                        <a class="navbar-brand">
+                            <img class="img-fluid" src="./pictures/icon/Logo.png" style="height: 3rem;">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 h5">
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" aria-current="page" href="#">
+                                        <i class="bi bi-house" style="vertical-align: middle;"></i> {{ navbarTexts.length !== 0 ? navbarTexts[language].home : "Home" }}</a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" href="#introduction"><i class="bi bi-card-text" style="vertical-align: middle;"></i> {{ navbarTexts.length !== 0 ?
+                                        navbarTexts[language].introduction : "Introduction" }}</a>
+                                </li>
+                                <li class="nav-item dropdown me-2">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="bi bi-globe2" style="vertical-align: middle;"></i> 
+                                        {{ navbarTexts.length !== 0 ? navbarTexts[language].language : "Language" }}
+                                    </a>
+                                    <ul class="dropdown-menu ps-3" style="width: 100px; cursor: pointer;"
+                                        @click="languageToggle">
+                                        <li data-lid="0">English</li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li data-lid="1">繁體中文</li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li data-lid="2">简体中文</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </section>
+
+        <!-- 内容 -->
+        <section class="d-flex justify-content-between">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-5 order-lg-1 order-2">
+                        <div class="ratio ratio-16x9">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/C0DPdy98e4c"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="mt-5 mb-5">
+                            <div class="row d-flex justify-content-between align-items-center">
+                                <div class="col-lg-8">
+                                    <p class="h2 fw-bold text-lg-start text-center">{{ wishList[language] }}</p>
+                                </div>
+                                <div class="col-lg-4 text-lg-start text-center">
+                                    <div class="row">
+                                        <a :href="links !== {} ? links.steam : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary"
+                                        target="_blank" style="text-decoration: none;">
+                                            <img class="img-fluid" src="./pictures/icon/steamIcon.png" style="width: 24px;" alt="">
+                                            Steam
+                                        </a>
+                                        <a :href="links !== {} ? links.discord : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary" target="_blank"
+                                            style="text-decoration: none;">
+                                            <img class="img-fluid" src="./pictures/icon/discordIcon.png" style="width: 24px;" alt="">
+                                            Discord
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 pt-5 order-lg-2 order-1" style="padding-left: 5rem;">
+                        <h1 class="fw-bold">{{ homeTexts.length !== 0 ? homeTexts[language].title : 'Carrotour' }}</h1>
+                        <p class="lead" style="text-indent: 2em;">{{ homeText }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 輪播圖 -->
+        <section class="d-flex justify-content-between p-5 bg-light align-items-center" id="introduction">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg align-items-center" style="padding-left: 0;">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="./pictures/gif/moving.gif" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="./pictures/gif/galloping.gif" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="./pictures/gif/bossing.gif" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg">
+                        <div id="carouselText" class="m-lg-0 mt-5">
+                            <h2 class="fw-bold"> {{ carouselTexts.length !== 0 ?
+                                carouselTexts[language][carouselIndex].title : 'Title' }} </h2>
+                            <p class="lead" style="text-indent: 2em;">{{ carouselTexts.length !== 0 ?
+                                carouselTexts[language][carouselIndex].description : 'Description' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部 -->
+        <section id="character" class="mt-5">
+            <div class="container">
+                <div class="d-flex align-items-center">
+                    <h2 class="fw-bold m-0">{{ characters[language] }}</h2>
+                    <i class="bi bi-caret-left arrow-botton ms-auto" @click="click(false)"></i>
+                    <p class="h3 m-0" style="width: 8rem; text-align: center;"> {{
+                        characterNameList[language][characterIndex] }}
+                    </p>
+                    <i class="bi bi-caret-right arrow-botton me-lg-5" @click="click(true)"></i>
+                    <i class="me-lg-5"></i>
+                </div>
+                <div>
+                    <div class="d-flex justify-content-center">
+                        <div class="container mt-3 d-flex justify-content-center">
+                            <img class="me-5 img-fluid" :src="characterImageSrc"
+                                style="width: 153.5px; height: 202.5px;">
+                            <div class="scrollable-container bg-light">
+                                <p>
+                                    {{ characterDescriptionList.length !== 0 ?
+                                    characterDescriptionList[language][characterIndex] : 'Description'}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-5 p-3 bg-dark d-flex text-center text-light">
+            <div class="container">
+                <p class="align-items-center" style="margin: 0">Copyright &copy; Carrotour</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let vue = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    characterIndex: 0,
+                    characterNameList: [],
+                    characterDescriptionList: [],
+                    characters: ["Characters", "角色", "角色"],
+                    characterImageSrc: '',
+                    homeTexts: [],
+                    homeText: '',
+                    navbarTexts: [],
+                    carouselIndex: 0,
+                    carouselTexts: [],
+                    wishList: ["Wishlist now", "加入願望清單", "加入愿望清单"],
+                    language: 0,
+                    timer: 0,
+                    links: {}
+                }
+            },
+            methods: {
+                click(next) {
+                    if (next) {
+                        if (this.characterIndex + 1 < this.characterNameList[this.language].length) this.characterIndex++
+                    }
+                    else {
+                        if (this.characterIndex > 0) this.characterIndex--
+                    }
+                    this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
+                },
+                languageToggle(event) {
+                    if (this.language !== event.target.dataset.lid) {
+                        this.language = event.target.dataset.lid
+                        this.typeWriterEffect(this.homeTexts[this.language].description)
+                    }
+                },
+                typeWriterEffect(targetText) {
+                    let speed = +this.language === 0 ? 6 : 30
+                    let index = 0
+                    this.homeText = ''
+                    clearInterval(this.timer)
+                    this.timer = setInterval(type, speed);
+                    function type() {
+                        if (index < targetText.length) vue.homeText += targetText[index++]
+                        else clearInterval(this.timer)
+                    }
+                }
+            },
+            created() {
+                // 使用 fetch API 获取 JSON 数据
+                fetch('./data/data.json')
+                    .then(response => response.json())  // 解析 JSON 数据
+                    .then(data => {
+                        vue.homeTexts = data.homeTexts
+                        vue.carouselTexts = data.carouselTexts
+                        vue.characterNameList = data.characterNameList
+                        vue.characterDescriptionList = data.characterDescriptionList
+                        vue.navbarTexts = data.navbarTexts
+                        vue.characterImageSrc = `./pictures/character/${vue.characterNameList[vue.language][vue.characterIndex]}.png`
+                        vue.links = data.links
+                        vue.typeWriterEffect(vue.homeTexts[vue.language].description)
+                    })
+                    .catch(error => console.error('Error loading JSON:', error));
+            }
+        })
+        setTimeout(() => {
+            let carousel = document.querySelector('#carouselExampleIndicators')
+            let carouselText = document.querySelector('#carouselText')
+            carousel.addEventListener('slid.bs.carousel', (e) => {
+
+                carouselText.classList.add('fade-animation');
+                vue.carouselIndex = e.to;
+                // 设置动画结束后移除动画类，方便重新触发动画
+                carouselText.addEventListener('animationend', () => {
+                    carouselText.classList.remove('fade-animation');
+                });
+
+                // carouselText.style.opacity = 0;
+                // setTimeout(() => {
+                //     carouselText.style.opacity = 1;
+                //     
+                // }, 300); 
+            })
+        }, 1000);
+
+
+    </script>
+</body>
+
 </html>
