@@ -95,7 +95,7 @@
                     </div>
                     <div class="col-lg-7 pt-5 order-lg-2 order-1" style="padding-left: 5rem;">
                         <h1 class="fw-bold">{{ homeTexts.length !== 0 ? homeTexts[language].title : 'Carrotour' }}</h1>
-                        <p class="lead" style="text-indent: 2em;">{{ homeText }}</p>
+                        <p class="lead homeText" style="text-indent: 2em;">{{ homeText }}</p>
                     </div>
                 </div>
             </div>
@@ -226,7 +226,7 @@
                     }
                 },
                 typeWriterEffect(targetText) {
-                    let speed = +this.language === 0 ? 6 : 15
+                    let speed = +this.language === 0 ? 6 : 30
                     let index = 0
                     this.homeText = ''
                     clearInterval(this.timer)
