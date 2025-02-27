@@ -80,7 +80,7 @@
                                     <p class="h2 fw-bold text-lg-start text-center">{{ wishList[language] }}</p>
                                 </div>
                                 <div class="col-lg-4 text-lg-start text-center">
-                                    <div class="row">
+                                    <div class="row ps-lg-4">
                                         <a :href="links !== {} ? links.steam : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary"
                                         target="_blank" style="text-decoration: none;">
                                             <img class="img-fluid" src="./pictures/icon/steamIcon.png" style="width: 24px;" alt="">
@@ -92,12 +92,11 @@
                                             Discord
                                         </a>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-7 pt-5 order-lg-2 order-1" style="padding-left: 5rem;">
+                    <div class="col-lg-7 pt-5 ps-lg-5 order-lg-2 order-1">
                         <h1 class="fw-bold">{{ homeTexts.length !== 0 ? homeTexts[language].title : 'Carrotour' }}</h1>
                         <p class="lead homeText" style="text-indent: 2em;">{{ homeText }}</p>
                     </div>
