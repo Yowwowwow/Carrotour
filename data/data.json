@@ -63,9 +63,27 @@
         ["立啪", "立啪\n（马）", "立啪\n（骆驼）", "立啪\n（象）", "瀚漠", "奡飞", "？？？"]
     ],
     "characterDescriptionList": [
-        ["Decription", "Decription", "Decription", "Decription", "Decription", "Decription", "Decription"],
-        ["Decription", "Decription", "Decription", "Decription", "Decription", "Decription", "Decription"],
-        ["Decription", "Decription", "Decription", "Decription", "Decription", "Decription", "Decription"]
+        ["A curious and naughty rabbit, and a student of a local wizard school. Despite being a wizard, Leappa is really bad at magic, so bad that he failed the most basic magic class 3 times. However, Leappa is good at eating carrots, leaping around and solving puzzles... maybe.",
+         "Leappa after getting turned into a horse. Moves like this: ",
+         "Leappa after getting turned into a camel. Moves like this: ",
+         "Leappa after getting turned into an elephant. Moves like this: ",
+         "A serious and dilligent camel. In the past, Humel ate some carrots out of hunger, without permission. To pay for that, Humel has to work for the owner of those carrots, but he does but complain, and strives to do his best at the job.",
+         "An elephant that's a bit lazy and silly. Alphil works for his boss because that's the only job he could find, and he needed one. Alphil always wants to be paid better, despite putting minimum effort into his job. It won't be a surprise if he gets fired...",
+         "This is the owner of the carrot field, and Humel and Alphil's boss. Old and grumpy, he is a high level wizard, who built an enormous underground maze. He keeps hiring new employees to work for him, yet nobody understands his goal... as well as the solutions to his maze."],
+        ["立啪是隻富有好奇心又頑皮的兔子，同時也是地方巫師學校的學生。雖然是巫師，魔法卻很爛，爛到連最基本的魔法課程都被當了3次。不過，立啪很擅長吃蘿蔔、跳來跳去，還有破解謎題……應該吧。",
+         "立啪被變成馬之後的樣子。會如此移動：",
+         "立啪被變成駱駝之後的樣子。會如此移動：",
+         "立啪被變成象之後的樣子。會如此移動：",
+         "瀚漠是隻嚴肅而勤奮的駱駝。瀚漠以前曾經因為太餓，就在未經同意下吃了一些蘿蔔。作為代價，他必須為那些蘿蔔的主人工作，但他不抱怨，並盡可能拿出最好的表現。",
+         "奡飛是隻有點懶又有點傻的大象。他之所以為他老闆工作，是因為他需要一個工作，卻找不到別的。奡飛一直想要領更高的薪水，但他工作時都只會最低限度的努力。他被炒了大概也不奇怪……",
+         "此為蘿蔔田的主人，以及瀚漠和奡飛的老闆。他是個又老脾氣又不好的高等巫師，還建造了一座巨大的地下迷宮。他一直招募新員工來為他工作，然而沒人知道他的目的……還有他迷宮的解答。"],
+        ["立啪是只富有好奇心又顽皮的兔子，同时也是地方巫师学校的学生。虽然是巫师，魔法却很烂，烂到连最基本的魔法课程都被当了3次。不过，立啪很擅长吃萝卜、跳来跳去，还有破解谜题……应该吧。",
+         "立啪被变成马之后的样子。会如此移动：",
+         "立啪被变成骆驼之后的样子。会如此移动：",
+         "立啪被变成象之后的样子。会如此移动：",
+         "瀚漠是只严肃而勤奋的骆驼。瀚漠以前曾经因为太饿，就在未经同意下吃了一些萝卜。作为代价，他必须为那些萝卜的主人工作，但他不抱怨，并尽可能拿出最好的表现。",
+         "奡飞是只有点懒又有点傻的大象。他之所以为他老板工作，是因为他需要一个工作，却找不到别的。奡飞一直想要领更高的薪水，但他工作时都只会最低限度的努力。他被炒了大概也不奇怪……",
+         "此为萝卜田的主人，以及瀚漠和奡飞的老板。他是个又老脾气又不好的高等巫师，还建造了一座巨大的地下迷宫。他一直招募新员工来为他工作，然而没人知道他的目的……还有他迷宫的解答。"]
     ],
     "navbarTexts": [
         {"home": "Home", "introduction": "Introduction", "language": "Language"},
@@ -73,7 +91,7 @@
         {"home": "主页", "introduction": "介绍", "language": "语言"}
     ],
     "links": {
-        "steam": "https://store.steampowered.com/?l=tchinese",
+        "steam": "https://store.steampowered.com/",
         "discord": "https://discord.com/"
     }
 }
