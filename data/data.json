@@ -59,8 +59,8 @@
     ],
     "characterNameList": [
         ["Leappa", "Leappa (horse)", "Leappa (camel)", "Leappa (elephant)", "Humel", "Alphil", "???"],
-        ["立啪", "立啪（馬）", "立啪（駱駝）", "立啪（象）", "瀚漠", "奡飛", "？？？"],
-        ["立啪", "立啪（马）", "立啪（骆驼）", "立啪（象）", "瀚漠", "奡飞", "？？？"]
+        ["立啪", "立啪\n（馬）", "立啪\n（駱駝）", "立啪\n（象）", "瀚漠", "奡飛", "？？？"],
+        ["立啪", "立啪\n（马）", "立啪\n（骆驼）", "立啪\n（象）", "瀚漠", "奡飞", "？？？"]
     ],
     "characterDescriptionList": [
         ["Decription", "Decription", "Decription", "Decription", "Decription", "Decription", "Decription"],

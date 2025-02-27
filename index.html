@@ -41,7 +41,7 @@
                                 </li>
                                 <li class="nav-item dropdown me-2">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="bi bi-globe2" style="vertical-align: middle;"></i> 
+                                        aria-expanded="false"><i class="bi bi-globe2" style="vertical-align: middle"></i> 
                                         {{ navbarTexts.length !== 0 ? navbarTexts[language].language : "Language" }}
                                     </a>
                                     <ul class="dropdown-menu ps-3" style="width: 100px; cursor: pointer;"
@@ -157,10 +157,10 @@
         <!-- 底部 -->
         <section id="character" class="mt-5">
             <div class="container">
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center" style="height: 3rem;">
                     <h2 class="fw-bold m-0">{{ characters[language] }}</h2>
                     <i class="bi bi-caret-left arrow-botton ms-auto" @click="click(false)"></i>
-                    <p class="h3 m-0" style="width: 8rem; text-align: center;"> {{
+                    <p class="h3 m-0" style="width: 8rem; text-align: center; white-space: pre-line;"> {{
                         characterNameList[language][characterIndex] }}
                     </p>
                     <i class="bi bi-caret-right arrow-botton me-lg-5" @click="click(true)"></i>
@@ -172,7 +172,7 @@
                             <img class="me-5 img-fluid" :src="characterImageSrcs[characterIndex]"
                                 style="width: 153.5px; height: 202.5px;">
                             <div class="scrollable-container bg-light">
-                                <p>
+                                <p class="h5">
                                     {{ characterDescriptionList.length !== 0 ?
                                     characterDescriptionList[language][characterIndex] : 'Description'}}
                                 </p>
@@ -251,8 +251,8 @@
                         vue.characterNameList = data.characterNameList
                         vue.characterDescriptionList = data.characterDescriptionList
                         vue.navbarTexts = data.navbarTexts
-                        vue.characterImageSrcs = data.characterNameList[0].map(element => {
-                            return `./pictures/character/${element}.png`
+                        vue.characterImageSrcs = data.characterNameList[0].map((element, index) => {
+                            return `./pictures/character/${index}.png`
                         })
                         vue.links = data.links
                         vue.typeWriterEffect(vue.homeTexts[vue.language].description)
