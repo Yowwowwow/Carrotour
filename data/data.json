@@ -58,9 +58,9 @@
         ]
     ],
     "characterNameList": [
-        ["Rabbit", "Horse", "Camel", "Elephant", "Humel", "Alphil", "Marquus"],
-        ["Rabbit", "Horse", "Camel", "Elephant", "Humel", "Alphil", "Marquus"],
-        ["Rabbit", "Horse", "Camel", "Elephant", "Humel", "Alphil", "Marquus"]
+        ["Leappa", "Leappa (horse)", "Leappa (camel)", "Leappa (elephant)", "Humel", "Alphil", "???"],
+        ["立啪", "立啪（馬）", "立啪（駱駝）", "立啪（象）", "瀚漠", "奡飛", "？？？"],
+        ["立啪", "立啪（马）", "立啪（骆驼）", "立啪（象）", "瀚漠", "奡飞", "？？？"]
     ],
     "characterDescriptionList": [
         ["Decription", "Decription", "Decription", "Decription", "Decription", "Decription", "Decription"],
