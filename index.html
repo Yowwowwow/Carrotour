@@ -174,9 +174,10 @@
                             <img class="me-5 img-fluid" :src="characterImageSrcs[characterIndex]"
                                 style="width: 153.5px; height: 202.5px;">
                             <div class="scrollable-container bg-light">
-                                <p class="h5">
+                                <p class="h5" v-html="characterDescriptionList[language][characterIndex]">
                                     {{ characterDescriptionList.length !== 0 ?
                                     characterDescriptionList[language][characterIndex] : 'Description'}}
+                                    <!-- <img src="pictures/icon/1x2move.png" style="width: 125px; vertical-align: text-top;"> -->
                                 </p>
                             </div>
                         </div>
@@ -254,6 +255,10 @@
                         vue.carouselTexts = data.carouselTexts
                         vue.characterNameList = data.characterNameList
                         vue.characterDescriptionList = data.characterDescriptionList
+                        for(let i=0;i<vue.characterDescriptionList.length;i++)for(let j=0;j<vue.characterDescriptionList[i].length;j++){
+                            vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("{", "<img src=\"pictures/icon/");
+                            vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("}", "\" style=\"width: 125px; vertical-align: text-top;\">");
+                        }
                         vue.navbarTexts = data.navbarTexts
                         vue.characterImageSrcs = data.characterNameList[0].map((element, index) => {
                             return `./pictures/character/${index}.png`
