@@ -5,11 +5,11 @@
             "description": "English description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tristique nulla nec erosiaculis, non auctor eros consectetur. Curabitur at tincidunt ipsum. Suspendisse utquam nec ligula tincidunt euismod vel non risus. Donec elementum eu nisi sediaculis. Integer at lorem vel nulla feugiat facilisis sit amet vel nisi. Etiammaximus venenatis ligula, at tempor dui placerat sed. Nulla facilisi. Curabiturinterdum metus vel libero hendrerit, id malesuada magna elementum."
         },
         {
-            "title": "邏蔔巡蘿",
+            "title": "Carrotour 邏蔔巡蘿",
             "description": "繁體描述 from json"
         },
         {
-            "title": "逻卜巡萝",
+            "title": "Carrotour 逻卜巡萝",
             "description": "简体描述 from json"
         }
     ],
@@ -86,12 +86,12 @@
          "此为萝卜田的主人，以及瀚漠和奡飞的老板。他是个又老脾气又不好的高等巫师，还建造了一座巨大的地下迷宫。他一直招募新员工来为他工作，然而没人知道他的目的……还有他迷宫的解答。"]
     ],
     "navbarTexts": [
-        {"home": "Home", "introduction": "Introduction", "language": "Language"},
-        {"home": "主頁", "introduction": "介紹", "language": "語言"},
-        {"home": "主页", "introduction": "介绍", "language": "语言"}
+        {"home": "Top", "introduction": "Introduction", "language": "Language"},
+        {"home": "頂端", "introduction": "介紹", "language": "語言"},
+        {"home": "顶端", "introduction": "介绍", "language": "语言"}
     ],
     "links": {
         "steam": "https://store.steampowered.com/",
-        "discord": "https://discord.com/"
+        "discord": "https://discord.gg/T8aKvA57am"
     }
 }

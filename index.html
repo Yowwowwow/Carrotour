@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Website of the puzzle game Carrotour, available on steam!">
+    <meta name="description" content="Website of the puzzle game Carrotour, available on Steam!">
     <meta name="image" content="pictures/icon/capsule.jpg">
     <title>Carrotour Website</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +33,7 @@
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 h5">
                                 <li class="nav-item me-2">
                                     <a class="nav-link" aria-current="page" href="#">
-                                        <i class="bi bi-house" style="vertical-align: middle;"></i> {{ navbarTexts.length !== 0 ? navbarTexts[language].home : "Home" }}</a>
+                                        <i class="bi bi-arrow-up-circle" style="vertical-align: middle;"></i> {{ navbarTexts.length !== 0 ? navbarTexts[language].home : "Home" }}</a>
                                 </li>
                                 <li class="nav-item me-2">
                                     <a class="nav-link" href="#introduction"><i class="bi bi-card-text" style="vertical-align: middle;"></i> {{ navbarTexts.length !== 0 ?
@@ -76,23 +76,22 @@
                         </div>
                         <div class="mt-5 mb-5">
                             <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-lg-8">
+                                <div class="col-lg-9">
                                     <p class="h2 fw-bold text-lg-start text-center">{{ wishList[language] }}</p>
                                 </div>
-                                <div class="col-lg-4 text-lg-start text-center">
-                                    <div class="row ps-lg-4">
+                                <div class="col-lg-3 text-lg-start text-center">
+                                    <div class="row ps-lg-8">
                                         <a :href="links !== {} ? links.steam : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary"
                                         target="_blank" style="text-decoration: none;">
-                                            <img class="img-fluid" src="./pictures/icon/steamIcon.png" style="width: 24px;" alt="">
-                                            Steam
+                                            <img class="img-fluid" src="./pictures/icon/steamButton.png" style="width: 240px;" alt="">
                                         </a>
-                                        <a :href="links !== {} ? links.discord : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary" target="_blank"
+                                    </div>
+                                </div>
+                                <a :href="links !== {} ? links.discord : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary" target="_blank"
                                             style="text-decoration: none;">
                                             <img class="img-fluid" src="./pictures/icon/discordIcon.png" style="width: 24px;" alt="">
                                             Discord
                                         </a>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,7 +183,7 @@
 
         <footer class="mt-5 p-3 bg-dark d-flex text-center text-light">
             <div class="container">
-                <p class="align-items-center" style="margin: 0">Copyright &copy; Carrotour</p>
+                <p class="align-items-center" style="margin: 0">© 2024-2025 Carrotour</p>
             </div>
         </footer>
     </div>
