@@ -1,6 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'); */
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 body::before {
     content: '';
@@ -19,10 +19,10 @@ body::before {
     font-display: swap;
 }
 
-.nunito {
+.nunito-common {
   font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 900;
+  font-weight: 700;
   font-style: normal;
 }
 
