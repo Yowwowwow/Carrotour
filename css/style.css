@@ -22,6 +22,7 @@ body::before {
 .nunito {
   font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
+  font-weight: 900;
   font-style: normal;
 }
 
