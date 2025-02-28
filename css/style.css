@@ -13,11 +13,11 @@ body::before {
     margin: 0;
 }
 
-@font-face {
+/* @font-face {
     font-family: 'ChillRoundFRegular';
     src: url(../fonts/ChillRoundFRegular.woff2);
     font-display: swap;
-}
+} */
 
 .nunito-common {
   font-family: "Nunito", sans-serif;
