@@ -57,6 +57,11 @@
                                         <li data-lid="2">简体中文</li>
                                     </ul>
                                 </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" :href="links !== {} ? links.discord : '#'" target="_blank">
+                                        <img src="./pictures/icon/discordIcon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -74,24 +79,23 @@
                                 allowfullscreen>
                             </iframe>
                         </div>
-                        <div class="mt-5 mb-5">
+                        <div class="mt-4 mb-4">
                             <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-lg-9">
+                                <div class="col-lg-12">
                                     <p class="h2 fw-bold text-lg-start text-center">{{ wishList[language] }}</p>
                                 </div>
-                                <div class="col-lg-3 text-lg-start text-center">
-                                    <div class="row ps-lg-8">
-                                        <a :href="links !== {} ? links.steam : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary"
+                                <a :href="links !== {} ? links.steam : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary"
                                         target="_blank" style="text-decoration: none;">
-                                            <img class="img-fluid" src="./pictures/icon/steamButton.png" style="width: 240px;" alt="">
+                                            <img class="img-fluid" src="./pictures/icon/steamButton.png" style="width: 200px;" alt="">
+                                </a>
+                                <!-- <div class="col-lg-3 text-lg-start text-center">
+                                    <div class="row ps-lg-8">
+                                        <a :href="links !== {} ? links.discord : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary" target="_blank"
+                                            style="text-decoration: none;">
+                                            <img class="img-fluid" src="./pictures/icon/discordIcon.png" style="width: 40px;" alt="">
                                         </a>
                                     </div>
-                                </div>
-                                <a :href="links !== {} ? links.discord : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary" target="_blank"
-                                            style="text-decoration: none;">
-                                            <img class="img-fluid" src="./pictures/icon/discordIcon.png" style="width: 24px;" alt="">
-                                            Discord
-                                        </a>
+                                </div> -->
                             </div>
                         </div>
                     </div>
