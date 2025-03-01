@@ -18,7 +18,7 @@
 
 <body style="background-color: rgb(235, 233, 230);">
     <div id="loading">Loading...</div>
-    <div id="app" style="display: none;">
+    <div class="appLoading" id="app">
         <!-- 头部 -->
         <section>
             <div class="container">
@@ -198,12 +198,22 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/vue.min.js"></script>
     <script>
-            // 监听 Vue 加载完成
+        window.onload = () => {
+            document.getElementById('loading').style.display = 'none'
+            document.getElementById('app').classList.remove('appLoading')
+            loaded()
+        }
+
+        function loaded () {
+            window.onload = null
+        }
+        
+        // 监听 Vue 加载完成
         function checkVueLoaded() {
             if (typeof Vue !== 'undefined') {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-                document.body.classList.add('loaded');
+                // document.getElementById('loading').style.display = 'none';
+                // document.getElementById('app').style.display = 'block';
+                // document.body.classList.add('loaded');
                 let vue = new Vue({
                 el: '#app',
                 data() {
@@ -305,15 +315,13 @@
         }
         checkVueLoaded();
 
-        
-
         function preloadImages(imageUrls) {
             imageUrls.forEach(url => {
                 const img = new Image();  // 创建新的 Image 对象
                 img.src = url; 
             });
         }
-
+        
     </script>
 </body>
 
