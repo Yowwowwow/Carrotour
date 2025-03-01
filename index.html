@@ -248,7 +248,10 @@
             },
             created() {
                 // 使用 fetch API 获取 JSON 数据
-                fetch('./data/data.json')
+                
+            }
+        })
+        fetch('./data/data.json')
                     .then(response => response.json())  // 解析 JSON 数据
                     .then(data => {
                         vue.homeTexts = data.homeTexts
@@ -269,8 +272,6 @@
                         preloadImages(vue.characterImageSrcs)
                     })
                     .catch(error => console.error('Error loading JSON:', error));
-            }
-        })
         setTimeout(() => {
             let carousel = document.querySelector('#carouselExampleIndicators')
             let carouselText = document.querySelector('#carouselText')
