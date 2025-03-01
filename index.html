@@ -229,6 +229,10 @@
               return `./pictures/character/${index}.png`
           })
           links = data.links
+
+          characterImageSrcs.push('pictures/icon/1x2move.png')
+          characterImageSrcs.push('pictures/icon/1x3move.png')
+          characterImageSrcs.push('pictures/icon/2x2move.png')
           // vue.typeWriterEffect(vue.homeTexts[vue.language].description)
 
           await preloadImages(characterImageSrcs)
