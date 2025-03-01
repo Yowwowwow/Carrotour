@@ -13,11 +13,17 @@
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="pictures/icon/icon.jpg">
+    <link rel="preload" href="pictures/character/0.png">
+    <link rel="preload" href="pictures/gif/moving.gif">
+    <link rel="preload" href="pictures/gif/galloping.gif">
+    <link rel="preload" href="pictures/gif/bossing.gif">
+
     <!-- <link rel="preload" href="./fonts/ChillRoundFRegular.woff2" as="font" type="font/woff2" crossorigin="anonymous"> -->
 </head>
 
-<body class="loaded" style="background-color: rgb(235, 233, 230);">
-    <div id="app">
+<body style="background-color: rgb(235, 233, 230);">
+    <div class="h2 fw-bold" id="loading">Loading...</div>
+    <div id="app" class="appLoading">
         <!-- 头部 -->
         <section>
             <div class="container">
@@ -204,7 +210,7 @@
       
       fetch('./data/data.json')
       .then(response => response.json())  // 解析 JSON 数据
-      .then(data => {
+      .then(async data => {
           homeTexts = data.homeTexts
           carouselTexts = data.carouselTexts
           characterNameList = data.characterNameList
@@ -220,7 +226,9 @@
           links = data.links
           // vue.typeWriterEffect(vue.homeTexts[vue.language].description)
 
-          // preloadImages(vue.characterImageSrcs)
+          await preloadImages(characterImageSrcs)
+          document.getElementById('loading').style.display = 'none'
+          document.getElementById('app').classList.remove('appLoading')
 
           document.getElementById('steamLink').href = links.steam
           document.getElementById('discordLink').href = links.discord
@@ -310,20 +318,33 @@
         characterImage.src = characterImageSrcs[characterIndex]
       }
 
+      async function preloadImages(imageUrls) {
+        const promises = imageUrls.map(url => {
+            return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = resolve;  // 加载成功时 resolve
+            img.onerror = reject;  // 加载失败时 reject
+            img.src = url;
+            });
+        });
+
+        await Promise.all(promises); // 等待所有图片加载完成
+        }
+
       function click(next) {
-          if (next) {
-              if (characterIndex + 1 < characterNameList[0].length) characterIndex++
-              else characterIndex = 0
-          }
-          else {
-              if (characterIndex > 0) characterIndex--
-              else characterIndex = characterNameList[0].length - 1
-          }
-          characterToggle()
+        if (next) {
+            if (characterIndex + 1 < characterNameList[0].length) characterIndex++
+            else characterIndex = 0
+        }
+        else {
+            if (characterIndex > 0) characterIndex--
+            else characterIndex = characterNameList[0].length - 1
+        }
+        characterToggle()
           // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
       }
     </script>
-    // <!-- <script src="js/vue.min.js"></script>
+    <!-- <script src="js/vue.min.js"></script>
     // <script>
     //         // 监听 Vue 加载完成
     //     function checkVueLoaded() {
