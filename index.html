@@ -17,7 +17,8 @@
 </head>
 
 <body style="background-color: rgb(235, 233, 230);">
-    <div id="app">
+    <div id="loading">Loading...</div>
+    <div id="app" style="display: none;">
         <!-- 头部 -->
         <section>
             <div class="container">
@@ -200,6 +201,8 @@
             // 监听 Vue 加载完成
         function checkVueLoaded() {
             if (typeof Vue !== 'undefined') {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
                 document.body.classList.add('loaded');
                 let vue = new Vue({
                 el: '#app',
