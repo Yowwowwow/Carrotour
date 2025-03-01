@@ -226,13 +226,8 @@
           }
           navbarTexts = data.navbarTexts
           characterImageSrcs = data.characterNameList[0].map((element, index) => {
-              return `pictures/character/${index}.png`
+              return `./pictures/character/${index}.png`
           })
-
-          characterImageSrcs.push('pictures/icon/1x2move.png')
-          characterImageSrcs.push('pictures/icon/1x3move.png')
-          characterImageSrcs.push('pictures/icon/2x2move.png')
-
           links = data.links
           // vue.typeWriterEffect(vue.homeTexts[vue.language].description)
 
@@ -354,6 +349,123 @@
           // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
       }
     </script>
+    <!-- <script src="js/vue.min.js"></script>
+    // <script>
+    //         // 监听 Vue 加载完成
+    //     function checkVueLoaded() {
+    //         if (typeof Vue !== 'undefined') {
+    //             document.body.classList.add('loaded');
+    //             let vue = new Vue({
+    //             el: '#app',
+    //             data() {
+    //                 return {
+    //                     characterIndex: 0,
+    //                     characterNameList: [],
+    //                     characterDescriptionList: [],
+    //                     characters: ["Characters", "角色", "角色"],
+    //                     characterImageSrcs: [],
+    //                     homeTexts: [],
+    //                     homeText: '',
+    //                     navbarTexts: [],
+    //                     carouselIndex: 0,
+    //                     carouselTexts: [],
+    //                     wishList: ["Wishlist now on Steam!", "快加入Steam願望清單！", "快加入Steam愿望清单！"],
+    //                     language: 0,
+    //                     timer: 0,
+    //                     links: {}
+    //                 }
+    //             },
+    //             methods: {
+    //                 click(next) {
+    //                     if (next) {
+    //                         if (this.characterIndex + 1 < this.characterNameList[this.language].length) this.characterIndex++
+    //                         else this.characterIndex = 0
+    //                     }
+    //                     else {
+    //                         if (this.characterIndex > 0) this.characterIndex--
+    //                         else this.characterIndex = this.characterNameList[this.language].length - 1
+    //                     }
+    //                     // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
+    //                 },
+    //                 languageToggle(event) {
+    //                     if (this.language !== event.target.dataset.lid) {
+    //                         this.language = event.target.dataset.lid
+    //                         this.typeWriterEffect(this.homeTexts[this.language].description)
+    //                     }
+    //                 },
+    //                 typeWriterEffect(targetText) {
+    //                     let speed = +this.language === 0 ? 6 : 30
+    //                     let index = 0
+    //                     this.homeText = ''
+    //                     clearInterval(this.timer)
+    //                     this.timer = setInterval(type, speed);
+    //                     function type() {
+    //                         if (index < targetText.length) vue.homeText += targetText[index++]
+    //                         else clearInterval(this.timer)
+    //                     }
+    //                 }
+    //             },
+    //             created() {
+    //                 // 使用 fetch API 获取 JSON 数据
+    //                 fetch('./data/data.json')
+    //                 .then(response => response.json())  // 解析 JSON 数据
+    //                 .then(data => {
+    //                     vue.homeTexts = data.homeTexts
+    //                     vue.carouselTexts = data.carouselTexts
+    //                     vue.characterNameList = data.characterNameList
+    //                     vue.characterDescriptionList = data.characterDescriptionList
+    //                     for(let i=0;i<vue.characterDescriptionList.length;i++)for(let j=0;j<vue.characterDescriptionList[i].length;j++){
+    //                         vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("{", "<img src=\"pictures/icon/");
+    //                         vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("}", "\" style=\"width: 125px; vertical-align: text-top;\">");
+    //                     }
+    //                     vue.navbarTexts = data.navbarTexts
+    //                     vue.characterImageSrcs = data.characterNameList[0].map((element, index) => {
+    //                         return `./pictures/character/${index}.png`
+    //                     })
+    //                     vue.links = data.links
+    //                     vue.typeWriterEffect(vue.homeTexts[vue.language].description)
+
+    //                     preloadImages(vue.characterImageSrcs)
+    //                 })
+    //                 .catch(error => console.error('Error loading JSON:', error));
+
+    //                 setTimeout(() => {
+    //                     let carousel = document.querySelector('#carouselExampleIndicators')
+    //                     let carouselText = document.querySelector('#carouselText')
+    //                     carousel.addEventListener('slid.bs.carousel', (e) => {
+
+    //                         carouselText.classList.add('fade-animation');
+    //                         vue.carouselIndex = e.to;
+    //                         // 设置动画结束后移除动画类，方便重新触发动画
+    //                         carouselText.addEventListener('animationend', () => {
+    //                             carouselText.classList.remove('fade-animation');
+    //                         });
+
+    //                         // carouselText.style.opacity = 0;
+    //                         // setTimeout(() => {
+    //                         //     carouselText.style.opacity = 1;
+    //                         //     
+    //                         // }, 300); 
+    //                     })
+    //                 }, 2000);
+    //             }
+    //         }).$mount('#app');
+    //         } else {
+    //             requestAnimationFrame(checkVueLoaded);
+    //         }
+    //     }
+    //     checkVueLoaded();
+
+        
+
+    //     function preloadImages(imageUrls) {
+    //         imageUrls.forEach(url => {
+    //             const img = new Image();  // 创建新的 Image 对象
+    //             img.src = url; 
+    //         });
+    //     }
+
+    // </script> -->
 </body>
 
 </html>
