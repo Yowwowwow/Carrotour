@@ -13,32 +13,17 @@ body::before {
     margin: 0;
 }
 
-/* @font-face {
+@font-face {
     font-family: 'ChillRoundFRegular';
     src: url(../fonts/ChillRoundFRegular.woff2);
     font-display: swap;
-} */
+}
 
 /* .nunito-common {
   font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
-} */
-
-/* body:not(.loaded) {
-  opacity: 0;
-  visibility: hidden;
-  overflow: hidden; 
-  background: white; 
-  height: 100vh;
-} */
-
-/* 加载完成后显示 */
-/* body.loaded {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.3s ease-in; 
 } */
 
 #loading {
@@ -50,9 +35,9 @@ body::before {
   color: #666;
 }
 
-/* .appLoading {
+.appLoading {
   display: none;
-} */
+}
 
 h1 {
   font-size: 3rem;
