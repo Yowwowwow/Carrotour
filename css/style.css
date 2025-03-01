@@ -50,9 +50,9 @@ body::before {
   color: #666;
 }
 
-/* .appLoading {
+.appLoading {
   display: none;
-} */
+}
 
 h1 {
   font-size: 3rem;
