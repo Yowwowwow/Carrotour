@@ -194,64 +194,66 @@
     </div>
 
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/vue.min.js"></script>
+    <script src="js/vue.min.js" async></script>
     <script>
-        let vue = new Vue({
-            el: '#app',
-            data() {
-                return {
-                    characterIndex: 0,
-                    characterNameList: [],
-                    characterDescriptionList: [],
-                    characters: ["Characters", "角色", "角色"],
-                    characterImageSrcs: [],
-                    homeTexts: [],
-                    homeText: '',
-                    navbarTexts: [],
-                    carouselIndex: 0,
-                    carouselTexts: [],
-                    wishList: ["Wishlist now on Steam!", "快加入Steam願望清單！", "快加入Steam愿望清单！"],
-                    language: 0,
-                    timer: 0,
-                    links: {}
-                }
-            },
-            methods: {
-                click(next) {
-                    if (next) {
-                        if (this.characterIndex + 1 < this.characterNameList[this.language].length) this.characterIndex++
-                        else this.characterIndex = 0
-                    }
-                    else {
-                        if (this.characterIndex > 0) this.characterIndex--
-                        else this.characterIndex = this.characterNameList[this.language].length - 1
-                    }
-                    // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
-                },
-                languageToggle(event) {
-                    if (this.language !== event.target.dataset.lid) {
-                        this.language = event.target.dataset.lid
-                        this.typeWriterEffect(this.homeTexts[this.language].description)
+
+            // 监听 Vue 加载完成
+        function checkVueLoaded() {
+            if (typeof Vue !== 'undefined') {
+                document.body.classList.add('loaded');
+                let vue = new Vue({
+                el: '#app',
+                data() {
+                    return {
+                        characterIndex: 0,
+                        characterNameList: [],
+                        characterDescriptionList: [],
+                        characters: ["Characters", "角色", "角色"],
+                        characterImageSrcs: [],
+                        homeTexts: [],
+                        homeText: '',
+                        navbarTexts: [],
+                        carouselIndex: 0,
+                        carouselTexts: [],
+                        wishList: ["Wishlist now on Steam!", "快加入Steam願望清單！", "快加入Steam愿望清单！"],
+                        language: 0,
+                        timer: 0,
+                        links: {}
                     }
                 },
-                typeWriterEffect(targetText) {
-                    let speed = +this.language === 0 ? 6 : 30
-                    let index = 0
-                    this.homeText = ''
-                    clearInterval(this.timer)
-                    this.timer = setInterval(type, speed);
-                    function type() {
-                        if (index < targetText.length) vue.homeText += targetText[index++]
-                        else clearInterval(this.timer)
+                methods: {
+                    click(next) {
+                        if (next) {
+                            if (this.characterIndex + 1 < this.characterNameList[this.language].length) this.characterIndex++
+                            else this.characterIndex = 0
+                        }
+                        else {
+                            if (this.characterIndex > 0) this.characterIndex--
+                            else this.characterIndex = this.characterNameList[this.language].length - 1
+                        }
+                        // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
+                    },
+                    languageToggle(event) {
+                        if (this.language !== event.target.dataset.lid) {
+                            this.language = event.target.dataset.lid
+                            this.typeWriterEffect(this.homeTexts[this.language].description)
+                        }
+                    },
+                    typeWriterEffect(targetText) {
+                        let speed = +this.language === 0 ? 6 : 30
+                        let index = 0
+                        this.homeText = ''
+                        clearInterval(this.timer)
+                        this.timer = setInterval(type, speed);
+                        function type() {
+                            if (index < targetText.length) vue.homeText += targetText[index++]
+                            else clearInterval(this.timer)
+                        }
                     }
-                }
-            },
-            created() {
-                // 使用 fetch API 获取 JSON 数据
-                
-            }
-        })
-        fetch('./data/data.json')
+                },
+                created() {
+                    // 使用 fetch API 获取 JSON 数据
+                    fetch('./data/data.json')
                     .then(response => response.json())  // 解析 JSON 数据
                     .then(data => {
                         vue.homeTexts = data.homeTexts
@@ -272,25 +274,35 @@
                         preloadImages(vue.characterImageSrcs)
                     })
                     .catch(error => console.error('Error loading JSON:', error));
-        setTimeout(() => {
-            let carousel = document.querySelector('#carouselExampleIndicators')
-            let carouselText = document.querySelector('#carouselText')
-            carousel.addEventListener('slid.bs.carousel', (e) => {
 
-                carouselText.classList.add('fade-animation');
-                vue.carouselIndex = e.to;
-                // 设置动画结束后移除动画类，方便重新触发动画
-                carouselText.addEventListener('animationend', () => {
-                    carouselText.classList.remove('fade-animation');
-                });
+                    setTimeout(() => {
+                        let carousel = document.querySelector('#carouselExampleIndicators')
+                        let carouselText = document.querySelector('#carouselText')
+                        carousel.addEventListener('slid.bs.carousel', (e) => {
 
-                // carouselText.style.opacity = 0;
-                // setTimeout(() => {
-                //     carouselText.style.opacity = 1;
-                //     
-                // }, 300); 
-            })
-        }, 2000);
+                            carouselText.classList.add('fade-animation');
+                            vue.carouselIndex = e.to;
+                            // 设置动画结束后移除动画类，方便重新触发动画
+                            carouselText.addEventListener('animationend', () => {
+                                carouselText.classList.remove('fade-animation');
+                            });
+
+                            // carouselText.style.opacity = 0;
+                            // setTimeout(() => {
+                            //     carouselText.style.opacity = 1;
+                            //     
+                            // }, 300); 
+                        })
+                    }, 2000);
+                }
+            }).$mount('#app');
+            } else {
+                requestAnimationFrame(checkVueLoaded);
+            }
+        }
+        checkVueLoaded();
+
+        
 
         function preloadImages(imageUrls) {
             imageUrls.forEach(url => {
