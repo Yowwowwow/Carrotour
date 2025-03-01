@@ -1,0 +1,44 @@
+{
+  "id": "4842680",
+  "name": "iconfont",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "18592623",
+      "name": "triangle-left",
+      "font_class": "triangle-left",
+      "unicode": "e6ae",
+      "unicode_decimal": 59054
+    },
+    {
+      "icon_id": "18592624",
+      "name": "triangle-right",
+      "font_class": "triangle-right",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
+      "icon_id": "372099",
+      "name": "cc-arrow-circle-up",
+      "font_class": "cc-arrow-circle-up",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "3418355",
+      "name": "简介",
+      "font_class": "intro",
+      "unicode": "e712",
+      "unicode_decimal": 59154
+    },
+    {
+      "icon_id": "11903005",
+      "name": "language",
+      "font_class": "language",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    }
+  ]
+}
