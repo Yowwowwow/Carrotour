@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="pictures/icon/icon.jpg">
     <link rel="preload" href="pictures/character/0.png">
+    <link rel="preload" href="pictures/character/1.png">
+    <link rel="preload" href="pictures/character/2.png">
+    <link rel="preload" href="pictures/character/3.png">
+    <link rel="preload" href="pictures/character/4.png">
+    <link rel="preload" href="pictures/character/5.png">
+    <link rel="preload" href="pictures/character/6.png">
     <link rel="preload" href="pictures/gif/moving.gif">
     <link rel="preload" href="pictures/gif/galloping.gif">
     <link rel="preload" href="pictures/gif/bossing.gif">
@@ -277,7 +283,7 @@
 
       console.log(leftButton)
 
-      leftButton.addEventListener('click', click)
+      leftButton.addEventListener('click', click.bind(null, false))
       rightButton.addEventListener('click', click.bind(null, true))
 
       // 语言切换
