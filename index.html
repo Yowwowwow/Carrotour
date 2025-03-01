@@ -263,16 +263,16 @@
                         if (index < targetText.length) vue.homeText += targetText[index++]
                         else clearInterval(this.timer)
                     }
-                },
-                async preloadImages() {
-                await Promise.all(
-                    this.characterImageSrcs.map(url => new Promise(resolve => {
-                    const img = new Image();
-                    img.src = url;
-                    img.onload = resolve;
-                    }))
-                );
                 }
+                // async preloadImages() {
+                // await Promise.all(
+                //     this.characterImageSrcs.map(url => new Promise(resolve => {
+                //     const img = new Image();
+                //     img.src = url;
+                //     img.onload = resolve;
+                //     }))
+                // );
+                // }
             },
             async created() {
                 try {
@@ -299,7 +299,7 @@
                     );
 
                     // 预加载图片并显示
-                    await this.preloadImages();
+                    // await this.preloadImages();
                     document.getElementById('app').style.display = 'block';
                     document.getElementById('loading').style.display = 'none';
                     
@@ -324,6 +324,11 @@
             }
             });
         }).$mount('#app');
+
+        setTimeout(() => {
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        }, 5000);
 
         function carouselEvent () {
             const carousel = document.querySelector('#carouselExampleIndicators');
