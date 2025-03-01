@@ -214,6 +214,12 @@
         // }
         let carouselTimer = null
         let vue = null
+
+        setTimeout(() => {
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        }, 5000);
+        
         document.addEventListener('DOMContentLoaded', () => {
             vue = new Vue({
             el: '#app',
@@ -324,11 +330,6 @@
             }
             });
         }).$mount('#app');
-
-        setTimeout(() => {
-            document.getElementById('app').style.display = 'block';
-            document.getElementById('loading').style.display = 'none';
-        }, 5000);
 
         function carouselEvent () {
             const carousel = document.querySelector('#carouselExampleIndicators');
