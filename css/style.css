@@ -1,6 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'); */
 
-/* @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 body::before {
     content: '';
@@ -13,18 +13,18 @@ body::before {
     margin: 0;
 }
 
-/* @font-face {
+@font-face {
     font-family: 'ChillRoundFRegular';
     src: url(../fonts/ChillRoundFRegular.woff2);
     font-display: swap;
-} */
+}
 
-/* .nunito-common {
+.nunito-common {
   font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
-} */
+}
 
 /* body:not(.loaded) {
   opacity: 0;
@@ -75,7 +75,7 @@ html {
 }
 
 body {
-    font-family: 'ChillRoundFRegular', Roboto, Arial, sans-serif;
+    font-family: 'ChillRoundFRegular', 'Ninuto' Roboto, Arial, sans-serif;
 }
 
 .dropdown-menu {
