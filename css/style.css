@@ -26,6 +26,21 @@ body::before {
   font-style: normal;
 } */
 
+body:not(.loaded) {
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden; /* 禁止滚动 */
+  background: white; /* 强制白屏 */
+  height: 100vh;
+}
+
+/* 加载完成后显示 */
+body.loaded {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease-in; /* 可选过渡效果 */
+}
+
 h1 {
   font-size: 3rem;
 }
