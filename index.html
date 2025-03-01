@@ -13,17 +13,11 @@
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="pictures/icon/icon.jpg">
-    <link rel="preload" href="pictures/character/0.png">
-    <link rel="preload" href="pictures/gif/moving.gif">
-    <link rel="preload" href="pictures/gif/galloping.gif">
-    <link rel="preload" href="pictures/gif/bossing.gif">
-
     <!-- <link rel="preload" href="./fonts/ChillRoundFRegular.woff2" as="font" type="font/woff2" crossorigin="anonymous"> -->
 </head>
 
-<body style="background-color: rgb(235, 233, 230);">
-    <div id="loading">Loading...</div>
-    <div id="app" class="appLoading">
+<body class="loaded" style="background-color: rgb(235, 233, 230);">
+    <div id="app">
         <!-- 头部 -->
         <section>
             <div class="container">
@@ -40,20 +34,18 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 h5">
                                 <li class="nav-item me-2">
-                                    <a class="nav-link" aria-current="page" href="#">
-                                        <i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> {{ navbarTexts.length !== 0 ? navbarTexts[language].home : "Home" }}</a>
+                                    <a class="nav-link top" aria-current="page" href="#">
+                                        <i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> Top</a>
                                 </li>
                                 <li class="nav-item me-2">
-                                    <a class="nav-link" href="#introduction"><i class="iconfont icon-intro" style="vertical-align: middle;"></i> {{ navbarTexts.length !== 0 ?
-                                        navbarTexts[language].introduction : "Introduction" }}</a>
+                                    <a class="nav-link intro" href="#introduction"><i class="iconfont icon-intro" style="vertical-align: middle;"></i> Introduction</a>
                                 </li>
                                 <li class="nav-item dropdown me-2">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    <a class="nav-link lang dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="iconfont icon-language" style="vertical-align: middle"></i> 
-                                        {{ navbarTexts.length !== 0 ? navbarTexts[language].language : "Language" }}
+                                         Language
                                     </a>
-                                    <ul class="dropdown-menu ps-3" style="width: 100px; cursor: pointer;"
-                                        @click="languageToggle">
+                                    <ul class="dropdown-menu ps-3" style="width: 100px; cursor: pointer;">
                                         <li data-lid="0">English</li>
                                         <li>
                                             <hr class="dropdown-divider">
@@ -66,7 +58,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item me-2">
-                                    <a class="nav-link" :href="links !== {} ? links.discord : '#'" target="_blank">
+                                    <a class="nav-link" id="discordLink" href="#" target="_blank">
                                         <img src="./pictures/icon/discordIcon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
                                         </a>
                                 </li>
@@ -90,9 +82,9 @@
                         <div class="mt-4 mb-4">
                             <div class="row d-flex justify-content-between align-items-center">
                                 <div class="col-lg-12">
-                                    <p class="h2 fw-bold text-lg-start text-center">{{ wishList[language] }}</p>
+                                    <p class="h2 fw-bold text-lg-start text-center wishList">Wishlist now on Steam!</p>
                                 </div>
-                                <a :href="links !== {} ? links.steam : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary text-center ms-auto me-auto" target="_blank" style="text-decoration: none;">
+                                <a href="#" id="steamLink" class="col-lg-12 col-6 h4 align-items-center text-primary text-center ms-auto me-auto" target="_blank" style="text-decoration: none;">
                                     <img class="img-fluid" src="./pictures/icon/steamButton.png" style="width: 200px;" alt="">
                                 </a>
                                 <!-- <div class="col-lg-3 text-lg-start text-center">
@@ -107,8 +99,8 @@
                         </div>
                     </div>
                     <div class="col-lg-7 pt-5 ps-lg-5 order-lg-2 order-1">
-                        <h1 class="fw-bold">{{ homeTexts.length !== 0 ? homeTexts[language].title : 'Carrotour' }}</h1>
-                        <p class="homeText">{{ homeText }}</p>
+                        <h1 class="homeTitle fw-bold">Carrotour</h1>
+                        <p class="homeText">A grid-based puzzle game where you utilize various \"leaper\" movements to navigate around obstacles and grab delicious carrots. Be a horse, camel, elephant or rabbit! Also, be prepared for intense boss battles featuring bullet hells!</p>
                     </div>
                 </div>
             </div>
@@ -153,10 +145,8 @@
                     </div>
                     <div class="col-lg">
                         <div id="carouselText" class="m-lg-0 mt-5">
-                            <h2 class="fw-bold"> {{ carouselTexts.length !== 0 ?
-                                carouselTexts[language][carouselIndex].title : 'Title' }} </h2>
-                            <p class="h5 lh-base">{{ carouselTexts.length !== 0 ?
-                                carouselTexts[language][carouselIndex].description : 'Description' }}</p>
+                            <h2 class="carouselTitle fw-bold">Unfamiliar Leaper Movements</h2>
+                            <p class="carouselDescription h5 lh-base">In this game, you don't just move up, down, left and right! Instead, you move as "leapers". They move in a specific angle about an axis, a fixed distance each time, and cannot be blocked. Think about the knight in chess, which is a classic leaper! Getting use to the move patterns is the key to victory.</p>
                         </div>
                     </div>
                 </div>
@@ -167,23 +157,20 @@
         <section id="character" class="mt-5">
             <div class="container">
                 <div class="d-flex align-items-center" style="height: 3rem;">
-                    <h2 class="fw-bold m-0">{{ characters[language] }}</h2>
-                    <i class="iconfont icon-triangle-left ms-auto" style="font-size: 2rem;" @click="click(false)"></i>
-                    <p class="h3 m-0" style="width: 8rem; text-align: center; white-space: pre-line;"> {{
-                        characterNameList.length !== 0 ? characterNameList[language][characterIndex] : 'Leappa' }}
-                    </p>
-                    <i class="iconfont icon-triangle-right me-lg-5" style="font-size: 2rem;" @click="click(true)"></i>
+                    <h2 class="characters fw-bold m-0">Characters</h2>
+                    <i class="iconfont icon-triangle-left ms-auto" id="left-button" style="font-size: 2rem;""></i>
+                    <p class="characterName h3 m-0" style="width: 8rem; text-align: center; white-space: pre-line;">Leappa</p>
+                    <i class="iconfont icon-triangle-right me-lg-5" id="right-button" style="font-size: 2rem;"></i>
                     <i class="me-lg-5"></i>
                 </div>
                 <div>
                     <div class="d-flex justify-content-center">
                         <div class="container mt-3 d-flex justify-content-center">
-                            <img class="me-5 img-fluid" :src="characterImageSrcs[characterIndex]"
+                            <img class="me-5 img-fluid characterImage" src="pictures/character/0.png"
                                 style="width: 9.593rem; height: 12.656rem;">
                             <div class="scrollable-container bg-light">
-                                <p class="h5" v-html="characterDescriptionList[language][characterIndex]">
-                                    {{ characterDescriptionList.length !== 0 ?
-                                    characterDescriptionList[language][characterIndex] : 'Description'}}
+                                <p class="h5 characterDescription">
+                                  A curious and naughty rabbit, and a student of a local wizard school. Despite being a wizard, Leappa is really bad at magic, so bad that he failed the most basic magic class 3 times. However, Leappa is good at eating carrots, leaping around and solving puzzles... maybe.
                                     <!-- <img src="pictures/icon/1x2move.png" style="width: 125px; vertical-align: text-top;"> -->
                                 </p>
                             </div>
@@ -201,265 +188,258 @@
     </div>
 
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/vue.min.js"></script>
     <script>
-        // window.onload = () => {
-        //     document.getElementById('loading').style.display = 'none'
-        //     document.getElementById('app').classList.remove('appLoading')
-        //     loaded()
-        // }
+      let homeTexts = []
+      let wishListTexts = ["Wishlist now on Steam!", "快加入Steam願望清單！", "快加入Steam愿望清单！"]
+      let carouselTexts = []
+      let carouselIndex = 0
+      let charactersList = ["Characters", "角色", "角色"]
+      let characterIndex = 0
+      let characterNameList = []
+      let characterDescriptionList = []
+      let navbarTexts = []
+      let characterImageSrcs = []
+      let link = {}
+      let language = 0
+      
+      fetch('./data/data.json')
+      .then(response => response.json())  // 解析 JSON 数据
+      .then(data => {
+          homeTexts = data.homeTexts
+          carouselTexts = data.carouselTexts
+          characterNameList = data.characterNameList
+          characterDescriptionList = data.characterDescriptionList
+          for(let i = 0; i < characterDescriptionList.length; i++) for(let j = 0; j < characterDescriptionList[i].length; j++) {
+              characterDescriptionList[i][j] = characterDescriptionList[i][j].replace("{", "<img src=\"pictures/icon/");
+              characterDescriptionList[i][j] = characterDescriptionList[i][j].replace("}", "\" style=\"width: 125px; vertical-align: text-top;\">");
+          }
+          navbarTexts = data.navbarTexts
+          characterImageSrcs = data.characterNameList[0].map((element, index) => {
+              return `./pictures/character/${index}.png`
+          })
+          links = data.links
+          // vue.typeWriterEffect(vue.homeTexts[vue.language].description)
 
-        // function loaded () {
-        //     window.onload = null
-        // }
-        let carouselTimer = null
-        let vue = null
-        document.addEventListener('DOMContentLoaded', () => {
-            vue = new Vue({
-            el: '#app',
-            data() {
-                return {
-                    characterIndex: 0,
-                    characterNameList: [],
-                    characterDescriptionList: [],
-                    characters: ["Characters", "角色", "角色"],
-                    characterImageSrcs: [],
-                    homeTexts: [],
-                    homeText: '',
-                    navbarTexts: [],
-                    carouselIndex: 0,
-                    carouselTexts: [],
-                    wishList: ["Wishlist now on Steam!", "快加入Steam願望清單！", "快加入Steam愿望清单！"],
-                    language: 0,
-                    timer: 0,
-                    links: {}
-                }
-            },
-            methods: {
-                click(next) {
-                    if (next) {
-                        if (this.characterIndex + 1 < this.characterNameList[this.language].length) this.characterIndex++
-                        else this.characterIndex = 0
-                    }
-                    else {
-                        if (this.characterIndex > 0) this.characterIndex--
-                        else this.characterIndex = this.characterNameList[this.language].length - 1
-                    }
-                    // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
-                },
-                languageToggle(event) {
-                    if (this.language !== event.target.dataset.lid) {
-                        this.language = event.target.dataset.lid
-                        this.typeWriterEffect(this.homeTexts[this.language].description)
-                    }
-                },
-                typeWriterEffect(targetText) {
-                    let speed = +this.language === 0 ? 6 : 30
-                    let index = 0
-                    this.homeText = ''
-                    clearInterval(this.timer)
-                    this.timer = setInterval(type, speed);
-                    function type() {
-                        if (index < targetText.length) vue.homeText += targetText[index++]
-                        else clearInterval(this.timer)
-                    }
-                },
-                async preloadImages() {
-                    await Promise.all(
-                        this.characterImageSrcs.map(url => new Promise(resolve => {
-                        const img = new Image();
-                        img.src = url;
-                        img.onload = resolve;
-                        }))
-                    );
-                }
-            },
-            async created() {
-                try {
-                    const response = await fetch('./data/data.json');
-                    const data = await response.json();
-                    
-                    vue.homeTexts = data.homeTexts
-                    vue.carouselTexts = data.carouselTexts
-                    vue.characterNameList = data.characterNameList
-                    vue.characterDescriptionList = data.characterDescriptionList
-                    for(let i=0;i<vue.characterDescriptionList.length;i++)for(let j=0;j<vue.characterDescriptionList[i].length;j++){
-                        vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("{", "<img src=\"pictures/icon/");
-                        vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("}", "\" style=\"width: 125px; vertical-align: text-top;\">");
-                    }
-                    vue.navbarTexts = data.navbarTexts
-                    // vue.characterImageSrcs = data.characterNameList[0].map((element, index) => {
-                    //     return `./pictures/character/${index}.png`
-                    // })
-                    vue.links = data.links
-                    vue.typeWriterEffect(vue.homeTexts[vue.language].description)
+          // preloadImages(vue.characterImageSrcs)
 
-                    this.characterImageSrcs = data.characterNameList[0].map((_, i) => 
-                        `./pictures/character/${i}.png`
-                    );
+          document.getElementById('steamLink').href = links.steam
+          document.getElementById('discordLink').href = links.discord
+      })
+      .catch(error => console.error('Error loading JSON:', error));
 
-                    // 预加载图片并显示
-                    await this.preloadImages();
-                    document.getElementById('app').style.display = 'block';
-                    document.getElementById('loading').style.display = 'none';
-                    
-                    } catch (error) {
-                    console.error('加载失败:', error);
-                }
-            },
-            mounted() {
-                carouselTimer = setInterval(carouselEvent, 1000)
+      const languageButton = document.querySelector('.dropdown-menu')
+      languageButton.addEventListener('click', languageToggle)
 
-                // this.$nextTick(() => { // 等待 DOM 更新完成
-                //     const carousel = document.querySelector('#carouselExampleIndicators');
-                //     carousel.addEventListener('slid.bs.carousel', (e) => {
-                //     carouselText.classList.add('fade-animation');
-                //         vue.carouselIndex = e.to;
-                //         // 设置动画结束后移除动画类，方便重新触发动画
-                //         carouselText.addEventListener('animationend', () => {
-                //             carouselText.classList.remove('fade-animation');
-                //         });
-                //     });
-                // });   
-            }
-            });
-        }).$mount('#app');
+      // 导航
+      const topLink = document.querySelector('.top')
+      const introLink = document.querySelector('.intro')
+      const langLink = document.querySelector('.lang')
 
-        function carouselEvent () {
-            const carousel = document.querySelector('#carouselExampleIndicators');
-            if (carousel && vue) {
-                carousel.addEventListener('slid.bs.carousel', (e) => {
-                carouselText.classList.add('fade-animation');
-                    vue.carouselIndex = e.to;
-                    // 设置动画结束后移除动画类，方便重新触发动画
-                    carouselText.addEventListener('animationend', () => {
-                        carouselText.classList.remove('fade-animation');
-                    });
-                });
-                clearInterval(carouselTimer)
-            } 
+      // 主页
+      const homeTitle = document.querySelector('.homeTitle')
+      const homeText = document.querySelector('.homeText')
+
+      const wishList = document.querySelector('.wishList')
+
+      // 轮播图
+      const carouselTitle = document.querySelector('.carouselTitle')
+      const carouselDescription = document.querySelector('.carouselDescription')
+
+      const carousel = document.querySelector('#carouselExampleIndicators')
+      const carouselText = document.querySelector('#carouselText')
+      carousel.addEventListener('slid.bs.carousel', (e) => {
+        carouselText.classList.add('fade-animation');
+        carouselIndex = e.to;
+        carouselToggle(language)
+        // 设置动画结束后移除动画类，方便重新触发动画
+        carouselText.addEventListener('animationend', () => {
+            carouselText.classList.remove('fade-animation');
+        });
+      })
+
+      // 角色
+      const characters = document.querySelector('.characters')
+      const characterName = document.querySelector('.characterName')
+      const characterDescription = document.querySelector('.characterDescription')
+      const characterImage = document.querySelector('.characterImage')
+          
+      // 角色切换
+      const leftButton = document.getElementById('left-button')
+      const rightButton = document.getElementById('right-button')
+
+      console.log(leftButton)
+
+      leftButton.addEventListener('click', click)
+      rightButton.addEventListener('click', click.bind(null, true))
+
+      // 语言切换
+      function languageToggle (e) {
+        let newLang = e.target.dataset.lid
+        if (language !== newLang) {
+          language = newLang
+          // 导航栏
+          topLink.innerHTML = `<i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> ${navbarTexts[newLang].home}`
+          introLink.innerHTML = `<i class="iconfont icon-intro" style="vertical-align: middle;"></i> ${navbarTexts[newLang].introduction}`
+          langLink.innerHTML = `<i class="iconfont icon-language" style="vertical-align: middle"></i> ${navbarTexts[newLang].language}`
+
+          // 主页
+          homeTitle.innerHTML = `${homeTexts[newLang].title}`
+          homeText.innerHTML = `${homeTexts[newLang].description}`
+
+          // 愿望清单
+          wishList.innerHTML = wishListTexts[newLang]
+
+          // 轮播图
+          carouselToggle(newLang)
+
+          // 角色
+          characters.innerHTML = charactersList[newLang]
+          characterName.innerHTML =  characterNameList[newLang][characterIndex]
         }
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     console.log('loaded');
-            
-        //     document.getElementById('app').classList.remove('appLoading')
-        //     document.getElementById('loading').style.display = 'none'
-        // });
-        
-        // let vue = new Vue({
-        //         el: '#app',
-        //         data() {
-        //             return {
-        //                 characterIndex: 0,
-        //                 characterNameList: [],
-        //                 characterDescriptionList: [],
-        //                 characters: ["Characters", "角色", "角色"],
-        //                 characterImageSrcs: [],
-        //                 homeTexts: [],
-        //                 homeText: '',
-        //                 navbarTexts: [],
-        //                 carouselIndex: 0,
-        //                 carouselTexts: [],
-        //                 wishList: ["Wishlist now on Steam!", "快加入Steam願望清單！", "快加入Steam愿望清单！"],
-        //                 language: 0,
-        //                 timer: 0,
-        //                 links: {}
-        //             }
-        //         },
-        //         methods: {
-        //             click(next) {
-        //                 if (next) {
-        //                     if (this.characterIndex + 1 < this.characterNameList[this.language].length) this.characterIndex++
-        //                     else this.characterIndex = 0
-        //                 }
-        //                 else {
-        //                     if (this.characterIndex > 0) this.characterIndex--
-        //                     else this.characterIndex = this.characterNameList[this.language].length - 1
-        //                 }
-        //                 // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
-        //             },
-        //             languageToggle(event) {
-        //                 if (this.language !== event.target.dataset.lid) {
-        //                     this.language = event.target.dataset.lid
-        //                     this.typeWriterEffect(this.homeTexts[this.language].description)
-        //                 }
-        //             },
-        //             typeWriterEffect(targetText) {
-        //                 let speed = +this.language === 0 ? 6 : 30
-        //                 let index = 0
-        //                 this.homeText = ''
-        //                 clearInterval(this.timer)
-        //                 this.timer = setInterval(type, speed);
-        //                 function type() {
-        //                     if (index < targetText.length) vue.homeText += targetText[index++]
-        //                     else clearInterval(this.timer)
-        //                 }
-        //             }
-        //         },
-        //         created() {
-        //             // 使用 fetch API 获取 JSON 数据
-        //             fetch('./data/data.json')
-        //             .then(response => response.json())  // 解析 JSON 数据
-        //             .then(data => {
-        //                 vue.homeTexts = data.homeTexts
-        //                 vue.carouselTexts = data.carouselTexts
-        //                 vue.characterNameList = data.characterNameList
-        //                 vue.characterDescriptionList = data.characterDescriptionList
-        //                 for(let i=0;i<vue.characterDescriptionList.length;i++)for(let j=0;j<vue.characterDescriptionList[i].length;j++){
-        //                     vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("{", "<img src=\"pictures/icon/");
-        //                     vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("}", "\" style=\"width: 125px; vertical-align: text-top;\">");
-        //                 }
-        //                 vue.navbarTexts = data.navbarTexts
-        //                 vue.characterImageSrcs = data.characterNameList[0].map((element, index) => {
-        //                     return `./pictures/character/${index}.png`
-        //                 })
-        //                 vue.links = data.links
-        //                 vue.typeWriterEffect(vue.homeTexts[vue.language].description)
+      }
 
-        //                 // preloadImages(vue.characterImageSrcs)
-        //             })
-        //             .catch(error => console.error('Error loading JSON:', error));
+      function carouselToggle(newLang) {
+        carouselTitle.innerHTML = carouselTexts[newLang][carouselIndex].title
+        carouselDescription.innerHTML = carouselTexts[newLang][carouselIndex].description
+      }
 
-        //             setTimeout(() => {
-        //                 let carousel = document.querySelector('#carouselExampleIndicators')
-        //                 let carouselText = document.querySelector('#carouselText')
-        //                 carousel.addEventListener('slid.bs.carousel', (e) => {
+      // 角色切换
+      function characterToggle() {
+        characterName.innerHTML =  characterNameList[language][characterIndex]
+        characterDescription.innerHTML = characterDescriptionList[language][characterIndex]
+        characterImage.src = characterImageSrcs[characterIndex]
+      }
 
-        //                     carouselText.classList.add('fade-animation');
-        //                     vue.carouselIndex = e.to;
-        //                     // 设置动画结束后移除动画类，方便重新触发动画
-        //                     carouselText.addEventListener('animationend', () => {
-        //                         carouselText.classList.remove('fade-animation');
-        //                     });
-
-        //                     // carouselText.style.opacity = 0;
-        //                     // setTimeout(() => {
-        //                     //     carouselText.style.opacity = 1;
-        //                     //     
-        //                     // }, 300); 
-        //                 })
-        //             }, 2000);
-        //         }
-        //     }).$mount('#app');
-
-        // 监听 Vue 加载完成
-        // function checkVueLoaded() {
-        //     if (typeof Vue !== 'undefined') {
-        //         // document.getElementById('loading').style.display = 'none';
-        //         // document.getElementById('app').style.display = 'block';
-        //         // document.body.classList.add('loaded');
-
-        //     }
-        // }
-        // checkVueLoaded();
-
-        // function preloadImages(imageUrls) {
-        //     imageUrls.forEach(url => {
-        //         const img = new Image();  // 创建新的 Image 对象
-        //         img.src = url; 
-        //     });
-        // }
+      function click(next) {
+          if (next) {
+              if (characterIndex + 1 < characterNameList[0].length) characterIndex++
+              else characterIndex = 0
+          }
+          else {
+              if (characterIndex > 0) characterIndex--
+              else characterIndex = characterNameList[0].length - 1
+          }
+          characterToggle()
+          // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
+      }
     </script>
+    // <!-- <script src="js/vue.min.js"></script>
+    // <script>
+    //         // 监听 Vue 加载完成
+    //     function checkVueLoaded() {
+    //         if (typeof Vue !== 'undefined') {
+    //             document.body.classList.add('loaded');
+    //             let vue = new Vue({
+    //             el: '#app',
+    //             data() {
+    //                 return {
+    //                     characterIndex: 0,
+    //                     characterNameList: [],
+    //                     characterDescriptionList: [],
+    //                     characters: ["Characters", "角色", "角色"],
+    //                     characterImageSrcs: [],
+    //                     homeTexts: [],
+    //                     homeText: '',
+    //                     navbarTexts: [],
+    //                     carouselIndex: 0,
+    //                     carouselTexts: [],
+    //                     wishList: ["Wishlist now on Steam!", "快加入Steam願望清單！", "快加入Steam愿望清单！"],
+    //                     language: 0,
+    //                     timer: 0,
+    //                     links: {}
+    //                 }
+    //             },
+    //             methods: {
+    //                 click(next) {
+    //                     if (next) {
+    //                         if (this.characterIndex + 1 < this.characterNameList[this.language].length) this.characterIndex++
+    //                         else this.characterIndex = 0
+    //                     }
+    //                     else {
+    //                         if (this.characterIndex > 0) this.characterIndex--
+    //                         else this.characterIndex = this.characterNameList[this.language].length - 1
+    //                     }
+    //                     // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
+    //                 },
+    //                 languageToggle(event) {
+    //                     if (this.language !== event.target.dataset.lid) {
+    //                         this.language = event.target.dataset.lid
+    //                         this.typeWriterEffect(this.homeTexts[this.language].description)
+    //                     }
+    //                 },
+    //                 typeWriterEffect(targetText) {
+    //                     let speed = +this.language === 0 ? 6 : 30
+    //                     let index = 0
+    //                     this.homeText = ''
+    //                     clearInterval(this.timer)
+    //                     this.timer = setInterval(type, speed);
+    //                     function type() {
+    //                         if (index < targetText.length) vue.homeText += targetText[index++]
+    //                         else clearInterval(this.timer)
+    //                     }
+    //                 }
+    //             },
+    //             created() {
+    //                 // 使用 fetch API 获取 JSON 数据
+    //                 fetch('./data/data.json')
+    //                 .then(response => response.json())  // 解析 JSON 数据
+    //                 .then(data => {
+    //                     vue.homeTexts = data.homeTexts
+    //                     vue.carouselTexts = data.carouselTexts
+    //                     vue.characterNameList = data.characterNameList
+    //                     vue.characterDescriptionList = data.characterDescriptionList
+    //                     for(let i=0;i<vue.characterDescriptionList.length;i++)for(let j=0;j<vue.characterDescriptionList[i].length;j++){
+    //                         vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("{", "<img src=\"pictures/icon/");
+    //                         vue.characterDescriptionList[i][j] = vue.characterDescriptionList[i][j].replace("}", "\" style=\"width: 125px; vertical-align: text-top;\">");
+    //                     }
+    //                     vue.navbarTexts = data.navbarTexts
+    //                     vue.characterImageSrcs = data.characterNameList[0].map((element, index) => {
+    //                         return `./pictures/character/${index}.png`
+    //                     })
+    //                     vue.links = data.links
+    //                     vue.typeWriterEffect(vue.homeTexts[vue.language].description)
+
+    //                     preloadImages(vue.characterImageSrcs)
+    //                 })
+    //                 .catch(error => console.error('Error loading JSON:', error));
+
+    //                 setTimeout(() => {
+    //                     let carousel = document.querySelector('#carouselExampleIndicators')
+    //                     let carouselText = document.querySelector('#carouselText')
+    //                     carousel.addEventListener('slid.bs.carousel', (e) => {
+
+    //                         carouselText.classList.add('fade-animation');
+    //                         vue.carouselIndex = e.to;
+    //                         // 设置动画结束后移除动画类，方便重新触发动画
+    //                         carouselText.addEventListener('animationend', () => {
+    //                             carouselText.classList.remove('fade-animation');
+    //                         });
+
+    //                         // carouselText.style.opacity = 0;
+    //                         // setTimeout(() => {
+    //                         //     carouselText.style.opacity = 1;
+    //                         //     
+    //                         // }, 300); 
+    //                     })
+    //                 }, 2000);
+    //             }
+    //         }).$mount('#app');
+    //         } else {
+    //             requestAnimationFrame(checkVueLoaded);
+    //         }
+    //     }
+    //     checkVueLoaded();
+
+        
+
+    //     function preloadImages(imageUrls) {
+    //         imageUrls.forEach(url => {
+    //             const img = new Image();  // 创建新的 Image 对象
+    //             img.src = url; 
+    //         });
+    //     }
+
+    // </script> -->
 </body>
 
 </html>
