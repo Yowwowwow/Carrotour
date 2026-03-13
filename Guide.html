@@ -1,31 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Website of the puzzle game Carrotour, available on Steam!">
     <meta name="image" content="pictures/icon/capsule.jpg">
-    <title>Carrotour Website</title>
-    <!-- <link rel="preload" href="js/vue.min.js" as="script"> -->
+    <title>Carrotour-Guide</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="./fonts/iconfont/iconfont.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> -->
     <link rel="icon" href="pictures/icon/icon.jpg">
-    <link rel="preload" href="pictures/character/0.webp" as="image">
-    <link rel="preload" href="pictures/character/1.webp" as="image">
-    <link rel="preload" href="pictures/character/2.webp" as="image">
-    <link rel="preload" href="pictures/character/3.webp" as="image">
-    <link rel="preload" href="pictures/character/4.webp" as="image">
-    <link rel="preload" href="pictures/character/5.webp" as="image">
-    <link rel="preload" href="pictures/character/6.webp" as="image">
-    <link rel="preload" href="pictures/gif/moving.gif" as="image">
-    <link rel="preload" href="pictures/gif/galloping.gif" as="image">
-    <link rel="preload" href="pictures/gif/bossing.gif" as="image">
-    <!-- <link rel="preload" href="fonts/ChillRoundFRegular.woff2" as="font" type="font/woff2" crossorigin="anonymous"> -->
+    <link rel="preload" href="sprites/ls.png" as="image">
+    <link rel="preload" href="sprites/ds.png" as="image">
+    <link rel="preload" href="sprites/carrot.png" as="image">
+    <link rel="preload" href="sprites/monster.png" as="image">
+    <link rel="preload" href="sprites/rock.png" as="image">
+    <link rel="preload" href="sprites/rabbit.png" as="image">
+    <link rel="preload" href="sprites/frog.png" as="image">
+    <link rel="preload" href="sprites/cat.png" as="image">
+    <link rel="preload" href="sprites/dog.png" as="image">
+    <link rel="preload" href="sprites/horse.png" as="image">
+    <link rel="preload" href="sprites/camel.png" as="image">
+    <link rel="preload" href="sprites/elephant.png" as="image">
+    <link rel="preload" href="sprites/giraffe.png" as="image">
+    <link rel="preload" href="sprites/zebra.png" as="image">
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            width: min(580px, 90vw);
+            margin: 0 auto;
+        }
+        .square {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+        }
+        .square img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            user-drag: none;
+            -webkit-user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+        }
+        .piece {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            user-drag: none;
+            -webkit-user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+        }
+</style>
 </head>
-
 <body style="background-color: rgb(235, 233, 230);">
     <div class="h2 fw-bold" id="loading">Loading...</div>
     <div id="app" class="appLoading">
@@ -93,112 +125,33 @@
             </div>
         </section>
 
-        <!-- 内容 -->
-        <section class="d-flex justify-content-between">
+        <section class="d-flex justify-content-center">
             <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-5 order-lg-1 order-2">
-                        <div class="ratio ratio-16x9">
-                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/iVNB5vnOo8o"
-                                allowfullscreen>
-                            </iframe>
-                        </div>
-                        <div class="mt-4 mb-4">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-lg-12">
-                                    <p class="h2 fw-bold text-lg-start text-center wishList">Get it now on Steam!</p>
-                                </div>
-                                <a href="#" id="steamLink" class="col-lg-12 col-6 h4 align-items-center text-primary text-center ms-auto me-auto" target="_blank" style="text-decoration: none;">
-                                    <img class="img-fluid" src="./pictures/icon/steamButton.png" style="width: 200px;" alt="">
-                                </a>
-                                <!-- <div class="col-lg-3 text-lg-start text-center">
-                                    <div class="row ps-lg-8">
-                                        <a :href="links !== {} ? links.discord : '#'" class="col-lg-12 col-6 h4 align-items-center text-primary" target="_blank"
-                                            style="text-decoration: none;">
-                                            <img class="img-fluid" src="./pictures/icon/discordIcon.png" style="width: 40px;" alt="">
-                                        </a>
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 pt-5 ps-lg-5 order-lg-2 order-1">
-                        <h1 class="homeTitle fw-bold">Carrotour</h1>
-                        <p class="homeText">A grid-based puzzle game where you utilize various "leaper" movements to navigate around obstacles and grab delicious carrots. Be a horse, camel, elephant or rabbit! Also, be prepared for intense boss battles featuring bullet hells!</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div class="row justify-content-center">
+                    <div class="container">
+                        <div class="row align-items-start">
 
-        <!-- 輪播圖 -->
-        <section class="d-flex justify-content-between p-5 bg-light align-items-center" id="introduction">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg align-items-center" style="padding-left: 0;">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                                    class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                                    aria-label="Slide 2"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                                    aria-label="Slide 3"></button>
+                            <!-- Left content -->
+                            <div class="col-lg-3 col-12 order-lg-1 order-1">
+                            <div class="p-3">
+                                Left content here
                             </div>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src="./pictures/gif/moving.gif" class="d-block w-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./pictures/gif/galloping.gif" class="d-block w-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./pictures/gif/bossing.gif" class="d-block w-100" alt="...">
-                                </div>
                             </div>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-lg">
-                        <div id="carouselText" class="m-lg-0 mt-5">
-                            <h2 class="carouselTitle fw-bold">Unfamiliar Leaper Movements</h2>
-                            <p class="carouselDescription h5 lh-base">In this game, you don't just move up, down, left and right! Instead, you move as "leapers". They move in a specific angle about an axis, a fixed distance each time, and cannot be blocked. Think about the knight in chess, which is a classic leaper! Getting use to the move patterns is the key to victory.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- 底部 -->
-        <section id="character" class="mt-5">
-            <div class="container">
-                <div class="d-flex align-items-center" style="height: 3rem;">
-                    <h2 class="characters fw-bold m-0">Characters</h2>
-                    <i class="iconfont icon-triangle-left ms-auto" id="left-button" style="font-size: 2rem;""></i>
-                    <p class="characterName h3 m-0" style="width: 9rem; text-align: center; white-space: pre-line;">Leappa</p>
-                    <i class="iconfont icon-triangle-right me-lg-5" id="right-button" style="font-size: 2rem;"></i>
-                    <i class="me-lg-5"></i>
-                </div>
-                <div>
-                    <div class="d-flex justify-content-center">
-                        <div class="container mt-3 d-flex justify-content-center">
-                            <img class="me-5 img-fluid characterImage" src="pictures/character/0.webp"
-                                style="width: 9.593rem; height: 12.656rem;">
-                            <div class="scrollable-container bg-light">
-                                <p class="h5 characterDescription">
-                                  A curious and naughty rabbit, and a student of a local wizard school. Despite being a wizard, Leappa is really bad at magic, so bad that he failed the most basic magic class 3 times. However, Leappa is good at eating carrots, leaping around and solving puzzles... maybe.
-                                </p>
+                            <!-- Board -->
+                            <div class="col-lg-6 col-12 order-lg-2 order-2 text-center">
+                            <div id="board"></div>
                             </div>
+
+                            <!-- Right content -->
+                            <!-- <div class="col-lg-3 col-12 order-lg-3 order-3">
+                            <div class="p-3">
+                                Right content here
+                            </div>
+                            </div> -->
+
                         </div>
-                    </div>
+                        </div>
                 </div>
             </div>
         </section>
@@ -211,6 +164,7 @@
     </div>
 
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/board.js"></script>
     <script>
       let homeTexts = []
       let wishListTexts = ["Get it now on Steam!", "快到Steam上遊玩！", "快到Steam上游玩！", "Steamでプレイしよう！"]
