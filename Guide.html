@@ -31,6 +31,9 @@
             width: min(580px, 90vw);
             margin: 0 auto;
         }
+        .ctglogo{
+            width: min(250px, 60vw);
+        }
         .square {
             position: relative;
             width: 100%;
@@ -56,6 +59,9 @@
             user-select: none;
             -moz-user-select: none;
         }
+        .recimg {
+            height: 50px;
+        }
 </style>
 </head>
 <body style="background-color: rgb(235, 233, 230);">
@@ -66,7 +72,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-md fixed-top bg-white">
                     <div class="container-fluid">
-                        <a class="navbar-brand">
+                        <a class="navbar-brand" href="https://yowwowwow.github.io/Carrotour">
                             <img class="img-fluid" src="pictures/icon/Logo.png" style="height: 3rem;">
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -80,9 +86,9 @@
                                     <a class="nav-link top" aria-current="page" href="#">
                                         <i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> Top</a>
                                 </li>
-                                <li class="nav-item me-2">
+                                <!-- <li class="nav-item me-2">
                                     <a class="nav-link intro" href="#introduction"><i class="iconfont icon-intro" style="vertical-align: middle;"></i> Introduction</a>
-                                </li>
+                                </li> -->
                                 <li class="nav-item dropdown me-2">
                                     <a class="nav-link lang dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                         aria-expanded="false"><i class="iconfont icon-language" style="vertical-align: middle"></i> 
@@ -132,26 +138,26 @@
                         <div class="row align-items-start">
 
                             <!-- Left content -->
-                            <div class="col-lg-3 col-12 order-lg-1 order-1">
+                            <div class="col-xl-3 col-lg-2 col-12 order-xl-1 order-1">
                             <div class="p-3">
-                                Left content here
+                                <img class="ctglogo" src="sprites/ctg.png">
                             </div>
                             </div>
 
                             <!-- Board -->
-                            <div class="col-lg-6 col-12 order-lg-2 order-2 text-center">
+                            <div class="col-xl-6 col-12 order-xl-2 order-2 text-center">
                             <div id="board"></div>
                             </div>
 
                             <!-- Right content -->
-                            <!-- <div class="col-lg-3 col-12 order-lg-3 order-3">
-                            <div class="p-3">
-                                Right content here
+                            <div class="col-xl-3 col-12 order-xl-3 order-3">
+                            <div id="record" class="p-3">
+                                
                             </div>
-                            </div> -->
+                            </div>
 
                         </div>
-                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -164,7 +170,7 @@
     </div>
 
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/board.js"></script>
+    <script src="js/isaac.js"></script><script src="js/board.js"></script>
     <script>
       let homeTexts = []
       let wishListTexts = ["Get it now on Steam!", "快到Steam上遊玩！", "快到Steam上游玩！", "Steamでプレイしよう！"]
