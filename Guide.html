@@ -142,6 +142,7 @@
                             <div class="p-3">
                                 <img class="ctglogo" src="sprites/ctg.png">
                                 <p id="dateText"></p>
+                                <textarea id="winText" rows="3" style="resize: none; width: 100%; display: none;" disabled></textarea>
                             </div>
                             </div>
 
@@ -174,7 +175,7 @@
     <script src="js/isaac.js"></script>
     <script>
         language = 0;
-        const guessesTexts = ["Guesses: ", "猜測次數：", "猜测次数：", "試行回数："];
+        const guessesTexts = ["Guesses: ", "猜測次數：", "猜测次数：", "推測回数："];
     </script>
     <script src="js/board.js"></script>
     <script>
@@ -190,7 +191,7 @@
       let characterImageSrcs = []
       let link = {}
       //let language = 0
-      let dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
+      //let dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
 
       fetch('./data/data.json')
       .then(response => response.json())  // 解析 JSON 数据
@@ -240,6 +241,7 @@
       const dateText = document.getElementById("dateText")
       dateText.innerHTML = dateTexts[language];
       updateGuesses();
+      const winText = document.getElementById("winText");
 
       // 轮播图
       const carouselTitle = document.querySelector('.carouselTitle')
@@ -287,6 +289,7 @@
           //homeText.innerHTML = `${homeTexts[newLang].description}`
           dateText.innerHTML = dateTexts[newLang];
           updateGuesses();
+          winText.innerHTML = winTexts[newLang];
 
           // 愿望清单
           //wishList.innerHTML = wishListTexts[newLang]

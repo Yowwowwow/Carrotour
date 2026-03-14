@@ -27,6 +27,8 @@ year = date.getFullYear().toString();
 month = (date.getMonth()<9?"0":"")+(date.getMonth()+1).toString();
 day = (date.getDate()<10?"0":"")+(date.getDate()).toString();
 dateid = year+month+day;
+dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
+winTexts = ["", "", "", ""];
 sd = "CTG"+dateid+dateid;
 rng = isaacCSPRNG(sd);
 crt = []
@@ -73,8 +75,15 @@ function updateGuesses(){
     guessesText.innerHTML = guessesTexts[language]+guesses;
 }
 function gameComplete(){
-    console.log(`won in ${guesses} guesses`);
-    console.log(emojirec);
+    let title = "Carrotour-Guide";
+    winTexts[0] = `${title} ${dateTexts[0]} won in ${guesses} guesses!\n${emojirec}`;
+    winTexts[1] = `${title} ${dateTexts[1]}猜測${guesses}次後勝利！\n${emojirec}`;
+    winTexts[2] = `${title} ${dateTexts[2]}猜测${guesses}次后胜利！\n${emojirec}`;
+    winTexts[3] = `${title} ${dateTexts[3]}推測回数${guesses}で勝利！\n${emojirec}`;
+    console.log(winTexts[0]);console.log(winTexts[1]);console.log(winTexts[2]);console.log(winTexts[3]);
+    let wt = document.getElementById("winText");
+    wt.innerHTML=winTexts[language];
+    wt.style.display = "";
     for(let i=0;i<10;i++)for(let j=0;j<10;j++){
         if(!clicked[i][j]){
             pc[i][j].style.opacity=0.25;
