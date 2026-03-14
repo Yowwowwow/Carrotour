@@ -1,5 +1,6 @@
 const board = document.getElementById("board");
 const record = document.getElementById("record");
+const guessesText = document.getElementById("guessesText");
 const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","sprites/dog.png","sprites/horse.png","sprites/camel.png","sprites/elephant.png","sprites/giraffe.png","sprites/zebra.png"]
 const BLANK = "sprites/blank.png";
 const CARROT = "sprites/carrot.png";
@@ -15,8 +16,8 @@ const ELEPHANT = "sprites/elephant.png";
 const GIRAFFE = "sprites/giraffe.png";
 const ZEBRA = "sprites/zebra.png";
 const CHARR = [ROCK,RABBIT,FROG,CAT,DOG,HORSE,CAMEL,ELEPHANT,GIRAFFE,ZEBRA,MONSTER]
-const EMJ = {CARROT:"🥕",MONSTER:"👾",ROCK:"🪨",RABBIT:"🐰",FROG:"🐸",CAT:"🐱",DOG:"🐶",HORSE:"🐴",CAMEL:"🐫",ELEPHANT:"🐘",GIRAFFE:"🦒",ZEBRA:"🦓"}
-
+const EMJ = {"sprites/carrot.png":"🥕","sprites/monster.png":"👾","sprites/rock.png":"🪨","sprites/rabbit.png":"🐰","sprites/frog.png":"🐸","sprites/cat.png":"🐱","sprites/dog.png":"🐶","sprites/horse.png":"🐴","sprites/camel.png":"🐫","sprites/elephant.png":"🐘","sprites/giraffe.png":"🦒","sprites/zebra.png":"🦓"}
+const EN_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 sq = [[],[],[],[],[],[],[],[],[],[]];
 pc = [[],[],[],[],[],[],[],[],[],[]];
 bd = [[],[],[],[],[],[],[],[],[],[]];
@@ -25,7 +26,8 @@ const date = new Date();
 year = date.getFullYear().toString();
 month = (date.getMonth()<9?"0":"")+(date.getMonth()+1).toString();
 day = (date.getDate()<10?"0":"")+(date.getDate()).toString();
-sd = "CTG"+year+month+day+year+month+day;
+dateid = year+month+day;
+sd = "CTG"+dateid+dateid;
 rng = isaacCSPRNG(sd);
 crt = []
 let tmp1st = Math.floor(rng.random()*100);
@@ -39,7 +41,7 @@ for(let y=0;y<10;y++){
         square.className = "square";
         square.dataset.x = x;
         square.dataset.y = 9-y;
-        square.addEventListener("mouseenter", () => {if(!clicked[square.dataset.x][square.dataset.y])square.style.filter="brightness(1.125)";});
+        square.addEventListener("mouseenter", () => {if(!clicked[square.dataset.x][square.dataset.y] && carrots<2)square.style.filter="brightness(1.125)";});
         square.addEventListener("mouseleave", () => {square.style.filter="";});
 
         const bg = document.createElement("img");
@@ -63,16 +65,43 @@ for(let y=0;y<10;y++){
         else bd[x][9-y]=MONSTER;
     }
 }
-function squareClicked(x, y){
+carrots = 0;
+guesses = 0;
+emojirec = "";
+console.log(EMJ);
+function updateGuesses(){
+    guessesText.innerHTML = guessesTexts[language]+guesses;
+}
+function gameComplete(){
+    console.log(`won in ${guesses} guesses`);
+    console.log(emojirec);
+    for(let i=0;i<10;i++)for(let j=0;j<10;j++){
+        if(!clicked[i][j]){
+            pc[i][j].style.opacity=0.25;
+            pc[i][j].src = bd[i][j];
+        }
+    }
+}
+function squareClicked(x, y, save=true){
     console.log("Clicked square:", String.fromCharCode(97 + x)+(y+1), `(${x}${y})`);
-    if(clicked[x][y])return;
+    if(carrots>=2 || clicked[x][y])return;
+    guesses++;
+    updateGuesses();
     clicked[x][y] = true;
     pc[x][y].src = bd[x][y];
+    emojirec += EMJ[bd[x][y]];
+    if(bd[x][y]==CARROT)carrots++;
     sq[x][y].style.filter="";
     const rec = document.createElement("img");
     rec.src = bd[x][y];
     rec.className = "recimg";
     record.appendChild(rec);
+    if(carrots>=2)gameComplete();
+    if(save){
+        let tmpsf = localStorage.getItem(dateid);
+        if(tmpsf===null)localStorage.setItem(dateid, `${x}${y}`);
+        else localStorage.setItem(dateid, `${tmpsf}${x}${y}`);
+    }
 }
 function getAnimal(x, y){
     let a = Math.abs(x);
@@ -108,5 +137,19 @@ for(let y=0;y<10;y++){
         else{
             bd[x][y] = CHARR[Math.floor(rng.random()*CHARR.length)];
         }
+    }
+}
+savefile = localStorage.getItem(dateid);
+if(savefile===null)console.log("new day");
+else{
+    try{
+        for(let i=0;i<savefile.length;i+=2){
+            let x = parseInt(savefile[i]);
+            let y = parseInt(savefile[i+1]);
+            squareClicked(x, y, false);
+        }
+    }
+    catch(error){
+        console.log(error);
     }
 }
