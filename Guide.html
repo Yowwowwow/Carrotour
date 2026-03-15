@@ -24,6 +24,8 @@
     <link rel="preload" href="sprites/elephant.png" as="image">
     <link rel="preload" href="sprites/giraffe.png" as="image">
     <link rel="preload" href="sprites/zebra.png" as="image">
+    <link rel="preload" href="sprites/circle.png" as="image">
+    <link rel="preload" href="sprites/dots.png" as="image">
     <style>
         #board {
             display: grid;
@@ -257,7 +259,7 @@
         winText.disabled = true;
         clearTimeout(copyTimeout);
         copyButton.innerHTML = "✅";
-        copyTimeout = setTimeout(()=>{copyButton.innerHTML=copyTexts[language];}, 2000);
+        copyTimeout = setTimeout(()=>{copyButton.innerHTML=copyTexts[language];}, 1000);
       }
       // 语言切换
       function languageToggle (e) {
