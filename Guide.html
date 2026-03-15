@@ -62,6 +62,27 @@
         .recimg {
             height: 50px;
         }
+        .click-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            z-index: 10;
+            opacity: 1;
+            pointer-events: none;
+            transform: translate(-50%, -50%) rotate(var(--rot)) scale(0.5);
+            animation: clickEffectAnim 0.5s ease-out forwards;
+        }
+        @keyframes clickEffectAnim {
+            from {
+                transform: translate(-50%, -50%) rotate(var(--rot)) scale(0.5);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(var(--rot)) scale(1.8);
+                opacity: 0;
+            }
+        }
 </style>
 </head>
 <body style="background-color: rgb(235, 233, 230);">
@@ -143,6 +164,7 @@
                                 <img class="ctglogo" src="sprites/ctg.png">
                                 <p id="dateText"></p>
                                 <textarea id="winText" rows="3" style="resize: none; width: 100%; display: none;" disabled></textarea>
+                                <button id="copyButton" type="button" style="width: 33%; display: none;" onclick="CopyResult()">Copy</button>
                             </div>
                             </div>
 
@@ -190,36 +212,20 @@
       let navbarTexts = []
       let characterImageSrcs = []
       let link = {}
+      let copyTexts = ["Copy", "複製", "复制", "コピー"];
       //let language = 0
       //let dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
 
       fetch('./data/data.json')
       .then(response => response.json())  // 解析 JSON 数据
       .then(async data => {
-          homeTexts = data.homeTexts
-          carouselTexts = data.carouselTexts
-          characterNameList = data.characterNameList
-          characterDescriptionList = data.characterDescriptionList
-          for(let i = 0; i < characterDescriptionList.length; i++) for(let j = 0; j < characterDescriptionList[i].length; j++) {
-              characterDescriptionList[i][j] = characterDescriptionList[i][j].replace("{", "<img src=\"pictures/icon/");
-              characterDescriptionList[i][j] = characterDescriptionList[i][j].replace("}", "\" style=\"width: 125px; vertical-align: text-top;\">");
-          }
           navbarTexts = data.navbarTexts
-          characterImageSrcs = data.characterNameList[0].map((element, index) => {
-              return `./pictures/character/${index}.webp`
-          })
           links = data.links
-
-          characterImageSrcs.push('pictures/icon/1x2move.webp')
-          characterImageSrcs.push('pictures/icon/1x3move.webp')
-          characterImageSrcs.push('pictures/icon/2x2move.webp')
-          // vue.typeWriterEffect(vue.homeTexts[vue.language].description)
-
           await preloadImages(characterImageSrcs)
           document.getElementById('loading').style.display = 'none'
           document.getElementById('app').classList.remove('appLoading')
 
-          document.getElementById('steamLink').href = links.steam
+          //document.getElementById('steamLink').href = links.steam
           document.getElementById('discordLink').href = links.discord
           document.getElementById('youtubeLink').href = links.youtube
           document.getElementById('twitterLink').href = links.twitter
@@ -231,7 +237,6 @@
 
       // 导航
       const topLink = document.querySelector('.top')
-      const introLink = document.querySelector('.intro')
       const langLink = document.querySelector('.lang')
 
       // 主页
@@ -242,38 +247,18 @@
       dateText.innerHTML = dateTexts[language];
       updateGuesses();
       const winText = document.getElementById("winText");
-
-      // 轮播图
-      const carouselTitle = document.querySelector('.carouselTitle')
-      const carouselDescription = document.querySelector('.carouselDescription')
-
-      const carousel = document.querySelector('#carouselExampleIndicators')
-      const carouselText = document.querySelector('#carouselText')
-      carousel.addEventListener('slid.bs.carousel', (e) => {
-        carouselText.classList.add('fade-animation');
-        carouselIndex = e.to;
-        carouselToggle(language)
-        // 设置动画结束后移除动画类，方便重新触发动画
-        carouselText.addEventListener('animationend', () => {
-            carouselText.classList.remove('fade-animation');
-        });
-      })
-
-      // 角色
-      const characters = document.querySelector('.characters')
-      const characterName = document.querySelector('.characterName')
-      const characterDescription = document.querySelector('.characterDescription')
-      const characterImage = document.querySelector('.characterImage')
-          
-      // 角色切换
-      const leftButton = document.getElementById('left-button')
-      const rightButton = document.getElementById('right-button')
-
-      console.log(leftButton)
-
-      leftButton.addEventListener('click', click.bind(null, false))
-      rightButton.addEventListener('click', click.bind(null, true))
-
+      const copyButton = document.getElementById("copyButton");
+      let copyTimeout = null;
+      function CopyResult(){
+        winText.disabled = false;
+        winText.select();
+        winText.setSelectionRange(0, 9999);
+        document.execCommand("copy");
+        winText.disabled = true;
+        clearTimeout(copyTimeout);
+        copyButton.innerHTML = "✅";
+        copyTimeout = setTimeout(()=>{copyButton.innerHTML=copyTexts[language];}, 2000);
+      }
       // 语言切换
       function languageToggle (e) {
         let newLang = e.target.dataset.lid
@@ -281,26 +266,11 @@
           language = newLang
           // 导航栏
           topLink.innerHTML = `<i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> ${navbarTexts[newLang].home}`
-          //introLink.innerHTML = `<i class="iconfont icon-intro" style="vertical-align: middle;"></i> ${navbarTexts[newLang].introduction}`
           langLink.innerHTML = `<i class="iconfont icon-language" style="vertical-align: middle"></i> ${navbarTexts[newLang].language}`
-
-          // 主页
-          //homeTitle.innerHTML = `${homeTexts[newLang].title}`
-          //homeText.innerHTML = `${homeTexts[newLang].description}`
           dateText.innerHTML = dateTexts[newLang];
           updateGuesses();
           winText.innerHTML = winTexts[newLang];
-
-          // 愿望清单
-          //wishList.innerHTML = wishListTexts[newLang]
-
-          // 轮播图
-          //carouselToggle(newLang)
-
-          // 角色
-          //characters.innerHTML = charactersList[newLang]
-          //characterName.innerHTML =  characterNameList[newLang][characterIndex]
-          //characterDescription.innerHTML = characterDescriptionList[newLang][characterIndex]
+          copyButton.innerHTML = copyTexts[newLang];
         }
       }
 

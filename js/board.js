@@ -70,11 +70,10 @@ for(let y=0;y<10;y++){
 carrots = 0;
 guesses = 0;
 emojirec = "";
-console.log(EMJ);
 function updateGuesses(){
     guessesText.innerHTML = guessesTexts[language]+guesses;
 }
-function gameComplete(){
+function gameComplete(x, y){
     let title = "Carrotour-Guide";
     winTexts[0] = `${title} ${dateTexts[0]} won in ${guesses} guesses!\n${emojirec}`;
     winTexts[1] = `${title} ${dateTexts[1]}猜測${guesses}次後勝利！\n${emojirec}`;
@@ -84,10 +83,13 @@ function gameComplete(){
     let wt = document.getElementById("winText");
     wt.innerHTML=winTexts[language];
     wt.style.display = "";
+    document.getElementById("copyButton").style.display = "";
     for(let i=0;i<10;i++)for(let j=0;j<10;j++){
         if(!clicked[i][j]){
-            pc[i][j].style.opacity=0.25;
-            pc[i][j].src = bd[i][j];
+            setTimeout(() => {
+                pc[i][j].style.opacity=0.25;
+                pc[i][j].src = bd[i][j];
+            }, 100*Math.sqrt((i-x)*(i-x)+(j-y)*(j-y)));
         }
     }
 }
@@ -99,13 +101,25 @@ function squareClicked(x, y, save=true){
     clicked[x][y] = true;
     pc[x][y].src = bd[x][y];
     emojirec += EMJ[bd[x][y]];
-    if(bd[x][y]==CARROT)carrots++;
+    const effect = document.createElement("img");
+    if(bd[x][y]==CARROT){
+        carrots++;
+        effect.src = "sprites/circle.png";
+        effect.style.setProperty("--rot", "0");
+    }
+    else{
+        effect.src = "sprites/dots.png";
+        effect.style.setProperty("--rot", `${Math.random()*360}deg`);
+    }
+    effect.className = "click-effect";
+    sq[x][y].appendChild(effect);
+    effect.addEventListener("animationend", ()=>{effect.remove();});
     sq[x][y].style.filter="";
     const rec = document.createElement("img");
     rec.src = bd[x][y];
     rec.className = "recimg";
     record.appendChild(rec);
-    if(carrots>=2)gameComplete();
+    if(carrots>=2)gameComplete(x, y);
     if(save){
         let tmpsf = localStorage.getItem(dateid);
         if(tmpsf===null)localStorage.setItem(dateid, `${x}${y}`);
@@ -148,17 +162,21 @@ for(let y=0;y<10;y++){
         }
     }
 }
-savefile = localStorage.getItem(dateid);
+//Don't save while testing
+/*savefile = localStorage.getItem(dateid);
 if(savefile===null)console.log("new day");
 else{
+    let tmpsf = "";
     try{
         for(let i=0;i<savefile.length;i+=2){
             let x = parseInt(savefile[i]);
             let y = parseInt(savefile[i+1]);
             squareClicked(x, y, false);
+            tmpsf += savefile[i] + savefile[i+1];
         }
     }
     catch(error){
         console.log(error);
+        localStorage.setItem(dateid, tmpsf);
     }
-}
+}*/
