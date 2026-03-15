@@ -1,6 +1,7 @@
 const board = document.getElementById("board");
 const record = document.getElementById("record");
 const guessesText = document.getElementById("guessesText");
+const MAXGUESSES = 12;
 const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","sprites/dog.png","sprites/horse.png","sprites/camel.png","sprites/elephant.png","sprites/giraffe.png","sprites/zebra.png"]
 const BLANK = "sprites/blank.png";
 const CARROT = "sprites/carrot.png";
@@ -30,7 +31,8 @@ dateid = year+month+day;
 dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
 winTexts = ["", "", "", ""];
 sd = "CTG"+dateid+dateid;
-rng = isaacCSPRNG(sd);
+//Use different seeds every time while testing
+rng = isaacCSPRNG(); //isaacCSPRNG(sd);
 crt = []
 let tmp1st = Math.floor(rng.random()*100);
 crt[0] = [Math.floor(tmp1st/10), tmp1st%10]
@@ -43,7 +45,7 @@ for(let y=0;y<10;y++){
         square.className = "square";
         square.dataset.x = x;
         square.dataset.y = 9-y;
-        square.addEventListener("mouseenter", () => {if(!clicked[square.dataset.x][square.dataset.y] && carrots<2)square.style.filter="brightness(1.125)";});
+        square.addEventListener("mouseenter", () => {if(!clicked[square.dataset.x][square.dataset.y] && carrots<2 && guesses<MAXGUESSES)square.style.filter="brightness(1.125)";});
         square.addEventListener("mouseleave", () => {square.style.filter="";});
 
         const bg = document.createElement("img");
@@ -71,33 +73,48 @@ carrots = 0;
 guesses = 0;
 emojirec = "";
 function updateGuesses(){
-    guessesText.innerHTML = guessesTexts[language]+guesses;
+    guessesText.innerHTML = `🥕 ${carrots}/2&nbsp;&nbsp;&nbsp;${guessesTexts[language]}${guesses}/${MAXGUESSES}`;
 }
-function gameComplete(x, y){
+function gameComplete(x, y, win){
     let title = "Carrotour-Guide";
-    winTexts[0] = `${title} ${dateTexts[0]} won in ${guesses} guesses!\n${emojirec}`;
-    winTexts[1] = `${title} ${dateTexts[1]}猜測${guesses}次後勝利！\n${emojirec}`;
-    winTexts[2] = `${title} ${dateTexts[2]}猜测${guesses}次后胜利！\n${emojirec}`;
-    winTexts[3] = `${title} ${dateTexts[3]}推測回数${guesses}で勝利！\n${emojirec}`;
+    let stars = "";
+    if(win){
+        stars += " ⭐";
+        if(guesses<=MAXGUESSES-1)stars += "⭐";
+        if(guesses<=MAXGUESSES-2)stars += "⭐";
+    }
+    let res = `${win?guesses:"X"}/${MAXGUESSES}${stars}`;
+    winTexts[0] = `${title} ${dateTexts[0]} ${res}\n${emojirec}`;
+    winTexts[1] = `${title} ${dateTexts[1]} ${res}\n${emojirec}`;
+    winTexts[2] = `${title} ${dateTexts[2]} ${res}\n${emojirec}`;
+    winTexts[3] = `${title} ${dateTexts[3]} ${res}\n${emojirec}`;
     console.log(winTexts[0]);console.log(winTexts[1]);console.log(winTexts[2]);console.log(winTexts[3]);
-    let wt = document.getElementById("winText");
-    wt.innerHTML=winTexts[language];
-    wt.style.display = "";
-    document.getElementById("copyButton").style.display = "";
     for(let i=0;i<10;i++)for(let j=0;j<10;j++){
         if(!clicked[i][j]){
-            setTimeout(() => {
-                pc[i][j].style.opacity=0.25;
+            if(win){
+                setTimeout(() => {
+                    pc[i][j].style.opacity=0.25;
+                    pc[i][j].src = bd[i][j];
+                }, 100*Math.sqrt((i-x)*(i-x)+(j-y)*(j-y)));
+            }
+            else{
+                pc[i][j].style.opacity=0;
                 pc[i][j].src = bd[i][j];
-            }, 100*Math.sqrt((i-x)*(i-x)+(j-y)*(j-y)));
+                for(let t=1;t<=10;t++)setTimeout(()=>{pc[i][j].style.opacity=0.025*t;}, 133*t);
+            }
         }
     }
+    setTimeout(() => {
+        let wt = document.getElementById("winText");
+        wt.innerHTML=winTexts[language];
+        wt.style.display = "";
+        document.getElementById("copyButton").style.display = "";
+    }, 1500);
 }
 function squareClicked(x, y, save=true){
     console.log("Clicked square:", String.fromCharCode(97 + x)+(y+1), `(${x}${y})`);
-    if(carrots>=2 || clicked[x][y])return;
+    if(carrots>=2 || guesses>=MAXGUESSES || clicked[x][y])return;
     guesses++;
-    updateGuesses();
     clicked[x][y] = true;
     pc[x][y].src = bd[x][y];
     emojirec += EMJ[bd[x][y]];
@@ -115,11 +132,13 @@ function squareClicked(x, y, save=true){
     sq[x][y].appendChild(effect);
     effect.addEventListener("animationend", ()=>{effect.remove();});
     sq[x][y].style.filter="";
+    updateGuesses();
     const rec = document.createElement("img");
     rec.src = bd[x][y];
     rec.className = "recimg";
     record.appendChild(rec);
-    if(carrots>=2)gameComplete(x, y);
+    if(carrots>=2)gameComplete(x, y, true);
+    else if(guesses>=MAXGUESSES)gameComplete(x, y, false);
     if(save){
         let tmpsf = localStorage.getItem(dateid);
         if(tmpsf===null)localStorage.setItem(dateid, `${x}${y}`);
@@ -145,7 +164,7 @@ function getAnimal(x, y){
 for(let y=0;y<10;y++){
     for(let x=0;x<10;x++){
         if(bd[x][y]==CARROT)continue;
-        let tmp = Math.floor(rng.random()*7);
+        let tmp = Math.floor(rng.random()*10);
         if(tmp>0){
             let a0 = getAnimal(x-crt[0][0], y-crt[0][1]);
             let a1 = getAnimal(x-crt[1][0], y-crt[1][1]);
