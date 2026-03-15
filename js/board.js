@@ -73,16 +73,16 @@ carrots = 0;
 guesses = 0;
 emojirec = "";
 function updateGuesses(){
-    guessesText.innerHTML = `🥕 ${carrots}/2&nbsp;&nbsp;&nbsp;${guessesTexts[language]}${guesses}/${MAXGUESSES}`;
+    guessesText.innerHTML = `<img src="sprites/carrot.png" style="height: 1.5rem;">${carrots}/2&nbsp;&nbsp;&nbsp;${guessesTexts[language]}${guesses}/${MAXGUESSES}`;
 }
 function gameComplete(x, y, win){
     let title = "Carrotour-Guide";
     let stars = "";
-    if(win){
+    /*if(win){
         stars += " ⭐";
         if(guesses<=MAXGUESSES-1)stars += "⭐";
         if(guesses<=MAXGUESSES-2)stars += "⭐";
-    }
+    }*/
     let res = `${win?guesses:"X"}/${MAXGUESSES}${stars}`;
     winTexts[0] = `${title} ${dateTexts[0]} ${res}\n${emojirec}`;
     winTexts[1] = `${title} ${dateTexts[1]} ${res}\n${emojirec}`;
