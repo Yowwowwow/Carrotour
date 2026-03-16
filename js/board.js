@@ -28,11 +28,11 @@ year = date.getFullYear().toString();
 month = (date.getMonth()<9?"0":"")+(date.getMonth()+1).toString();
 day = (date.getDate()<10?"0":"")+(date.getDate()).toString();
 dateid = year+month+day;
+saveid = "ctg"+dateid;
 dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
 winTexts = ["", "", "", ""];
 sd = "CTG"+dateid+dateid;
-//Use different seeds every time while testing
-rng = isaacCSPRNG(); //isaacCSPRNG(sd);
+rng = isaacCSPRNG(sd);
 crt = []
 let tmp1st = Math.floor(rng.random()*100);
 crt[0] = [Math.floor(tmp1st/10), tmp1st%10]
@@ -75,7 +75,9 @@ emojirec = "";
 function updateGuesses(){
     guessesText.innerHTML = `<img src="sprites/carrot.png" style="height: 1.5rem;">${carrots}/2&nbsp;&nbsp;&nbsp;${guessesTexts[language]}${guesses}/${MAXGUESSES}`;
 }
-function gameComplete(x, y, win){
+todaysResult = "unplayed";
+function gameComplete(x, y, win, save=false){
+    todaysResult = win ? "won" : "played";
     let title = "Carrotour-Guide";
     let stars = "";
     /*if(win){
@@ -109,7 +111,26 @@ function gameComplete(x, y, win){
         wt.innerHTML=winTexts[language];
         wt.style.display = "";
         document.getElementById("copyButton").style.display = "";
+        let sme = document.getElementById("statsModal");
+        if(!sme.classList.contains("show"))document.getElementById("statsButton").click();
     }, 1500);
+    if(save){
+        let resultid = `ctgguesses${win?guesses:"X"}`;
+        let resrec = localStorage.getItem(resultid);
+        if(resrec===null || parseInt(resrec)!==parseInt(resrec))localStorage.setItem(resultid, 1);
+        else localStorage.setItem(resultid, parseInt(resrec)+1);
+        let lastplay = localStorage.getItem("ctglastplay");
+        let lastwin = localStorage.getItem("ctglastwin");
+        let playstreak = parseInt(localStorage.getItem("ctgplaystreak"));
+        let winstreak = parseInt(localStorage.getItem("ctgwinstreak"));
+        if(lastplay===null || playstreak!==playstreak || Date.parse(lastplay)!==Date.parse(lastplay) || (date - Date.parse(lastplay))>=172800000)localStorage.setItem("ctgplaystreak", 1);
+        else localStorage.setItem("ctgplaystreak", 1+playstreak);
+        localStorage.setItem("ctglastplay", `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`);
+        if(!win)localStorage.setItem("ctgwinstreak", 0);
+        else if(lastwin===null || winstreak!==winstreak || Date.parse(lastwin)!==Date.parse(lastwin) || (date - Date.parse(lastwin))>=172800000)localStorage.setItem("ctgwinstreak", 1);
+        else localStorage.setItem("ctgwinstreak", 1+winstreak);
+        if(win)localStorage.setItem("ctglastwin", `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`);
+    }
 }
 function squareClicked(x, y, save=true){
     console.log("Clicked square:", String.fromCharCode(97 + x)+(y+1), `(${x}${y})`);
@@ -137,12 +158,12 @@ function squareClicked(x, y, save=true){
     rec.src = bd[x][y];
     rec.className = "recimg";
     record.appendChild(rec);
-    if(carrots>=2)gameComplete(x, y, true);
-    else if(guesses>=MAXGUESSES)gameComplete(x, y, false);
+    if(carrots>=2)gameComplete(x, y, true, save);
+    else if(guesses>=MAXGUESSES)gameComplete(x, y, false, save);
     if(save){
-        let tmpsf = localStorage.getItem(dateid);
-        if(tmpsf===null)localStorage.setItem(dateid, `${x}${y}`);
-        else localStorage.setItem(dateid, `${tmpsf}${x}${y}`);
+        let tmpsf = localStorage.getItem(saveid);
+        if(tmpsf===null)localStorage.setItem(saveid, `${x}${y}`);
+        else localStorage.setItem(saveid, `${tmpsf}${x}${y}`);
     }
 }
 function getAnimal(x, y){
@@ -181,8 +202,7 @@ for(let y=0;y<10;y++){
         }
     }
 }
-//Don't save while testing
-/*savefile = localStorage.getItem(dateid);
+savefile = localStorage.getItem(saveid);
 if(savefile===null)console.log("new day");
 else{
     let tmpsf = "";
@@ -196,6 +216,6 @@ else{
     }
     catch(error){
         console.log(error);
-        localStorage.setItem(dateid, tmpsf);
+        localStorage.setItem(saveid, tmpsf);
     }
-}*/
+}

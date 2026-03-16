@@ -69,3 +69,92 @@ const helpTitle = document.getElementById("helpTitle");
 const helpContent = document.getElementById("helpContent");
 helpTitle.innerHTML = helpTitles[language];
 helpContent.innerHTML = helpContents[language];
+
+const statsTitle = document.getElementById("statsTitle");
+const statsContent = document.getElementById("statsContent");
+const statsTitles = ["Statistics", "遊玩紀錄", "游玩纪录", "統計情報"];
+const winSentences = ["You've won today! ⭐⭐⭐", "今日你已獲勝！⭐⭐⭐", "今日你已获胜！⭐⭐⭐", "今日は勝利！⭐⭐⭐"];
+const playSentences = ["You've played today!", "今日已遊玩！", "今日已游玩！", "今日はプレイ済み！"];
+let s_winStreak = 0;
+let s_playStreak = 0;
+let s_daysPlayed = 0;
+let s_wins = 0;
+let s_winRate = 0;
+let currentChart = null;
+Chart.register(ChartDataLabels);
+function UpdateStats(){
+    s_winStreak = parseInt(localStorage.getItem("ctgwinstreak")??"0");
+    s_playStreak = parseInt(localStorage.getItem("ctgplaystreak")??"0");
+    let guessDist = [0,0,0,0,0,0,0,0,0,0,0];
+    for(let i=2;i<=10;i++)guessDist[i] = parseInt(localStorage.getItem(`ctgguesses${i}`)??"0");
+    guessDist[0] = parseInt(localStorage.getItem("ctgguessesX")??"0");
+    for(let i=0;i<=10;i++)if(guessDist[i]!==guessDist[i])guessDist[i]=0;
+    let tmpwins = 0;
+    for(let i=2;i<=10;i++)tmpwins += guessDist[i];
+    s_wins = tmpwins;
+    s_daysPlayed = tmpwins + guessDist[0];
+    s_winRate = s_daysPlayed==0 ? "0%" : `${Math.round(s_wins/s_daysPlayed*1000)/10}%`;
+
+    statsTitle.innerHTML = statsTitles[language];
+    let tmptoday = "";
+    if(todaysResult=="won")tmptoday = `<b>${winSentences[language]}</b><br>`;
+    else if(todaysResult=="played")tmptoday = `<b>${playSentences[language]}</b><br>`;
+    let statsByLanguage = [
+        `${tmptoday}Win Streak: ${s_winStreak}<br>
+        Play Streak: ${s_playStreak}<br>
+        Total Days Played: ${s_daysPlayed}<br>
+        Wins: ${s_wins}<br>
+        Win Rate: ${s_winRate}<br>
+        Results Breakdown:`,
+        `${tmptoday}連勝數：${s_winStreak}<br>
+        連續遊玩天數：${s_playStreak}<br>
+        總遊玩天數：${s_daysPlayed}<br>
+        勝利數：${s_wins}<br>
+        勝率：${s_winRate}<br>
+        成績分析：`,
+        `${tmptoday}连胜数：${s_winStreak}<br>
+        连续游玩天数：${s_playStreak}<br>
+        总游玩天数：${s_daysPlayed}<br>
+        胜利数：${s_wins}<br>
+        胜率：${s_winRate}<br>
+        成绩分析：`,
+        `${tmptoday}連勝日数：${s_winStreak}<br>
+        連続プレイ日数：${s_playStreak}<br>
+        プレイ日数合計：${s_daysPlayed}<br>
+        勝利数：${s_wins}<br>
+        勝率：${s_winRate}<br>
+        結果分析：`
+    ]
+    statsContent.innerHTML = statsByLanguage[language];
+    let categories = ["2","3","4","5","6","7","8","9","10","X"];
+    let values = [guessDist[2],guessDist[3],guessDist[4],guessDist[5],guessDist[6],guessDist[7],guessDist[8],guessDist[9],guessDist[10],guessDist[0]];
+    if(currentChart!==null)currentChart.destroy();
+    currentChart = new Chart(
+        document.getElementById("BDChart"),
+        {
+            type: "bar",
+            data: {
+                labels: categories,
+                datasets: [{
+                    label: '',
+                    data: values,
+                    backgroundColor: '#EEA44F'
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {display: false},
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'right',
+                        offset: '2'
+                    }
+                },
+                indexAxis: 'y',
+                maintainAspectRatio: false
+            }
+        }
+    );
+}
+UpdateStats();
+document.getElementById("statsModal").addEventListener("show.bs.modal",()=>{UpdateStats();});

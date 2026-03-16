@@ -174,12 +174,13 @@
                 <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Stats</h5>
+                    <h5 id="statsTitle" class="modal-title">Statistics</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
-                    This is supposed to show your stats but I haven't completed it uhhhh
+                    <div id="statsContent"></div>
+                    <div style="height: 32rem;"><canvas id="BDChart" width="250" height="400"></canvas></div>
                 </div>
 
                 </div>
@@ -200,7 +201,7 @@
                                     role="button"
                                     data-bs-toggle="modal"
                                     data-bs-target="#helpModal"></i>
-                                <i class="bi bi-bar-chart-line fs-5"
+                                <i id="statsButton" class="bi bi-bar-chart-line fs-5"
                                     role="button"
                                     data-bs-toggle="modal"
                                     data-bs-target="#statsModal"></i>
@@ -234,7 +235,7 @@
         </footer>
     </div>
 
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="js/isaac.js"></script>
     <script>
         language = 0;
@@ -317,6 +318,8 @@
           copyButton.innerHTML = copyTexts[newLang];
           helpTitle.innerHTML = helpTitles[newLang];
           helpContent.innerHTML = helpContents[newLang];
+
+          UpdateStats();
         }
       }
       function ApplySavedLanguage(){
