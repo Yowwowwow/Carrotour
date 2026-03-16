@@ -158,12 +158,12 @@
                 <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">How to Play</h5>
+                    <h5 id="helpTitle" class="modal-title">How to Play</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                <div class="modal-body">
-                    This is supposed to tell you how to play this game but I haven't completed it uhhhh
+                <div id="helpContent" class="modal-body">
+                    How to play the game:
                 </div>
 
                 </div>
@@ -238,9 +238,10 @@
     <script src="js/isaac.js"></script>
     <script>
         language = 0;
+        const numberOfLanguages = 4
         const guessesTexts = ["Guesses: ", "猜測次數：", "猜测次数：", "推測回数："];
     </script>
-    <script src="js/board.js"></script>
+    <script src="js/board.js"></script><script src="js/texts.js"></script>
     <script>
       let homeTexts = []
       let wishListTexts = ["Get it now on Steam!", "快到Steam上遊玩！", "快到Steam上游玩！", "Steamでプレイしよう！"]
@@ -270,6 +271,7 @@
           document.getElementById('discordLink').href = links.discord
           document.getElementById('youtubeLink').href = links.youtube
           document.getElementById('twitterLink').href = links.twitter
+          ApplySavedLanguage();
       })
       .catch(error => console.error('Error loading JSON:', error));
 
@@ -301,10 +303,11 @@
         copyTimeout = setTimeout(()=>{copyButton.innerHTML=copyTexts[language];}, 1000);
       }
       // 语言切换
-      function languageToggle (e) {
-        let newLang = e.target.dataset.lid
+      function languageToggle (e, forceNewLang=null) {
+        let newLang = forceNewLang ?? e.target.dataset.lid;
         if (language !== newLang) {
-          language = newLang
+          language = newLang;
+          localStorage.setItem("lang", newLang);
           // 导航栏
           topLink.innerHTML = `<i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> ${navbarTexts[newLang].home}`
           langLink.innerHTML = `<i class="iconfont icon-language" style="vertical-align: middle"></i> ${navbarTexts[newLang].language}`
@@ -312,9 +315,14 @@
           updateGuesses();
           winText.innerHTML = winTexts[newLang];
           copyButton.innerHTML = copyTexts[newLang];
+          helpTitle.innerHTML = helpTitles[newLang];
+          helpContent.innerHTML = helpContents[newLang];
         }
       }
-
+      function ApplySavedLanguage(){
+        let savedLanguage = parseInt(localStorage.getItem("lang"));
+        if(savedLanguage!=NaN && savedLanguage>=0 && savedLanguage<numberOfLanguages)languageToggle(null, savedLanguage);
+      }
       function carouselToggle(newLang) {
         carouselTitle.innerHTML = carouselTexts[newLang][carouselIndex].title
         carouselDescription.innerHTML = carouselTexts[newLang][carouselIndex].description

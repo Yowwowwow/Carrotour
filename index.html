@@ -224,6 +224,7 @@
       let characterImageSrcs = []
       let link = {}
       let language = 0
+      const numberOfLanguages = 4;
       
       fetch('./data/data.json')
       .then(response => response.json())  // 解析 JSON 数据
@@ -255,6 +256,7 @@
           document.getElementById('discordLink').href = links.discord
           document.getElementById('youtubeLink').href = links.youtube
           document.getElementById('twitterLink').href = links.twitter
+          ApplySavedLanguage();
       })
       .catch(error => console.error('Error loading JSON:', error));
 
@@ -304,8 +306,9 @@
       rightButton.addEventListener('click', click.bind(null, true))
 
       // 语言切换
-      function languageToggle (e) {
-        let newLang = e.target.dataset.lid
+      function languageToggle (e, forceNewLang=null) {
+        let newLang = forceNewLang ?? e.target.dataset.lid
+        localStorage.setItem("lang", newLang);
         if (language !== newLang) {
           language = newLang
           // 导航栏
@@ -328,6 +331,10 @@
           characterName.innerHTML =  characterNameList[newLang][characterIndex]
           characterDescription.innerHTML = characterDescriptionList[newLang][characterIndex]
         }
+      }
+      function ApplySavedLanguage(){
+        let savedLanguage = parseInt(localStorage.getItem("lang"));
+        if(savedLanguage!=NaN && savedLanguage>=0 && savedLanguage<numberOfLanguages)languageToggle(null, savedLanguage);
       }
 
       function carouselToggle(newLang) {
