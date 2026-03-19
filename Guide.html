@@ -228,6 +228,12 @@
             </div>
         </section>
 
+        <section class="d-flex text-center mt-2">
+            <div class="container">
+                <b class="fs-2"><a id="getCT" style="color: inherit;" href="https://store.steampowered.com/app/3529380/Carrotour/">Get <img src="pictures/icon/Logo.png" style="height: 1.5em;"> on Steam!</a></b>
+            </div>
+        </section>
+
         <footer class="mt-5 p-3 bg-dark d-flex text-center text-light">
             <div class="container">
                 <p class="align-items-center" style="margin: 0">© 2024-2026 Carrotour</p>
@@ -256,6 +262,8 @@
       let characterImageSrcs = []
       let link = {}
       let copyTexts = ["Copy", "複製", "复制", "コピー"];
+      let CTLogo = '<img src="pictures/icon/Logo.png" style="height: 1.5em;">';
+      let getCTTexts = [`Get ${CTLogo} on Steam!`, `在Steam獲取${CTLogo}吧！`, `在Steam获取${CTLogo}吧！`, `Steamで${CTLogo}をゲット！`];
       //let language = 0
       //let dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
 
@@ -291,6 +299,7 @@
       dateText.innerHTML = dateTexts[language];
       updateGuesses();
       const winText = document.getElementById("winText");
+      const getCT = document.getElementById("getCT");
       const copyButton = document.getElementById("copyButton");
       let copyTimeout = null;
       function CopyResult(){
@@ -318,6 +327,7 @@
           copyButton.innerHTML = copyTexts[newLang];
           helpTitle.innerHTML = helpTitles[newLang];
           helpContent.innerHTML = helpContents[newLang];
+          getCT.innerHTML = getCTTexts[newLang];
 
           UpdateStats();
         }
