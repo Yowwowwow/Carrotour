@@ -178,7 +178,7 @@
         </section>
 
         <!-- 底部 -->
-        <section id="character" class="mt-5">
+        <section id="character" class="mt-5 mb-5">
             <div class="container">
                 <div class="d-flex align-items-center" style="height: 3rem;">
                     <h2 class="characters fw-bold m-0">Characters</h2>
@@ -203,7 +203,23 @@
             </div>
         </section>
 
-        <footer class="mt-5 p-3 bg-dark d-flex text-center text-light">
+        <section class="d-flex justify-content-between p-5 bg-light align-items-center">
+            <div class="container">
+                <h2 class="mb-4 fw-bold m-0">Carrotour-Guide</h2>
+                <div class="row">
+                    <div class="col-lg-4 align-items-center flex-wrap" style="padding-left: 0;">
+                        <a href="https://yowwowwow.github.io/Carrotour/Guide"><img src="./sprites/ctg.png" class="d-block w-100 align-middle" alt="..."></a>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="m-lg-0 mt-5">
+                            <p id="ctgText" class="h5 lh-base"><a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>, a spinoff from Carrotour, is a daily puzzle game about finding hidden carrots on the board with the help of clues provided by animals and monsters!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="p-3 bg-dark d-flex text-center text-light">
             <div class="container">
                 <p class="align-items-center" style="margin: 0">© 2024-2026 Carrotour</p>
             </div>
@@ -224,6 +240,12 @@
       let characterImageSrcs = []
       let link = {}
       let language = 0
+      let ctgTexts = [
+        '<a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>, a spinoff from Carrotour, is a daily puzzle game about finding hidden carrots on the board with the help of clues provided by animals and monsters!',
+        '<a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>是Carrotour 邏蔔巡蘿的衍生作品，是透過動物和怪物們提供的線索來尋找棋盤上隱藏的蘿蔔的每日解謎遊戲！',
+        '<a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>是Carrotour 逻卜巡萝的衍生作品，是透过动物和怪物们提供的线索来寻找棋盘上隐藏的萝卜的每日解谜游戏！',
+        '<a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>は、Carrotourのスピンオフで、動物やモンスターが与えるヒントを手がかりに、盤面に隠されたニンジンを探し出すデイリーパズルゲーム！'    
+    ]
       const numberOfLanguages = 4;
       
       fetch('./data/data.json')
@@ -273,6 +295,7 @@
       const homeText = document.querySelector('.homeText')
 
       const wishList = document.querySelector('.wishList')
+      const ctgText = document.getElementById("ctgText")
 
       // 轮播图
       const carouselTitle = document.querySelector('.carouselTitle')
@@ -319,6 +342,7 @@
           // 主页
           homeTitle.innerHTML = `${homeTexts[newLang].title}`
           homeText.innerHTML = `${homeTexts[newLang].description}`
+          ctgText.innerHTML = ctgTexts[newLang]
 
           // 愿望清单
           wishList.innerHTML = wishListTexts[newLang]
