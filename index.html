@@ -34,7 +34,7 @@
             <div class="container">
                 <nav class="navbar navbar-expand-md fixed-top bg-white">
                     <div class="container-fluid">
-                        <a class="navbar-brand">
+                        <a class="navbar-brand" href="#">
                             <img class="img-fluid" src="pictures/icon/Logo.png" style="height: 3rem;">
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -72,6 +72,11 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item me-2">
+                                    <a class="nav-link" id="navSteamLink" href="#" target="_blank">
+                                        <img src="./pictures/icon/steam.ico" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
+                                <li class="nav-item me-2">
                                     <a class="nav-link" id="discordLink" href="#" target="_blank">
                                         <img src="./pictures/icon/discordIcon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
                                         </a>
@@ -84,6 +89,11 @@
                                 <li class="nav-item me-2">
                                     <a class="nav-link" id="twitterLink" href="#" target="_blank">
                                         <img src="./pictures/icon/twitterIcon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" id="ctgLink" href="#" target="_blank">
+                                        <img src="./sprites/ctgicon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
                                         </a>
                                 </li>
                             </ul>
@@ -278,6 +288,8 @@
           document.getElementById('discordLink').href = links.discord
           document.getElementById('youtubeLink').href = links.youtube
           document.getElementById('twitterLink').href = links.twitter
+          document.getElementById('navSteamLink').href = links.steam
+          document.getElementById('ctgLink').href = links.carrotourguide
           ApplySavedLanguage();
       })
       .catch(error => console.error('Error loading JSON:', error));
