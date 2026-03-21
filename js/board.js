@@ -19,6 +19,8 @@ const ZEBRA = "sprites/zebra.png";
 const CHARR = [ROCK,RABBIT,FROG,CAT,DOG,HORSE,CAMEL,ELEPHANT,GIRAFFE,ZEBRA,MONSTER]
 const EMJ = {"sprites/carrot.png":"🥕","sprites/monster.png":"👾","sprites/rock.png":"🪨","sprites/rabbit.png":"🐰","sprites/frog.png":"🐸","sprites/cat.png":"🐱","sprites/dog.png":"🐶","sprites/horse.png":"🐴","sprites/camel.png":"🐫","sprites/elephant.png":"🐘","sprites/giraffe.png":"🦒","sprites/zebra.png":"🦓"}
 const EN_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let isInfinite = "Infinite" === window.location.href.split('?')[1];
+if(isInfinite)console.log("Infinite Mode");
 sq = [[],[],[],[],[],[],[],[],[],[]];
 pc = [[],[],[],[],[],[],[],[],[],[]];
 bd = [[],[],[],[],[],[],[],[],[],[]];
@@ -30,9 +32,11 @@ day = (date.getDate()<10?"0":"")+(date.getDate()).toString();
 dateid = year+month+day;
 saveid = "ctg"+dateid;
 dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
+if(isInfinite)dateTexts = ["Infinite Mode","Infinite Mode","Infinite Mode","Infinite Mode"];
 winTexts = ["", "", "", ""];
 sd = "CTG"+dateid+dateid;
 rng = isaacCSPRNG(sd);
+if(isInfinite)rng = isaacCSPRNG();
 crt = []
 let tmp1st = Math.floor(rng.random()*100);
 crt[0] = [Math.floor(tmp1st/10), tmp1st%10]
@@ -114,7 +118,7 @@ function gameComplete(x, y, win, save=false){
         let sme = document.getElementById("statsModal");
         if(!sme.classList.contains("show"))document.getElementById("statsButton").click();
     }, 1500);
-    if(save){
+    if(save && !isInfinite){
         let resultid = `ctgguesses${win?guesses:"X"}`;
         let resrec = localStorage.getItem(resultid);
         if(resrec===null || parseInt(resrec)!==parseInt(resrec))localStorage.setItem(resultid, 1);
@@ -160,7 +164,7 @@ function squareClicked(x, y, save=true){
     record.appendChild(rec);
     if(carrots>=2)gameComplete(x, y, true, save);
     else if(guesses>=MAXGUESSES)gameComplete(x, y, false, save);
-    if(save){
+    if(save && !isInfinite){
         let tmpsf = localStorage.getItem(saveid);
         if(tmpsf===null)localStorage.setItem(saveid, `${x}${y}`);
         else localStorage.setItem(saveid, `${tmpsf}${x}${y}`);
@@ -203,19 +207,21 @@ for(let y=0;y<10;y++){
     }
 }
 savefile = localStorage.getItem(saveid);
-if(savefile===null)console.log("new day");
-else{
-    let tmpsf = "";
-    try{
-        for(let i=0;i<savefile.length;i+=2){
-            let x = parseInt(savefile[i]);
-            let y = parseInt(savefile[i+1]);
-            squareClicked(x, y, false);
-            tmpsf += savefile[i] + savefile[i+1];
+if(!isInfinite){
+    if(savefile===null)console.log("new day");
+    else{
+        let tmpsf = "";
+        try{
+            for(let i=0;i<savefile.length;i+=2){
+                let x = parseInt(savefile[i]);
+                let y = parseInt(savefile[i+1]);
+                squareClicked(x, y, false);
+                tmpsf += savefile[i] + savefile[i+1];
+            }
         }
-    }
-    catch(error){
-        console.log(error);
-        localStorage.setItem(saveid, tmpsf);
+        catch(error){
+            console.log(error);
+            localStorage.setItem(saveid, tmpsf);
+        }
     }
 }
