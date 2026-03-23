@@ -90,10 +90,11 @@ function gameComplete(x, y, win, save=false){
         if(guesses<=MAXGUESSES-2)stars += "⭐";
     }*/
     let res = `${win?guesses:"X"}/${MAXGUESSES}${stars}`;
-    winTexts[0] = `${title} ${dateTexts[0]} ${res}\n${emojirec}`;
-    winTexts[1] = `${title} ${dateTexts[1]} ${res}\n${emojirec}`;
-    winTexts[2] = `${title} ${dateTexts[2]} ${res}\n${emojirec}`;
-    winTexts[3] = `${title} ${dateTexts[3]} ${res}\n${emojirec}`;
+    let gameLink = `https://yowwowwow.github.io/Carrotour/Guide${isInfinite?"?Infinite":""}`;
+    winTexts[0] = `${title} ${dateTexts[0]} ${res}\n${emojirec}\n${gameLink}`;
+    winTexts[1] = `${title} ${dateTexts[1]} ${res}\n${emojirec}\n${gameLink}`;
+    winTexts[2] = `${title} ${dateTexts[2]} ${res}\n${emojirec}\n${gameLink}`;
+    winTexts[3] = `${title} ${dateTexts[3]} ${res}\n${emojirec}\n${gameLink}`;
     console.log(winTexts[0]);console.log(winTexts[1]);console.log(winTexts[2]);console.log(winTexts[3]);
     for(let i=0;i<10;i++)for(let j=0;j<10;j++){
         if(!clicked[i][j]){
