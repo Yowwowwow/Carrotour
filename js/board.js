@@ -73,6 +73,14 @@ for(let y=0;y<10;y++){
         else bd[x][9-y]=MONSTER;
     }
 }
+if(!isInfinite){
+    let lastplay = localStorage.getItem("ctglastplay");
+    let lastwin = localStorage.getItem("ctglastwin");
+    let playstreak = parseInt(localStorage.getItem("ctgplaystreak"));
+    let winstreak = parseInt(localStorage.getItem("ctgwinstreak"));
+    if(lastplay===null || playstreak!==playstreak || Date.parse(lastplay)!==Date.parse(lastplay) || (date - Date.parse(lastplay))>=172800000)localStorage.setItem("ctgplaystreak", 0);
+    if(lastwin===null || winstreak!==winstreak || Date.parse(lastwin)!==Date.parse(lastwin) || (date - Date.parse(lastwin))>=172800000)localStorage.setItem("ctgwinstreak", 0);
+}
 carrots = 0;
 guesses = 0;
 emojirec = "";
