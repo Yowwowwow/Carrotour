@@ -185,6 +185,30 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="settingsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 id="settingsTitle" class="modal-title">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <a id="settingsLink" href=""></a>
+                    <hr>
+                    <span class="form-check form-switch form-check-inline" style="margin-right: 0;">
+                        <input class="form-check-input" type="checkbox" role="switch" id="honestToggle">
+                        <label class="form-check-label" for="honestToggle"></label>
+                    </span>
+                    <span id="honestLabel"></span>
+                    <br>
+                    <div id="honestDesc"></div>
+                </div>
+
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="statsModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -221,6 +245,10 @@
                                     role="button"
                                     data-bs-toggle="modal"
                                     data-bs-target="#statsModal"></i>
+                                <i id="settingsButton" class="bi bi-gear fs-5"
+                                    role="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#settingsModal"></i>
                                 <textarea id="winText" rows="4" style="resize: none; width: 100%; display: none;" disabled></textarea>
                                 <button id="copyButton" type="button" style="width: 33%; display: none;" onclick="CopyResult()">Copy</button>
                             </div>
@@ -347,6 +375,7 @@
           helpContent.innerHTML = helpContents[newLang];
           getCT.innerHTML = getCTTexts[newLang];
 
+          UpdateSettings();
           UpdateStats();
         }
       }

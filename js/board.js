@@ -19,11 +19,24 @@ const ZEBRA = "sprites/zebra.png";
 const CHARR = [ROCK,RABBIT,FROG,CAT,DOG,HORSE,CAMEL,ELEPHANT,GIRAFFE,ZEBRA,MONSTER]
 const EMJ = {"sprites/carrot.png":"🥕","sprites/monster.png":"👾","sprites/rock.png":"🪨","sprites/rabbit.png":"🐰","sprites/frog.png":"🐸","sprites/cat.png":"🐱","sprites/dog.png":"🐶","sprites/horse.png":"🐴","sprites/camel.png":"🐫","sprites/elephant.png":"🐘","sprites/giraffe.png":"🦒","sprites/zebra.png":"🦓"}
 const EN_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-let isInfinite = "Infinite" === window.location.href.split('?')[1];
+const isInfinite = "Infinite" === window.location.href.split('?')[1];
+const honestToggle = document.getElementById("honestToggle");
+let isHonest = localStorage.getItem("ctghonest")==="1";
+if(isHonest)honestToggle.checked = true;
+carrots = 0;
+guesses = 0;
+honestToggle.addEventListener("change", function (event) {
+    if(event.isTrusted){
+        if(guesses>0 && guesses<MAXGUESSES && carrots<2)return;
+        isHonest = honestToggle.checked;
+        localStorage.setItem("ctghonest", isHonest ? "1" : "0");
+    }
+});
 if(isInfinite)console.log("Infinite Mode");
 sq = [[],[],[],[],[],[],[],[],[],[]];
 pc = [[],[],[],[],[],[],[],[],[],[]];
 bd = [[],[],[],[],[],[],[],[],[],[]];
+Hbd = [[],[],[],[],[],[],[],[],[],[]]; //honest board
 clicked = [[],[],[],[],[],[],[],[],[],[]];
 const date = new Date();
 year = date.getFullYear().toString();
@@ -81,8 +94,6 @@ if(!isInfinite){
     if(lastplay===null || playstreak!==playstreak || Date.parse(lastplay)!==Date.parse(lastplay) || (date - Date.parse(lastplay))>=172800000)localStorage.setItem("ctgplaystreak", 0);
     if(lastwin===null || winstreak!==winstreak || Date.parse(lastwin)!==Date.parse(lastwin) || (date - Date.parse(lastwin))>=172800000)localStorage.setItem("ctgwinstreak", 0);
 }
-carrots = 0;
-guesses = 0;
 emojirec = "";
 function updateGuesses(){
     guessesText.innerHTML = `<img src="sprites/carrot.png" style="height: 1.5rem;">${carrots}/2&nbsp;&nbsp;&nbsp;${guessesTexts[language]}${guesses}/${MAXGUESSES}`;
@@ -97,24 +108,26 @@ function gameComplete(x, y, win, save=false){
         if(guesses<=MAXGUESSES-1)stars += "⭐";
         if(guesses<=MAXGUESSES-2)stars += "⭐";
     }*/
+    let hr = isHonest ? "🤥🚫" : ""; //honest record
     let res = `${win?guesses:"X"}/${MAXGUESSES}${stars}`;
     let gameLink = `https://yowwowwow.github.io/Carrotour/Guide${isInfinite?"?Infinite":""}`;
-    winTexts[0] = `${title} ${dateTexts[0]} ${res}\n${emojirec}\n${gameLink}`;
-    winTexts[1] = `${title} ${dateTexts[1]} ${res}\n${emojirec}\n${gameLink}`;
-    winTexts[2] = `${title} ${dateTexts[2]} ${res}\n${emojirec}\n${gameLink}`;
-    winTexts[3] = `${title} ${dateTexts[3]} ${res}\n${emojirec}\n${gameLink}`;
+    winTexts[0] = `${title} ${dateTexts[0]} ${res}\n${emojirec}${hr}\n${gameLink}`;
+    winTexts[1] = `${title} ${dateTexts[1]} ${res}\n${emojirec}${hr}\n${gameLink}`;
+    winTexts[2] = `${title} ${dateTexts[2]} ${res}\n${emojirec}${hr}\n${gameLink}`;
+    winTexts[3] = `${title} ${dateTexts[3]} ${res}\n${emojirec}${hr}\n${gameLink}`;
     console.log(winTexts[0]);console.log(winTexts[1]);console.log(winTexts[2]);console.log(winTexts[3]);
+    honestToggle.disabled = false;
     for(let i=0;i<10;i++)for(let j=0;j<10;j++){
         if(!clicked[i][j]){
             if(win){
                 setTimeout(() => {
                     pc[i][j].style.opacity=0.25;
-                    pc[i][j].src = bd[i][j];
+                    pc[i][j].src = isHonest ? Hbd[i][j] : bd[i][j];
                 }, 100*Math.sqrt((i-x)*(i-x)+(j-y)*(j-y)));
             }
             else{
                 pc[i][j].style.opacity=0;
-                pc[i][j].src = bd[i][j];
+                pc[i][j].src = isHonest ? Hbd[i][j] : bd[i][j];
                 for(let t=1;t<=10;t++)setTimeout(()=>{pc[i][j].style.opacity=0.025*t;}, 133*t);
             }
         }
@@ -148,12 +161,14 @@ function gameComplete(x, y, win, save=false){
 function squareClicked(x, y, save=true){
     console.log("Clicked square:", String.fromCharCode(97 + x)+(y+1), `(${x}${y})`);
     if(carrots>=2 || guesses>=MAXGUESSES || clicked[x][y])return;
+    honestToggle.disabled=true;
     guesses++;
     clicked[x][y] = true;
-    pc[x][y].src = bd[x][y];
-    emojirec += EMJ[bd[x][y]];
+    let discover = isHonest ? Hbd[x][y] : bd[x][y];
+    pc[x][y].src = discover;
+    emojirec += EMJ[discover];
     const effect = document.createElement("img");
-    if(bd[x][y]==CARROT){
+    if(discover==CARROT){
         carrots++;
         effect.src = "sprites/circle.png";
         effect.style.setProperty("--rot", "0");
@@ -168,14 +183,14 @@ function squareClicked(x, y, save=true){
     sq[x][y].style.filter="";
     updateGuesses();
     const rec = document.createElement("img");
-    rec.src = bd[x][y];
+    rec.src = discover;
     rec.className = "recimg";
     record.appendChild(rec);
     if(carrots>=2)gameComplete(x, y, true, save);
     else if(guesses>=MAXGUESSES)gameComplete(x, y, false, save);
     if(save && !isInfinite){
         let tmpsf = localStorage.getItem(saveid);
-        if(tmpsf===null)localStorage.setItem(saveid, `${x}${y}`);
+        if(tmpsf===null)localStorage.setItem(saveid, `${isHonest?"H":""}${x}${y}`);
         else localStorage.setItem(saveid, `${tmpsf}${x}${y}`);
     }
 }
@@ -215,13 +230,32 @@ for(let y=0;y<10;y++){
         }
     }
 }
+for(let y=0;y<10;y++){
+    for(let x=0;x<10;x++){
+        if(bd[x][y]==CARROT)Hbd[x][y]=CARROT;
+        else{
+            let a0 = getAnimal(x-crt[0][0], y-crt[0][1]);
+            let a1 = getAnimal(x-crt[1][0], y-crt[1][1]);
+            if(a0==MONSTER && a1==MONSTER)Hbd[x][y]=MONSTER;
+            else if(a0==MONSTER)Hbd[x][y]=a1;
+            else if(a1==MONSTER || a1==a0)Hbd[x][y]=a0;
+            else if(bd[x][y]==a0 || bd[x][y]==a1)Hbd[x][y]=bd[x][y];
+            else{
+                let coin = Math.floor(rng.random()*2);
+                Hbd[x][y] = (coin==0)?a0:a1;
+            }
+        }
+    }
+}
 savefile = localStorage.getItem(saveid);
 if(!isInfinite){
     if(savefile===null)console.log("new day");
     else{
         let tmpsf = "";
+        let tmpHonest = isHonest;
+        if(savefile[0]=="H"){tmpsf="H"; isHonest=true;}else isHonest=false;
         try{
-            for(let i=0;i<savefile.length;i+=2){
+            for(let i=isHonest?1:0;i<savefile.length;i+=2){
                 let x = parseInt(savefile[i]);
                 let y = parseInt(savefile[i+1]);
                 squareClicked(x, y, false);
@@ -231,6 +265,11 @@ if(!isInfinite){
         catch(error){
             console.log(error);
             localStorage.setItem(saveid, tmpsf);
+        }
+        if(!honestToggle.disabled)isHonest = tmpHonest;
+        else{
+            honestToggle.checked = isHonest;
+            localStorage.setItem("ctghonest", isHonest ? "1" : "0");
         }
     }
 }

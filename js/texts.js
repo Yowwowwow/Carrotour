@@ -156,5 +156,46 @@ function UpdateStats(){
         }
     );
 }
+
+const settingsTitle = document.getElementById("settingsTitle");
+const settingsLink = document.getElementById("settingsLink");
+const honestLabel = document.getElementById("honestLabel");
+const honestDesc = document.getElementById("honestDesc");
+const settingsTitles = ["Settings", "設定", "设置", "設定"];
+const honestTexts = ["Honest Mode", "誠實模式", "诚实模式", "正直モード"];
+const honestDescs = [
+    `Cannot be toggled during a game. If enabled, the following will not happen:<br>
+    - ${Pic("rock")} shows up.<br>
+    - An animal shows up, but it cannot reach either ${Pic("carrot")} in one move.<br>
+    - ${Pic("monster")} shows up, but an animal can reach either ${Pic("carrot")} from the square in one move.
+    `,
+    `在遊戲進行中不可開關。若開啟，以下情況將不會發生：<br>
+    - ${Pic("rock")}出現。<br>
+    - 某動物出現，但其無法一步走到任一${Pic("carrot")}。<br>
+    - ${Pic("monster")}出現，但有動物可從該格一步走到某${Pic("carrot")}。
+    `,
+    `在游戏进行中不可开关。若开启，以下情况将不会发生：<br>
+    - ${Pic("rock")}出现。<br>
+    - 某动物出现，但其无法一步走到任一${Pic("carrot")}。<br>
+    - ${Pic("monster")}出现，但有动物可从该格一步走到某${Pic("carrot")}。
+    `,
+    `ゲームの途中で切り替えることはできません。有効にした場合、以下は発生しません：<br>
+    - ${Pic("rock")}が出現する。<br>
+    - 動物が出現するが、その動物は1手でどちらの${Pic("carrot")}にも到達できない。<br>
+    - ${Pic("monster")}が出現するが、ある動物がそのマスから1手でどちらの${Pic("carrot")}に到達できる。
+    `
+]
+const dailyLink = "https://yowwowwow.github.io/Carrotour/Guide";
+const infiniteLink = "https://yowwowwow.github.io/Carrotour/Guide?Infinite";
+const dailyTexts = ["Classic Mode (Daily Puzzles)", "Classic Mode（每日謎題）", "Classic Mode（每日谜题）", "Classic Mode（デイリーパズル）"];
+const infiniteTexts = ["Infinite Mode", "Infinite Mode（無限模式）", "Infinite Mode（无限模式）", "Infinite Mode（無限モード）"];
+function UpdateSettings(){
+    settingsTitle.innerHTML = settingsTitles[language];
+    settingsLink.href = isInfinite ? dailyLink : infiniteLink;
+    settingsLink.innerHTML = isInfinite ? dailyTexts[language] : infiniteTexts[language];
+    honestLabel.innerHTML = honestTexts[language];
+    honestDesc.innerHTML = honestDescs[language];
+}
+UpdateSettings();
 UpdateStats();
 document.getElementById("statsModal").addEventListener("show.bs.modal",()=>{UpdateStats();});
