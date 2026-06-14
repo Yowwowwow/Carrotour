@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find the 2 carrots in 10 tries! This is a spinoff from the chess leaper puzzle game, Carrotour.">
+    <meta name="image" content="https://yowwowwow.github.io/Carrotour/sprites/ctgcards.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Carrotour-Guide - A Daily Puzzle Game">
+    <meta name="twitter:description" content="Find the 2 carrots in 10 tries! This is a spinoff from the chess leaper puzzle game, Carrotour.">
+    <meta name="twitter:image" content="https://yowwowwow.github.io/Carrotour/sprites/ctgcards.png">
+    <meta property="og:description" content="Find the 2 carrots in 10 tries! This is a spinoff from the chess leaper puzzle game, Carrotour.">
+    <meta property="og:image" content="https://yowwowwow.github.io/Carrotour/sprites/ctgcards.png">
+    <title>Carrotour-Merge</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./fonts/iconfont/iconfont.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">    <link rel="icon" href="sprites/ctmicon.png">
+    <link rel="preload" href="sprites/ls.png" as="image">
+    <link rel="preload" href="sprites/ds.png" as="image">
+    <link rel="preload" href="sprites/carrot.png" as="image">
+    <link rel="preload" href="sprites/monster.png" as="image">
+    <link rel="preload" href="sprites/rock.png" as="image">
+    <link rel="preload" href="sprites/rabbit.png" as="image">
+    <link rel="preload" href="sprites/frog.png" as="image">
+    <link rel="preload" href="sprites/cat.png" as="image">
+    <link rel="preload" href="sprites/dog.png" as="image">
+    <link rel="preload" href="sprites/horse.png" as="image">
+    <link rel="preload" href="sprites/camel.png" as="image">
+    <link rel="preload" href="sprites/elephant.png" as="image">
+    <link rel="preload" href="sprites/giraffe.png" as="image">
+    <link rel="preload" href="sprites/zebra.png" as="image">
+    <link rel="preload" href="sprites/circle.png" as="image">
+    <link rel="preload" href="sprites/dots.png" as="image">
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            width: min(580px, 90vw);
+            margin: 0 auto;
+        }
+        .ctglogo{
+            width: min(250px, 60vw);
+        }
+        .square {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+        }
+        .square img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            user-drag: none;
+            -webkit-user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+        }
+        .piece {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            user-drag: none;
+            -webkit-user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+        }
+        .recimg {
+            height: 50px;
+        }
+        .click-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            z-index: 10;
+            opacity: 1;
+            pointer-events: none;
+            transform: translate(-50%, -50%) rotate(var(--rot)) scale(0.5);
+            animation: clickEffectAnim 0.5s ease-out forwards;
+        }
+        @keyframes clickEffectAnim {
+            from {
+                transform: translate(-50%, -50%) rotate(var(--rot)) scale(0.5);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(var(--rot)) scale(1.8);
+                opacity: 0;
+            }
+        }
+</style>
+</head>
+<body style="background-color: rgb(235, 233, 230);">
+    <div class="h2 fw-bold" id="loading">Loading...</div>
+    <div id="app" class="appLoading">
+        <!-- 头部 -->
+        <section>
+            <div class="container">
+                <nav class="navbar navbar-expand-md fixed-top bg-white">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="https://yowwowwow.github.io/Carrotour">
+                            <img class="img-fluid" src="pictures/icon/Logo.png" style="height: 3rem;">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 h5">
+                                <li class="nav-item me-2">
+                                    <a class="nav-link top" aria-current="page" href="#">
+                                        <i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> Top</a>
+                                </li>
+                                <!-- <li class="nav-item me-2">
+                                    <a class="nav-link intro" href="#introduction"><i class="iconfont icon-intro" style="vertical-align: middle;"></i> Introduction</a>
+                                </li> -->
+                                <li class="nav-item dropdown me-2">
+                                    <a class="nav-link lang dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="iconfont icon-language" style="vertical-align: middle"></i> 
+                                         Language
+                                    </a>
+                                    <ul class="dropdown-menu ps-3" style="width: 100px; cursor: pointer;">
+                                        <li data-lid="0">English</li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li data-lid="1">繁體中文</li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li data-lid="2">简体中文</li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li data-lid="3">日本語</li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" id="navSteamLink" href="#" target="_blank">
+                                        <img src="./pictures/icon/steam.ico" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" id="discordLink" href="#" target="_blank">
+                                        <img src="./pictures/icon/discordIcon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" id="youtubeLink" href="#" target="_blank">
+                                        <img src="./pictures/icon/yt_logo.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" id="twitterLink" href="#" target="_blank">
+                                        <img src="./pictures/icon/twitterIcon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" id="ctgLink" href="#" target="_blank">
+                                        <img src="./sprites/ctgicon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </section>
+        <div class="modal fade" id="helpModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 id="helpTitle" class="modal-title">How to Play</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div id="helpContent" class="modal-body">
+                    How to play the game:
+                </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="settingsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 id="settingsTitle" class="modal-title">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <a id="settingsLink" href=""></a>
+                    <hr>
+                    <span class="form-check form-switch form-check-inline" style="margin-right: 0;">
+                        <input class="form-check-input" type="checkbox" role="switch" id="honestToggle">
+                        <label class="form-check-label" for="honestToggle"></label>
+                    </span>
+                    <span id="honestLabel"></span>
+                    <br>
+                    <div id="honestDesc"></div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="statsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 id="statsTitle" class="modal-title">Statistics</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="statsContent"></div>
+                    <div style="height: 32rem;"><canvas id="BDChart" width="250" height="400"></canvas></div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+        <section class="d-flex justify-content-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="container">
+                        <div class="row align-items-start">
+
+                            <!-- Left content -->
+                            <div class="col-xl-3 col-12 order-xl-1 order-1">
+                            <div class="p-3">
+                                <img class="ctglogo" src="sprites/ctmph.png">
+                                <p id="dateText" style="margin: 0;"></p>
+                                <i class="bi bi-question-circle fs-5"
+                                    role="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#helpModal"></i>
+                                <i id="statsButton" class="bi bi-bar-chart-line fs-5"
+                                    role="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#statsModal"></i>
+                                <i id="settingsButton" class="bi bi-gear fs-5"
+                                    role="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#settingsModal"></i>
+                                <textarea id="winText" rows="4" style="resize: none; width: 100%; display: none;" disabled></textarea>
+                                <button id="copyButton" type="button" style="width: 33%; display: none;" onclick="CopyResult()">Copy</button>
+                            </div>
+                            </div>
+
+                            <!-- Board -->
+                            <div class="col-xl-6 col-12 order-xl-2 order-2 text-center">
+                            <div id="board"></div>
+                            </div>
+
+                            <!-- Right content -->
+                            <div class="col-xl-3 col-12 order-xl-3 order-3">
+                            <div id="record" class="p-3">
+                                <p id="guessesText">Guesses: 0/10</p>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="d-flex text-center mt-2">
+            <div class="container">
+                <b class="fs-2"><a id="getCT" style="color: inherit;" href="https://store.steampowered.com/app/3529380/Carrotour/">Get <img src="pictures/icon/Logo.png" style="height: 1.5em;"> on Steam!</a></b>
+            </div>
+        </section>
+
+        <footer class="mt-5 p-3 bg-dark d-flex text-center text-light">
+            <div class="container">
+                <p class="align-items-center" style="margin: 0">© 2024-2026 Carrotour</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        language = 0;
+        const numberOfLanguages = 4
+    </script>
+    <script src="js/mergeboard.js"></script>
+    <script>
+      let homeTexts = []
+      let wishListTexts = ["Get it now on Steam!", "快到Steam上遊玩！", "快到Steam上游玩！", "Steamでプレイしよう！"]
+      let carouselTexts = []
+      let carouselIndex = 0
+      let charactersList = ["Characters", "角色", "角色", "キャラクター"]
+      let characterIndex = 0
+      let characterNameList = []
+      let characterDescriptionList = []
+      let navbarTexts = []
+      let characterImageSrcs = []
+      let link = {}
+      let copyTexts = ["Copy", "複製", "复制", "コピー"];
+      let CTLogo = '<img src="pictures/icon/Logo.png" style="height: 1.5em;">';
+      let getCTTexts = [`Get ${CTLogo} on Steam!`, `在Steam獲取${CTLogo}吧！`, `在Steam获取${CTLogo}吧！`, `Steamで${CTLogo}をゲット！`];
+      //let language = 0
+      //let dateTexts = [`${EN_month[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`, `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`];
+
+      fetch('./data/data.json')
+      .then(response => response.json())  // 解析 JSON 数据
+      .then(async data => {
+          navbarTexts = data.navbarTexts
+          links = data.links
+          await preloadImages(characterImageSrcs)
+          document.getElementById('loading').style.display = 'none'
+          document.getElementById('app').classList.remove('appLoading')
+
+          //document.getElementById('steamLink').href = links.steam
+          document.getElementById('discordLink').href = links.discord
+          document.getElementById('youtubeLink').href = links.youtube
+          document.getElementById('twitterLink').href = links.twitter
+          document.getElementById('navSteamLink').href = links.steam
+          document.getElementById('ctgLink').href = links.carrotourguide
+          ApplySavedLanguage();
+      })
+      .catch(error => console.error('Error loading JSON:', error));
+
+      const languageButton = document.querySelector('.dropdown-menu')
+      languageButton.addEventListener('click', languageToggle)
+
+      // 导航
+      const topLink = document.querySelector('.top')
+      const langLink = document.querySelector('.lang')
+
+      // 主页
+      const homeTitle = document.querySelector('.homeTitle')
+      const homeText = document.querySelector('.homeText')
+      const wishList = document.querySelector('.wishList')
+      const dateText = document.getElementById("dateText")
+      const winText = document.getElementById("winText");
+      const getCT = document.getElementById("getCT");
+      const copyButton = document.getElementById("copyButton");
+      let copyTimeout = null;
+      function CopyResult(){
+        winText.disabled = false;
+        winText.select();
+        winText.setSelectionRange(0, 9999);
+        document.execCommand("copy");
+        winText.disabled = true;
+        clearTimeout(copyTimeout);
+        copyButton.innerHTML = "✅";
+        copyTimeout = setTimeout(()=>{copyButton.innerHTML=copyTexts[language];}, 1000);
+      }
+      // 语言切换
+      function languageToggle (e, forceNewLang=null) {
+        let newLang = forceNewLang ?? e.target.dataset.lid;
+        if (language !== newLang) {
+          language = newLang;
+          localStorage.setItem("lang", newLang);
+          // 导航栏
+          topLink.innerHTML = `<i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> ${navbarTexts[newLang].home}`
+          langLink.innerHTML = `<i class="iconfont icon-language" style="vertical-align: middle"></i> ${navbarTexts[newLang].language}`
+          dateText.innerHTML = dateTexts[newLang];
+          updateGuesses();
+          winText.innerHTML = winTexts[newLang];
+          copyButton.innerHTML = copyTexts[newLang];
+          helpTitle.innerHTML = helpTitles[newLang];
+          helpContent.innerHTML = helpContents[newLang];
+          getCT.innerHTML = getCTTexts[newLang];
+
+          UpdateSettings();
+          UpdateStats();
+        }
+      }
+      function ApplySavedLanguage(){
+        let savedLanguage = parseInt(localStorage.getItem("lang"));
+        if(savedLanguage!=NaN && savedLanguage>=0 && savedLanguage<numberOfLanguages)languageToggle(null, savedLanguage);
+      }
+      function carouselToggle(newLang) {
+        carouselTitle.innerHTML = carouselTexts[newLang][carouselIndex].title
+        carouselDescription.innerHTML = carouselTexts[newLang][carouselIndex].description
+      }
+
+      // 角色切换
+      function characterToggle() {
+        characterName.innerHTML =  characterNameList[language][characterIndex]
+        characterDescription.innerHTML = characterDescriptionList[language][characterIndex]
+        characterImage.src = characterImageSrcs[characterIndex]
+      }
+
+      async function preloadImages(imageUrls) {
+        const promises = imageUrls.map(url => {
+            return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = resolve;  // 加载成功时 resolve
+            img.onerror = reject;  // 加载失败时 reject
+            img.src = url;
+            });
+        });
+
+        await Promise.all(promises); // 等待所有图片加载完成
+        }
+
+      function click(next) {
+        if (next) {
+            if (characterIndex + 1 < characterNameList[0].length) characterIndex++
+            else characterIndex = 0
+        }
+        else {
+            if (characterIndex > 0) characterIndex--
+            else characterIndex = characterNameList[0].length - 1
+        }
+        characterToggle()
+          // this.characterImageSrc = `./pictures/character/${this.characterNameList[vue.language][vue.characterIndex]}.png`
+      }
+
+         //                 typeWriterEffect(targetText) {
+    //                     let speed = +this.language === 0 ? 6 : 30
+    //                     let index = 0
+    //                     this.homeText = ''
+    //                     clearInterval(this.timer)
+    //                     this.timer = setInterval(type, speed);
+    //                     function type() {
+    //                         if (index < targetText.length) vue.homeText += targetText[index++]
+    //                         else clearInterval(this.timer)
+    //                     }
+    //                 }
+    </script>
+</body>
+
+</html>
