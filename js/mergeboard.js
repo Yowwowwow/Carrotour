@@ -18,14 +18,18 @@ const GIRAFFE = "sprites/giraffe.png";
 const ZEBRA = "sprites/zebra.png";
 const GECKO = "sprites/gecko.png";
 const CHARR = [ROCK,RABBIT,FROG,CAT,DOG,HORSE,CAMEL,ELEPHANT,GIRAFFE,ZEBRA,MONSTER]
+const FRAME = "sprites/selected.png";
+const RCIRCLE = "sprites/redcircle.png";
 const EMJ = {"sprites/carrot.png":"🥕","sprites/monster.png":"👾","sprites/rock.png":"🪨","sprites/rabbit.png":"🐰","sprites/frog.png":"🐸","sprites/cat.png":"🐱","sprites/dog.png":"🐶","sprites/horse.png":"🐴","sprites/camel.png":"🐫","sprites/elephant.png":"🐘","sprites/giraffe.png":"🦒","sprites/zebra.png":"🦓"}
 const EN_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const isInfinite = "Infinite" === window.location.href.split('?')[1];
 const honestToggle = document.getElementById("honestToggle");
-sq = [[],[],[],[],[],[],[],[],[],[]];
-pc = [[],[],[],[],[],[],[],[],[],[]];
-bd = [[],[],[],[],[],[],[],[],[],[]];
-clicked = [[],[],[],[],[],[],[],[],[],[]];
+let selected = null;
+sq = [[],[],[],[],[]];
+pc = [[],[],[],[],[]];
+hl = [[],[],[],[],[]];
+bd = [[],[],[],[],[]];
+clicked = [[],[],[],[],[]];
 for(let y=0;y<5;y++){
     for(let x=0;x<5;x++){
         const square = document.createElement("div");
@@ -43,25 +47,44 @@ for(let y=0;y<5;y++){
         piece.src = BLANK;
         piece.className = "piece";
 
+        const highlight = document.createElement("img");
+        highlight.src = BLANK;
+        highlight.className = "piece";
+
         square.appendChild(bg);
         square.appendChild(piece);
+        square.appendChild(highlight);
 
         square.addEventListener("click", ()=>{squareClicked(x, 4-y);});
 
         board.appendChild(square);
         sq[x][4-y] = square
         pc[x][4-y] = piece
+        hl[x][4-y] = highlight;
         clicked[x][4-y] = false;
+
+        bd[x][4-y] = rngAnimal();
     }
 }
-document.addEventListener("click", (e)=>
-    {
+updateBoard();
+document.addEventListener("click",
+    (e)=>{
         for(let i=0;i<5;i++)for(let j=0;j<5;j++)if(sq[i][j].contains(e.target))return;
-        console.log("Clicked outside");
+        outsideClicked();
     });
-for(let i=0;i<5;i++)for(let j=0;j<5;j++)pc[i][j].src = rngAnimal();
+function updateBoard(){
+    for(let i=0;i<5;i++)for(let j=0;j<5;j++)pc[i][j].src = bd[i][j];
+}
+function outsideClicked(){
+    console.log("Clicked outside");
+}
 function squareClicked(x, y, save=true){
     console.log("Clicked square:", String.fromCharCode(97 + x)+(y+1), `(${x}${y})`);
+    if(selected == null){
+        selected = [x,y];
+        hl[x][y].src = FRAME;
+    }
+    
 }
 function rngAnimal(n = 0){
     let tmp = Math.floor(Math.random()*9);
