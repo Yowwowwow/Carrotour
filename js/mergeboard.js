@@ -7,6 +7,7 @@ const MAXGUESSES = 10;
 const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","sprites/dog.png","sprites/horse.png","sprites/camel.png","sprites/elephant.png","sprites/giraffe.png","sprites/zebra.png"]
 const BLANK = "sprites/blank.png";
 const CARROT = "sprites/carrot.png";
+const GCARR = "sprites/gcarrot.png";
 const MONSTER = "sprites/tmonster.png";
 const ROCK = "sprites/rock.png";
 const RABBIT = "sprites/rabbit.png";
@@ -27,21 +28,22 @@ const EN_month = ["January", "February", "March", "April", "May", "June", "July"
 const isInfinite = "Infinite" === window.location.href.split('?')[1];
 const honestToggle = document.getElementById("honestToggle");
 let selected = null;
-sq = [[],[],[],[],[]];
-pc = [[],[],[],[],[]];
-hl = [[],[],[],[],[]];
-bd = [[],[],[],[],[]];
-clicked = [[],[],[],[],[]];
+let sq = [[],[],[],[],[]];
+let pc = [[],[],[],[],[]];
+let hl = [[],[],[],[],[]];
+let bd = [[],[],[],[],[]];
+let clicked = [[],[],[],[],[]];
 for(let y=0;y<HBD;y++){
     for(let x=0;x<WBD;x++){
         const square = document.createElement("div");
+        const bg = document.createElement("img");
         square.className = "square";
         square.dataset.x = x;
         square.dataset.y = HBD-1-y;
-        square.addEventListener("mouseenter", () => {square.style.filter="brightness(1.125)";});
-        square.addEventListener("mouseleave", () => {square.style.filter="";});
-
-        const bg = document.createElement("img");
+        square.dataset.s = (x+y)%2==0 ? "sprites/ls.png" : "sprites/ds.png";
+        square.dataset.bs = (x+y)%2==0 ? "sprites/bls.png" : "sprites/bds.png";
+        square.addEventListener("mouseenter", () => {bg.src = square.dataset.bs;});
+        square.addEventListener("mouseleave", () => {bg.src = square.dataset.s;});
 
         if((x+y)%2===0)bg.src="sprites/ls.png"; else bg.src="sprites/ds.png";
 
@@ -60,8 +62,8 @@ for(let y=0;y<HBD;y++){
         square.addEventListener("click", ()=>{squareClicked(x, HBD-1-y);});
 
         board.appendChild(square);
-        sq[x][HBD-1-y] = square
-        pc[x][HBD-1-y] = piece
+        sq[x][HBD-1-y] = square;
+        pc[x][HBD-1-y] = piece;
         hl[x][HBD-1-y] = highlight;
         clicked[x][HBD-1-y] = false;
 
@@ -80,12 +82,12 @@ function updateBoard(){
 function circleSquares(x, y, a, b){
     for(let i=0;i<2;i++){
         if(x+a<WBD){
-            if(y+b<HBD)hl[x+a][y+b].src = RCIRCLE;
-            if(y-b>=0)hl[x+a][y-b].src = RCIRCLE;
+            if(y+b<HBD&&bd[x+a][y+b]!=MONSTER)hl[x+a][y+b].src = RCIRCLE;
+            if(b!=0&&y-b>=0&&bd[x+a][y-b]!=MONSTER)hl[x+a][y-b].src = RCIRCLE;
         }
         if(x-a>=0){
-            if(y+b<HBD)hl[x-a][y+b].src = RCIRCLE;
-            if(y-b>=0)hl[x-a][y-b].src = RCIRCLE;
+            if(y+b<HBD&&bd[x-a][y+b]!=MONSTER)hl[x-a][y+b].src = RCIRCLE;
+            if(b!=0&&y-b>=0&&bd[x-a][y-b]!=MONSTER)hl[x-a][y-b].src = RCIRCLE;
         }
         if(a==b)break;
         let tmp=a; a=b; b=tmp;
@@ -117,7 +119,8 @@ function outsideClicked(){
     deselectAll();
 }
 function movePiece(x, y){
-    console.log(`Move (${selected}) to (${x},${y})`)
+    console.log(`Move (${selected}) to (${x},${y})`);
+    animateMove(selected[0], selected[1], x, y);
     deselectAll();
 }
 function squareClicked(x, y, save=true){
@@ -128,7 +131,7 @@ function squareClicked(x, y, save=true){
     else{
         if(x==selected[0] && y==selected[1])deselectAll();
         else{
-            if(checkAnimal(x-selected[0], y-selected[1], bd[selected[0]][selected[1]])){
+            if(bd[x][y]!=MONSTER&&checkAnimal(x-selected[0], y-selected[1], bd[selected[0]][selected[1]])){
                 movePiece(x, y);
             }
             else{
@@ -177,4 +180,69 @@ function getAnimal(x, y){
     if(a==1 && b==4)return GIRAFFE;
     if(a==2 && b==3)return ZEBRA;
     return MONSTER;
+}
+function mergeResult(a, b){
+    if(b==CARROT || b==GCARR)return a;
+    if(a==b){
+        if(a==FROG || a==HORSE || a==ELEPHANT)return CARROT;
+        if(a==DOG || a==CAMEL || a==ZEBRA || a==GECKO)return GCARR;
+    }
+    for(let i=0;i<2;i++){
+        if(a==RABBIT){
+            if(b==RABBIT)return FROG;
+            if(b==CAT)return HORSE;
+            if(b==FROG)return DOG;
+            if(b==HORSE)return CAMEL;
+            if(b==ELEPHANT)return ZEBRA;
+        }
+        else if(a==CAT){
+            if(b==CAT)return ELEPHANT;
+            if(b==FROG)return CAMEL;
+            if(b==HORSE)return ZEBRA;
+            if(b==ELEPHANT)return GECKO;
+        }
+        let tmp=a; a=b; b=tmp;
+    }
+    return MONSTER;
+}
+function completeMove(a, b, x, y){
+    bd[x][y] = mergeResult(bd[a][b], bd[x][y]);
+    bd[a][b] = rngAnimal();
+    updateBoard();
+}
+function animateMove(a, b, x, y){
+    piece = pc[a][b];
+    target = sq[x][y];
+    const start = piece.getBoundingClientRect();
+    const end = target.getBoundingClientRect();
+    const clone = piece.cloneNode(true);
+    document.body.appendChild(clone);
+    clone.style.position = "fixed";
+    clone.style.left = `${start.left}px`;
+    clone.style.top = `${start.top}px`;
+    clone.style.width = `${start.width}px`;
+    clone.style.height = `${start.height}px`;
+    clone.style.transition = "all 0.2236s ease";
+    clone.style.zIndex = "999";
+    piece.src = BLANK;
+    requestAnimationFrame(() => {
+        clone.style.left = `${end.left}px`;
+        clone.style.top = `${end.top}px`;
+    });
+    clone.addEventListener("transitionend", () => {
+        clone.remove();
+        const effect = document.createElement("img");
+        effect.src = bd[x][y]!=CARROT&&bd[x][y]!=GCARR ? "sprites/merge.png" : "sprites/circle.png";
+        effect.style.setProperty("--rot", "0");
+        effect.className = "click-effect";
+        sq[x][y].appendChild(effect);
+        effect.addEventListener("animationend", ()=>{effect.remove();});
+        const e2 = document.createElement("img");
+        e2.src = "sprites/dots.png";
+        e2.style.setProperty("--rot", `${Math.random()*360}deg`);
+        e2.className = "click-effect";
+        sq[a][b].appendChild(e2);
+        e2.addEventListener("animationend", ()=>{e2.remove();});
+        completeMove(a, b, x, y);
+    }, { once: true });
 }
