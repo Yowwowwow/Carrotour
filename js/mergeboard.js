@@ -37,17 +37,17 @@ for(let y=0;y<HBD;y++){
     for(let x=0;x<WBD;x++){
         const square = document.createElement("div");
         const bg = document.createElement("img");
+        const piece = document.createElement("img");
         square.className = "square";
         square.dataset.x = x;
         square.dataset.y = HBD-1-y;
         square.dataset.s = (x+y)%2==0 ? "sprites/ls.png" : "sprites/ds.png";
         square.dataset.bs = (x+y)%2==0 ? "sprites/bls.png" : "sprites/bds.png";
-        square.addEventListener("mouseenter", () => {bg.src = square.dataset.bs;});
-        square.addEventListener("mouseleave", () => {bg.src = square.dataset.s;});
+        square.addEventListener("mouseenter", () => {bg.src=square.dataset.bs;piece.style.filter="brightness(1.125)";});
+        square.addEventListener("mouseleave", () => {bg.src=square.dataset.s;piece.style.filter="";});
 
         if((x+y)%2===0)bg.src="sprites/ls.png"; else bg.src="sprites/ds.png";
 
-        const piece = document.createElement("img");
         piece.src = BLANK;
         piece.className = "piece";
 
@@ -232,7 +232,9 @@ function animateMove(a, b, x, y){
     clone.addEventListener("transitionend", () => {
         clone.remove();
         const effect = document.createElement("img");
-        effect.src = bd[x][y]!=CARROT&&bd[x][y]!=GCARR ? "sprites/merge.png" : "sprites/circle.png";
+        if(bd[x][y]==CARROT||bd[x][y]==GCARR)effect.src="sprites/circle.png";
+        else if(mergeResult(bd[a][b],bd[x][y])==CARROT||mergeResult(bd[a][b],bd[x][y])==GCARR)effect.src="sprites/cmerge.png";
+        else effect.src="sprites/merge.png";
         effect.style.setProperty("--rot", "0");
         effect.className = "click-effect";
         sq[x][y].appendChild(effect);
