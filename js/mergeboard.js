@@ -1,5 +1,6 @@
-const WBD = 5;
-const HBD = 5;
+const WBD = 5; //board width
+const HBD = 5; //board height
+const MVSC = 32; //how many moves it takes to spawn a silver carrot
 const board = document.getElementById("board");
 const record = document.getElementById("record");
 const guessesText = document.getElementById("guessesText");
@@ -8,6 +9,7 @@ const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","spri
 const BLANK = "sprites/blank.png";
 const CARROT = "sprites/carrot.png";
 const GCARR = "sprites/gcarrot.png";
+const SCARR = "sprites/scarrot.png";
 const MONSTER = "sprites/tmonster.png";
 const ROCK = "sprites/rock.png";
 const RABBIT = "sprites/rabbit.png";
@@ -27,12 +29,15 @@ const EMJ = {"sprites/carrot.png":"🥕","sprites/monster.png":"👾","sprites/r
 const EN_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const isInfinite = "Infinite" === window.location.href.split('?')[1];
 const honestToggle = document.getElementById("honestToggle");
+let canselect = true;
 let selected = null;
 let sq = [[],[],[],[],[]];
 let pc = [[],[],[],[],[]];
 let hl = [[],[],[],[],[]];
 let bd = [[],[],[],[],[]];
 let clicked = [[],[],[],[],[]];
+let moves = 0;
+let points = 0;
 for(let y=0;y<HBD;y++){
     for(let x=0;x<WBD;x++){
         const square = document.createElement("div");
@@ -80,34 +85,36 @@ function updateBoard(){
     for(let i=0;i<WBD;i++)for(let j=0;j<HBD;j++)pc[i][j].src = bd[i][j];
 }
 function circleSquares(x, y, a, b){
+    let c = 0;
     for(let i=0;i<2;i++){
         if(x+a<WBD){
-            if(y+b<HBD&&bd[x+a][y+b]!=MONSTER)hl[x+a][y+b].src = RCIRCLE;
-            if(b!=0&&y-b>=0&&bd[x+a][y-b]!=MONSTER)hl[x+a][y-b].src = RCIRCLE;
+            if(y+b<HBD&&bd[x+a][y+b]!=MONSTER){hl[x+a][y+b].src = RCIRCLE; c++;}
+            if(b!=0&&y-b>=0&&bd[x+a][y-b]!=MONSTER){hl[x+a][y-b].src = RCIRCLE; c++;}
         }
         if(x-a>=0){
-            if(y+b<HBD&&bd[x-a][y+b]!=MONSTER)hl[x-a][y+b].src = RCIRCLE;
-            if(b!=0&&y-b>=0&&bd[x-a][y-b]!=MONSTER)hl[x-a][y-b].src = RCIRCLE;
+            if(y+b<HBD&&bd[x-a][y+b]!=MONSTER){hl[x-a][y+b].src = RCIRCLE; c++;}
+            if(b!=0&&y-b>=0&&bd[x-a][y-b]!=MONSTER){hl[x-a][y-b].src = RCIRCLE; c++;}
         }
         if(a==b)break;
         let tmp=a; a=b; b=tmp;
     }
+    return c;
 }
 function selectSquare(x, y){
     deselectAll();
     selected = [x,y];
     hl[x][y].src = FRAME;
     switch(bd[x][y]){
-        case RABBIT: circleSquares(x,y,0,1); break;
-        case CAT: circleSquares(x,y,1,1); break;
-        case FROG: circleSquares(x,y,0,2); break;
-        case HORSE: circleSquares(x,y,1,2); break;
-        case ELEPHANT: circleSquares(x,y,2,2); break;
-        case DOG: circleSquares(x,y,0,3); break;
-        case CAMEL: circleSquares(x,y,1,3); break;
-        case ZEBRA: circleSquares(x,y,2,3); break;
-        case GECKO: circleSquares(x,y,3,3); break;
-        default: break;
+        case RABBIT: return circleSquares(x,y,0,1);
+        case CAT: return circleSquares(x,y,1,1);
+        case FROG: return circleSquares(x,y,0,2);
+        case HORSE: return circleSquares(x,y,1,2);
+        case ELEPHANT: return circleSquares(x,y,2,2);
+        case DOG: return circleSquares(x,y,0,3);
+        case CAMEL: return circleSquares(x,y,1,3);
+        case ZEBRA: return circleSquares(x,y,2,3);
+        case GECKO: return circleSquares(x,y,3,3);
+        default: return 0;
     }
 }
 function deselectAll(){
@@ -119,12 +126,15 @@ function outsideClicked(){
     deselectAll();
 }
 function movePiece(x, y){
+    canselect = false;
     console.log(`Move (${selected}) to (${x},${y})`);
+    moves++;
     animateMove(selected[0], selected[1], x, y);
     deselectAll();
 }
 function squareClicked(x, y, save=true){
-    console.log("Clicked square:", String.fromCharCode(97 + x)+(y+1), `(${x}${y})`);
+    //console.log("Clicked square:", String.fromCharCode(97 + x)+(y+1), `(${x}${y})`);
+    if(!canselect)return;
     if(selected == null){
         selectSquare(x, y);
     }
@@ -140,13 +150,19 @@ function squareClicked(x, y, save=true){
         }
     }
 }
-function rngAnimal(n = 0){
-    let tmp = Math.floor(Math.random()*9);
-    if(tmp<3)return RABBIT;
-    if(tmp<6)return CAT;
-    if(tmp<7)return FROG;
-    if(tmp<8)return HORSE;
-    return ELEPHANT;
+function rngAnimal(x=0, y=0){
+    if(moves>0&&moves%MVSC==0)return SCARR;
+    let tmp = Math.random();
+    if((x!=2||y!=2) && tmp<Math.min(1, moves/128)*0.125){
+        let l = [DOG, CAMEL, ZEBRA];
+        if(x!=2&&y!=2)l.push(GECKO);
+        return l[Math.floor(Math.random()*l.length)];
+    }
+    tmp = Math.random();
+    if(tmp<0.333333333333){
+        return [FROG, HORSE, ELEPHANT][Math.floor(Math.random()*3)];
+    }
+    return Math.random()<0.5 ? RABBIT : CAT;
 }
 function checkAnimal(a, b, T){
     if(a<0)a=-a;
@@ -181,8 +197,9 @@ function getAnimal(x, y){
     if(a==2 && b==3)return ZEBRA;
     return MONSTER;
 }
+function isCarrot(s){return s==CARROT||s==SCARR||s==GCARR;}
 function mergeResult(a, b){
-    if(b==CARROT || b==GCARR)return a;
+    if(isCarrot(b))return a;
     if(a==b){
         if(a==FROG || a==HORSE || a==ELEPHANT)return CARROT;
         if(a==DOG || a==CAMEL || a==ZEBRA || a==GECKO)return GCARR;
@@ -206,9 +223,27 @@ function mergeResult(a, b){
     return MONSTER;
 }
 function completeMove(a, b, x, y){
+    if(bd[x][y]==CARROT)points += 1;
+    else if(bd[x][y]==SCARR)points += 2;
+    else if(bd[x][y]==GCARR)points += 4;
     bd[x][y] = mergeResult(bd[a][b], bd[x][y]);
-    bd[a][b] = rngAnimal();
+    bd[a][b] = rngAnimal(a, b);
     updateBoard();
+    canselect = true;
+    console.log(`moves: ${moves}   score: ${points}`);
+    if(checkGameOver())alert("game over or something bruhhh");
+}
+function checkGameOver(){
+    for(let i=0;i<WBD;i++){
+        for(let j=0;j<HBD;j++){
+            if(selectSquare(i, j)>0){
+                deselectAll();
+                return false;
+            }
+        }
+    }
+    deselectAll();
+    return true;
 }
 function animateMove(a, b, x, y){
     piece = pc[a][b];
@@ -232,15 +267,15 @@ function animateMove(a, b, x, y){
     clone.addEventListener("transitionend", () => {
         clone.remove();
         const effect = document.createElement("img");
-        if(bd[x][y]==CARROT||bd[x][y]==GCARR)effect.src="sprites/circle.png";
-        else if(mergeResult(bd[a][b],bd[x][y])==CARROT||mergeResult(bd[a][b],bd[x][y])==GCARR)effect.src="sprites/cmerge.png";
+        if(isCarrot(bd[x][y]))effect.src="sprites/circle.png";
+        else if(isCarrot(mergeResult(bd[a][b],bd[x][y])))effect.src="sprites/cmerge.png";
         else effect.src="sprites/merge.png";
         effect.style.setProperty("--rot", "0");
         effect.className = "click-effect";
         sq[x][y].appendChild(effect);
         effect.addEventListener("animationend", ()=>{effect.remove();});
         const e2 = document.createElement("img");
-        e2.src = "sprites/dots.png";
+        e2.src = moves>0&&moves%MVSC==0 ? "sprites/cdots.png" : "sprites/dots.png";
         e2.style.setProperty("--rot", `${Math.random()*360}deg`);
         e2.className = "click-effect";
         sq[a][b].appendChild(e2);
