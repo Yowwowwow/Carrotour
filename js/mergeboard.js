@@ -1,6 +1,6 @@
 const WBD = 5; //board width
 const HBD = 5; //board height
-const MVSC = 32; //how many moves it takes to spawn a silver carrot
+const MVSC = 16; //how many moves it takes to spawn a silver carrot
 const board = document.getElementById("board");
 const record = document.getElementById("record");
 const guessesText = document.getElementById("guessesText");
@@ -152,14 +152,21 @@ function squareClicked(x, y, save=true){
 }
 function rngAnimal(x=0, y=0){
     if(moves>0&&moves%MVSC==0)return SCARR;
+    let p3 = 0.25;
+    if(moves<32)p3 = moves/320;
+    else if(moves<64)p3 = 0.1 + (moves-32)/480;
+    else if(moves<128)p3 = 0.166666666667 + (moves-64)/768;
     let tmp = Math.random();
-    if((x!=2||y!=2) && tmp<Math.min(1, moves/128)*0.125){
+    if((x!=2||y!=2) && tmp<p3){
         let l = [DOG, CAMEL, ZEBRA];
         if(x!=2&&y!=2)l.push(GECKO);
         return l[Math.floor(Math.random()*l.length)];
     }
+    let p2 = 0.5;
+    if(moves<64)p2 = 0.333333333333;
+    else if(moves<128)p2 = 0.333333333333 + (moves-64)/384;
     tmp = Math.random();
-    if(tmp<0.333333333333){
+    if(tmp<p2){
         return [FROG, HORSE, ELEPHANT][Math.floor(Math.random()*3)];
     }
     return Math.random()<0.5 ? RABBIT : CAT;
