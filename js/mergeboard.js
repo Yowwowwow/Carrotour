@@ -320,10 +320,10 @@ function UpdateUI(){
         `スコア：${points}&nbsp;&nbsp;&nbsp;手数：${moves}`
     ];
     let winningTexts = [
-        `YOU WIN!`,// (Score reached ${WINSCORE})`,
-        `勝利！`,//（分數達到${WINSCORE}）`,
-        `胜利！`,//（分数达到${WINSCORE}）`,
-        `YOU WIN!`,//（スコア${WINSCORE}到達）`
+        `YOU WIN! ⭐⭐⭐`,// (Score reached ${WINSCORE})`,
+        `勝利！⭐⭐⭐`,//（分數達到${WINSCORE}）`,
+        `胜利！⭐⭐⭐`,//（分数达到${WINSCORE}）`,
+        `YOU WIN! ⭐⭐⭐`,//（スコア${WINSCORE}到達）`
     ];
     let gameoverTexts = [
         `GAME OVER`,
