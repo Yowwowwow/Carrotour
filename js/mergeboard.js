@@ -1,9 +1,11 @@
 const WBD = 5; //board width
 const HBD = 5; //board height
 const MVSC = 16; //how many moves it takes to spawn a silver carrot
+const WINSCORE = 8;
 const board = document.getElementById("board");
 const record = document.getElementById("record");
 const guessesText = document.getElementById("guessesText");
+const scoreText = document.getElementById("scoreText");
 const MAXGUESSES = 10;
 const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","sprites/dog.png","sprites/horse.png","sprites/camel.png","sprites/elephant.png","sprites/giraffe.png","sprites/zebra.png"]
 const BLANK = "sprites/blank.png";
@@ -22,6 +24,8 @@ const ELEPHANT = "sprites/elephant.png";
 const GIRAFFE = "sprites/giraffe.png";
 const ZEBRA = "sprites/zebra.png";
 const GECKO = "sprites/gecko.png";
+const ANIMALS = [RABBIT,CAT,FROG,HORSE,ELEPHANT,DOG,CAMEL,ZEBRA,GECKO];
+const FOOD = [CARROT,SCARR,GCARR];
 const CHARR = [ROCK,RABBIT,FROG,CAT,DOG,HORSE,CAMEL,ELEPHANT,GIRAFFE,ZEBRA,MONSTER]
 const FRAME = "sprites/selected.png";
 const RCIRCLE = "sprites/redcircle.png";
@@ -29,6 +33,8 @@ const EMJ = {"sprites/carrot.png":"🥕","sprites/monster.png":"👾","sprites/r
 const EN_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const isInfinite = "Infinite" === window.location.href.split('?')[1];
 const honestToggle = document.getElementById("honestToggle");
+let winning = false;
+let gameover = false;
 let canselect = true;
 let selected = null;
 let sq = [[],[],[],[],[]];
@@ -86,18 +92,28 @@ function updateBoard(){
 }
 function circleSquares(x, y, a, b){
     let c = 0;
+    let d = {};
+    for(const i of ANIMALS)d[i]=0;
+    for(const i of FOOD)d[i]=0;
     for(let i=0;i<2;i++){
         if(x+a<WBD){
-            if(y+b<HBD&&bd[x+a][y+b]!=MONSTER){hl[x+a][y+b].src = RCIRCLE; c++;}
-            if(b!=0&&y-b>=0&&bd[x+a][y-b]!=MONSTER){hl[x+a][y-b].src = RCIRCLE; c++;}
+            if(y+b<HBD&&bd[x+a][y+b]!=MONSTER){hl[x+a][y+b].src=RCIRCLE; d[bd[x+a][y+b]]++; c++;}
+            if(b!=0&&y-b>=0&&bd[x+a][y-b]!=MONSTER){hl[x+a][y-b].src=RCIRCLE; d[bd[x+a][y-b]]++; c++;}
         }
         if(x-a>=0){
-            if(y+b<HBD&&bd[x-a][y+b]!=MONSTER){hl[x-a][y+b].src = RCIRCLE; c++;}
-            if(b!=0&&y-b>=0&&bd[x-a][y-b]!=MONSTER){hl[x-a][y-b].src = RCIRCLE; c++;}
+            if(y+b<HBD&&bd[x-a][y+b]!=MONSTER){hl[x-a][y+b].src=RCIRCLE; d[bd[x-a][y+b]]++; c++;}
+            if(b!=0&&y-b>=0&&bd[x-a][y-b]!=MONSTER){hl[x-a][y-b].src=RCIRCLE; d[bd[x-a][y-b]]++; c++;}
         }
         if(a==b)break;
         let tmp=a; a=b; b=tmp;
     }
+    let first = true;
+    let s = "";
+    for(const i of ANIMALS)if(d[i]>0){
+        if(first)first=false; else s+="<br>";
+        s += `${Pic(bd[x][y])}+${Pic(i)}=${Pic(mergeResult(bd[x][y],i))}`;
+    }
+    guessesText.innerHTML = s;
     return c;
 }
 function selectSquare(x, y){
@@ -120,6 +136,7 @@ function selectSquare(x, y){
 function deselectAll(){
     selected = null;
     for(let i=0;i<WBD;i++)for(let j=0;j<HBD;j++)hl[i][j].src = BLANK;
+    guessesText.innerHTML="";
 }
 function outsideClicked(){
     console.log("Clicked outside");
@@ -238,7 +255,9 @@ function completeMove(a, b, x, y){
     updateBoard();
     canselect = true;
     console.log(`moves: ${moves}   score: ${points}`);
-    if(checkGameOver())alert("game over or something bruhhh");
+    if(points>=WINSCORE)winning = true;
+    if(checkGameOver())gameover = true;
+    UpdateUI();
 }
 function checkGameOver(){
     for(let i=0;i<WBD;i++){
@@ -289,4 +308,31 @@ function animateMove(a, b, x, y){
         e2.addEventListener("animationend", ()=>{e2.remove();});
         completeMove(a, b, x, y);
     }, { once: true });
+}
+function Pic(s){
+    return `<img src="${s}" style="height: 1.5rem;">`;
+}
+function UpdateUI(){
+    let scoreTexts = [
+        `Score: ${points}&nbsp;&nbsp;&nbsp;Moves: ${moves}`,
+        `分數：${points}&nbsp;&nbsp;&nbsp;步數：${moves}`,
+        `分数：${points}&nbsp;&nbsp;&nbsp;步数：${moves}`,
+        `スコア：${points}&nbsp;&nbsp;&nbsp;手数：${moves}`
+    ];
+    let winningTexts = [
+        `YOU WIN!`,// (Score reached ${WINSCORE})`,
+        `勝利！`,//（分數達到${WINSCORE}）`,
+        `胜利！`,//（分数达到${WINSCORE}）`,
+        `YOU WIN!`,//（スコア${WINSCORE}到達）`
+    ];
+    let gameoverTexts = [
+        `GAME OVER`,
+        `GAME OVER`,
+        `GAME OVER`,
+        `GAME OVER`
+    ]
+    let st = scoreTexts[language];
+    if(winning)st += `<br>${winningTexts[language]}`;
+    if(gameover)st += `<br>${gameoverTexts[language]}`;
+    scoreText.innerHTML = st;
 }

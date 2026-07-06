@@ -257,6 +257,7 @@
                                     role="button"
                                     data-bs-toggle="modal"
                                     data-bs-target="#settingsModal"></i>
+                                <p id="scoreText" style="margin: 0;">Score: 0&nbsp;&nbsp;&nbsp;Moves: 0</p>
                                 <textarea id="winText" rows="4" style="resize: none; width: 100%; display: none;" disabled></textarea>
                                 <button id="copyButton" type="button" style="width: 33%; display: none;" onclick="CopyResult()">Copy</button>
                             </div>
@@ -270,7 +271,7 @@
                             <!-- Right content -->
                             <div class="col-xl-3 col-12 order-xl-3 order-3">
                             <div id="record" class="p-3">
-                                <p id="guessesText">Guesses: 0/10</p>
+                                <p id="guessesText"></p>
                             </div>
                             </div>
 
@@ -371,16 +372,19 @@
           // 导航栏
           topLink.innerHTML = `<i class="iconfont icon-cc-arrow-circle-up" style="vertical-align: middle;"></i> ${navbarTexts[newLang].home}`
           langLink.innerHTML = `<i class="iconfont icon-language" style="vertical-align: middle"></i> ${navbarTexts[newLang].language}`
-          dateText.innerHTML = dateTexts[newLang];
-          updateGuesses();
-          winText.innerHTML = winTexts[newLang];
-          copyButton.innerHTML = copyTexts[newLang];
-          helpTitle.innerHTML = helpTitles[newLang];
-          helpContent.innerHTML = helpContents[newLang];
-          getCT.innerHTML = getCTTexts[newLang];
+          
+          UpdateUI();
+          
+          //dateText.innerHTML = dateTexts[newLang];
+          //updateGuesses();
+          //winText.innerHTML = winTexts[newLang];
+          //copyButton.innerHTML = copyTexts[newLang];
+          //helpTitle.innerHTML = helpTitles[newLang];
+          //helpContent.innerHTML = helpContents[newLang];
+          //getCT.innerHTML = getCTTexts[newLang];
 
-          UpdateSettings();
-          UpdateStats();
+          //UpdateSettings();
+          //UpdateStats();
         }
       }
       function ApplySavedLanguage(){
