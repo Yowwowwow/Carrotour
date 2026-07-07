@@ -2,6 +2,7 @@ const WBD = 5; //board width
 const HBD = 5; //board height
 const MVSC = 16; //how many moves it takes to spawn a silver carrot
 const WINSCORE = 8;
+const SAVEKEY = "ctmcurr";
 const board = document.getElementById("board");
 const record = document.getElementById("record");
 const guessesText = document.getElementById("guessesText");
@@ -26,6 +27,7 @@ const ZEBRA = "sprites/zebra.png";
 const GECKO = "sprites/gecko.png";
 const ANIMALS = [RABBIT,CAT,FROG,HORSE,ELEPHANT,DOG,CAMEL,ZEBRA,GECKO];
 const FOOD = [CARROT,SCARR,GCARR];
+const POSSIBLEOBJ = [RABBIT,CAT,FROG,HORSE,ELEPHANT,DOG,CAMEL,ZEBRA,GECKO,MONSTER,CARROT,SCARR,GCARR];
 const CHARR = [ROCK,RABBIT,FROG,CAT,DOG,HORSE,CAMEL,ELEPHANT,GIRAFFE,ZEBRA,MONSTER]
 const FRAME = "sprites/selected.png";
 const RCIRCLE = "sprites/redcircle.png";
@@ -33,6 +35,21 @@ const EMJ = {"sprites/carrot.png":"🥕","sprites/monster.png":"👾","sprites/r
 const EN_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const isInfinite = "Infinite" === window.location.href.split('?')[1];
 const honestToggle = document.getElementById("honestToggle");
+const ABBR = {
+    [RABBIT]:"R", "R":RABBIT,
+    [CAT]:"C", "C":CAT,
+    [FROG]:"F", "F":FROG,
+    [HORSE]:"H", "H":HORSE,
+    [ELEPHANT]:"E", "E":ELEPHANT,
+    [DOG]:"D", "D":DOG,
+    [CAMEL]:"L", "L":CAMEL,
+    [ZEBRA]:"Z", "Z":ZEBRA,
+    [GECKO]:"G", "G":GECKO,
+    [MONSTER]:"M", "M":MONSTER,
+    [CARROT]:"A", "A":CARROT,
+    [SCARR]:"S", "S":SCARR,
+    [GCARR]:"O", "O":GCARR
+};
 let winning = false;
 let gameover = false;
 let canselect = true;
@@ -41,9 +58,33 @@ let sq = [[],[],[],[],[]];
 let pc = [[],[],[],[],[]];
 let hl = [[],[],[],[],[]];
 let bd = [[],[],[],[],[]];
+let tbd = [[],[],[],[],[]]; //temp board
+let tpts = 0; //temp points
+let tmvs = 0; //temp moves
 let clicked = [[],[],[],[],[]];
 let moves = 0;
 let points = 0;
+let gotsave = false;
+//validate savefile
+try{
+    if(localStorage.getItem(SAVEKEY)!=null){
+        const sf = localStorage.getItem(SAVEKEY).split(',');
+        if(sf.length!==3)throw new Error("sf.length not 3");
+        tpts = parseInt(sf[0]);
+        if(!Number.isInteger(tpts))throw new Error("points is NaN");
+        tmvs = parseInt(sf[1]);
+        if(!Number.isInteger(tmvs))throw new Error("moves is NaN");
+        for(let j=0;j<HBD;j++)for(let i=0;i<WBD;i++){
+            tbd[i][j] = ABBR[sf[2][j*WBD+i]];
+            if(!POSSIBLEOBJ.includes(tbd[i][j]))throw new Error("board record wrong");
+        }
+        gotsave = true;
+        points = tpts; moves = tmvs;
+        console.log("parsed savefile");
+    }
+    else console.log("can't find savefile");
+}
+catch(e){console.log(`when reading save: ${e}`);}
 for(let y=0;y<HBD;y++){
     for(let x=0;x<WBD;x++){
         const square = document.createElement("div");
@@ -78,10 +119,19 @@ for(let y=0;y<HBD;y++){
         hl[x][HBD-1-y] = highlight;
         clicked[x][HBD-1-y] = false;
 
-        bd[x][HBD-1-y] = rngAnimal();
+        if(!gotsave)bd[x][HBD-1-y] = rngAnimal();
+        else bd[x][HBD-1-y] = tbd[x][HBD-1-y];
     }
 }
 updateBoard();
+if(gotsave){
+    if(checkWin())winning = true;
+    if(checkGameOver())gameover = true;
+    UpdateUI();
+}
+else{
+    saveGame();
+}
 document.addEventListener("click",
     (e)=>{
         for(let i=0;i<WBD;i++)for(let j=0;j<HBD;j++)if(sq[i][j].contains(e.target))return;
@@ -89,6 +139,11 @@ document.addEventListener("click",
     });
 function updateBoard(){
     for(let i=0;i<WBD;i++)for(let j=0;j<HBD;j++)pc[i][j].src = bd[i][j];
+}
+function saveGame(){
+    let s = `${points},${moves},`;
+    for(let j=0;j<HBD;j++)for(let i=0;i<WBD;i++)s+=ABBR[bd[i][j]];
+    localStorage.setItem(SAVEKEY, s);
 }
 function circleSquares(x, y, a, b){
     let c = 0;
@@ -255,10 +310,12 @@ function completeMove(a, b, x, y){
     updateBoard();
     canselect = true;
     console.log(`moves: ${moves}   score: ${points}`);
-    if(points>=WINSCORE)winning = true;
+    if(checkWin())winning = true;
     if(checkGameOver())gameover = true;
     UpdateUI();
+    saveGame();
 }
+function checkWin(){return points>=WINSCORE;}
 function checkGameOver(){
     for(let i=0;i<WBD;i++){
         for(let j=0;j<HBD;j++){
