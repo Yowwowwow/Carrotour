@@ -99,12 +99,30 @@
                 opacity: 0;
             }
         }
+        #victory-effect {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: min(100vw, 100vh);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            z-index: 99999;
+            pointer-events: none;
+        }
+        #victory-effect.show {animation: victoryPopup 1.25s linear forwards;}
+        @keyframes victoryPopup {
+            0%   { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            17.5%  { transform: translate(-50%, -50%) scale(0.95); opacity: 0.875; }
+            20%  { transform: translate(-50%, -50%) scale(0.9); opacity: 1; }
+            80%  { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
 </style>
 </head>
 <body style="background-color: rgb(235, 233, 230);">
     <div class="h2 fw-bold" id="loading">Loading...</div>
     <div id="app" class="appLoading">
-        <!-- 头部 -->
+        <img src="sprites/ctmvictory.png" id="victory-effect">
         <section>
             <div class="container">
                 <nav class="navbar navbar-expand-md fixed-top bg-white">
@@ -234,6 +252,24 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="restartModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 id="restartTitle" class="modal-title">Restart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div id="restartContent" class="modal-body">
+                    <div id="restartAsk"></div>
+                    <button id="restartYes" type="button" style="width: 25%; margin-top: 0.25em; margin-right: 6.25%;" onclick="restartYes()" data-bs-dismiss="modal">Yes</button>
+                    <button id="restartNo" type="button" style="width: 25%;" data-bs-dismiss="modal">No</button>
+                </div>
+
+                </div>
+            </div>
+        </div>
         <section class="d-flex justify-content-center">
             <div class="container">
                 <div class="row justify-content-center">
@@ -253,10 +289,14 @@
                                     role="button"
                                     data-bs-toggle="modal"
                                     data-bs-target="#statsModal"></i>
-                                <i id="settingsButton" class="bi bi-gear fs-5"
+                                <!-- <i id="settingsButton" class="bi bi-gear fs-5"
                                     role="button"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#settingsModal"></i>
+                                    data-bs-target="#settingsModal"></i> -->
+                                <i id="restartButton" class="bi bi-arrow-counterclockwise fs-5"
+                                    role="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#restartModal"></i>
                                 <p id="scoreText" style="margin: 0;">Score: 0&nbsp;&nbsp;&nbsp;Moves: 0</p>
                                 <textarea id="winText" rows="4" style="resize: none; width: 100%; display: none;" disabled></textarea>
                                 <button id="copyButton" type="button" style="width: 33%; display: none;" onclick="CopyResult()">Copy</button>

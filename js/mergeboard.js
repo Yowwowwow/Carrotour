@@ -1,12 +1,21 @@
 const WBD = 5; //board width
 const HBD = 5; //board height
 const MVSC = 16; //how many moves it takes to spawn a silver carrot
-const WINSCORE = 8;
+const WINSCORE = 1;
 const SAVEKEY = "ctmcurr";
+const BESTKEY = "ctmbest";
+const WINSKEY = "ctmwins";
+const FASTKEY = "ctmfast";
 const board = document.getElementById("board");
 const record = document.getElementById("record");
 const guessesText = document.getElementById("guessesText");
 const scoreText = document.getElementById("scoreText");
+const victoryEffect = document.getElementById("victory-effect");
+const restartModal = document.getElementById("restartModal");
+const restartTitle = document.getElementById("restartTitle");
+const restartAsk = document.getElementById("restartAsk");
+const restartYesBtn = document.getElementById("restartYes");
+const restartNoBtn = document.getElementById("restartNo");
 const MAXGUESSES = 10;
 const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","sprites/dog.png","sprites/horse.png","sprites/camel.png","sprites/elephant.png","sprites/giraffe.png","sprites/zebra.png"]
 const BLANK = "sprites/blank.png";
@@ -140,10 +149,22 @@ document.addEventListener("click",
 function updateBoard(){
     for(let i=0;i<WBD;i++)for(let j=0;j<HBD;j++)pc[i][j].src = bd[i][j];
 }
-function saveGame(){
+function saveGame(pluswin=false){
     let s = `${points},${moves},`;
     for(let j=0;j<HBD;j++)for(let i=0;i<WBD;i++)s+=ABBR[bd[i][j]];
     localStorage.setItem(SAVEKEY, s);
+    let b = localStorage.getItem(BESTKEY)?.split(',') ?? ["-99999999","99999999"];
+    if(b.length!=2)b = ["-99999999","99999999"];
+    b[0] = parseInt(b[0]); b[1] = parseInt(b[1]);
+    if(!Number.isInteger(b[0]) || !Number.isInteger(b[1]) || points>b[0] || (points==b[0]&&moves<b[1])){
+        localStorage.setItem(BESTKEY, `${points},${moves}`);
+    }
+    if(pluswin){
+        let w = parseInt(localStorage.getItem(WINSKEY));
+        localStorage.setItem(WINSKEY, Number.isInteger(w) ? (w+1) : 1);
+        let f = parseInt(localStorage.getItem(FASTKEY));
+        if(!Number.isInteger(f) || moves<f)localStorage.setItem(FASTKEY, moves);
+    }
 }
 function circleSquares(x, y, a, b){
     let c = 0;
@@ -310,10 +331,17 @@ function completeMove(a, b, x, y){
     updateBoard();
     canselect = true;
     console.log(`moves: ${moves}   score: ${points}`);
-    if(checkWin())winning = true;
+    let pluswin = false;
+    if(winning==false && checkWin()){
+        winning = true;
+        pluswin = true;
+        victoryEffect.classList.remove("show");
+        void victoryEffect.offsetWidth;
+        victoryEffect.classList.add("show");
+    }
     if(checkGameOver())gameover = true;
     UpdateUI();
-    saveGame();
+    saveGame(pluswin);
 }
 function checkWin(){return points>=WINSCORE;}
 function checkGameOver(){
@@ -392,4 +420,23 @@ function UpdateUI(){
     if(winning)st += `<br>${winningTexts[language]}`;
     if(gameover)st += `<br>${gameoverTexts[language]}`;
     scoreText.innerHTML = st;
+
+    let restartTexts = ["Restart", "重新開始", "重新开始", "リスタート"];
+    let restartAsks = ["Start a new game?", "是否重開一局新遊戲？", "是否重开一局新游戏？", "新しいゲームを始める？"];
+    let yesTexts = ["Yes", "是", "是", "はい"];
+    let noTexts = ["No", "否", "否", "いいえ"];
+    restartTitle.innerHTML = restartTexts[language];
+    restartAsk.innerHTML = restartAsks[language];
+    restartYesBtn.innerHTML = yesTexts[language];
+    restartNoBtn.innerHTML = noTexts[language];
+}
+function restartYes(){
+    points = 0;
+    moves = 0;
+    winning = false;
+    gameover = false;
+    for(i=0;i<WBD;i++)for(j=0;j<HBD;j++)bd[i][j]=rngAnimal();
+    updateBoard();
+    UpdateUI();
+    saveGame();
 }
