@@ -2,10 +2,11 @@ const WBD = 5; //board width
 const HBD = 5; //board height
 const MVSC = 16; //how many moves it takes to spawn a silver carrot
 const WINSCORE = 1;
-const SAVEKEY = "ctmcurr";
-const BESTKEY = "ctmbest";
-const WINSKEY = "ctmwins";
-const FASTKEY = "ctmfast";
+const SAVEKEY = "ctmcurr"; //the current game
+const BESTKEY = "ctmbest"; //highest score and how many moves it took
+const WINSKEY = "ctmwins"; //total games won
+const FASTKEY = "ctmfast"; //fastest win
+const TPTSKEY = "ctmtpts"; //total points ever earned, excluding the current game
 const board = document.getElementById("board");
 const record = document.getElementById("record");
 const guessesText = document.getElementById("guessesText");
@@ -16,6 +17,8 @@ const restartTitle = document.getElementById("restartTitle");
 const restartAsk = document.getElementById("restartAsk");
 const restartYesBtn = document.getElementById("restartYes");
 const restartNoBtn = document.getElementById("restartNo");
+const statsTitle = document.getElementById("statsTitle");
+const statsContent = document.getElementById("statsContent");
 const MAXGUESSES = 10;
 const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","sprites/dog.png","sprites/horse.png","sprites/camel.png","sprites/elephant.png","sprites/giraffe.png","sprites/zebra.png"]
 const BLANK = "sprites/blank.png";
@@ -136,11 +139,11 @@ updateBoard();
 if(gotsave){
     if(checkWin())winning = true;
     if(checkGameOver())gameover = true;
-    UpdateUI();
 }
 else{
     saveGame();
 }
+UpdateUI();
 document.addEventListener("click",
     (e)=>{
         for(let i=0;i<WBD;i++)for(let j=0;j<HBD;j++)if(sq[i][j].contains(e.target))return;
@@ -149,14 +152,20 @@ document.addEventListener("click",
 function updateBoard(){
     for(let i=0;i<WBD;i++)for(let j=0;j<HBD;j++)pc[i][j].src = bd[i][j];
 }
+function isHighScoring(){
+    let b = localStorage.getItem(BESTKEY)?.split(',') ?? ["-99999999","99999999"];
+    if(b.length!=2)b = ["-99999999","99999999"];
+    b[0] = parseInt(b[0]); b[1] = parseInt(b[1]);
+    if(!Number.isInteger(b[0]) || !Number.isInteger(b[1]) || points>b[0] || (points==b[0]&&moves<=b[1])){
+        return true;
+    }
+    return false;
+}
 function saveGame(pluswin=false){
     let s = `${points},${moves},`;
     for(let j=0;j<HBD;j++)for(let i=0;i<WBD;i++)s+=ABBR[bd[i][j]];
     localStorage.setItem(SAVEKEY, s);
-    let b = localStorage.getItem(BESTKEY)?.split(',') ?? ["-99999999","99999999"];
-    if(b.length!=2)b = ["-99999999","99999999"];
-    b[0] = parseInt(b[0]); b[1] = parseInt(b[1]);
-    if(!Number.isInteger(b[0]) || !Number.isInteger(b[1]) || points>b[0] || (points==b[0]&&moves<b[1])){
+    if(isHighScoring()){
         localStorage.setItem(BESTKEY, `${points},${moves}`);
     }
     if(pluswin){
@@ -340,7 +349,7 @@ function completeMove(a, b, x, y){
         victoryEffect.classList.add("show");
     }
     if(checkGameOver())gameover = true;
-    UpdateUI();
+    UpdateUI(true);
     saveGame(pluswin);
 }
 function checkWin(){return points>=WINSCORE;}
@@ -397,46 +406,100 @@ function animateMove(a, b, x, y){
 function Pic(s){
     return `<img src="${s}" style="height: 1.5rem;">`;
 }
-function UpdateUI(){
-    let scoreTexts = [
+function UpdateUI(scoreOnly=false){
+    const scoreTexts = [
         `Score: ${points}&nbsp;&nbsp;&nbsp;Moves: ${moves}`,
         `分數：${points}&nbsp;&nbsp;&nbsp;步數：${moves}`,
         `分数：${points}&nbsp;&nbsp;&nbsp;步数：${moves}`,
         `スコア：${points}&nbsp;&nbsp;&nbsp;手数：${moves}`
     ];
-    let winningTexts = [
+    const highScoreTexts = [
+        "&nbsp;&nbsp;&nbsp;High score!",
+        "&nbsp;&nbsp;&nbsp;新紀錄！",
+        "&nbsp;&nbsp;&nbsp;新纪录！",
+        "&nbsp;&nbsp;&nbsp;ハイスコア！"
+    ];
+    const winningTexts = [
         `YOU WIN! ⭐⭐⭐`,// (Score reached ${WINSCORE})`,
         `勝利！⭐⭐⭐`,//（分數達到${WINSCORE}）`,
         `胜利！⭐⭐⭐`,//（分数达到${WINSCORE}）`,
         `YOU WIN! ⭐⭐⭐`,//（スコア${WINSCORE}到達）`
     ];
-    let gameoverTexts = [
+    const gameoverTexts = [
         `GAME OVER`,
         `GAME OVER`,
         `GAME OVER`,
         `GAME OVER`
-    ]
+    ];
     let st = scoreTexts[language];
+    if(isHighScoring()) st += highScoreTexts[language];
     if(winning)st += `<br>${winningTexts[language]}`;
     if(gameover)st += `<br>${gameoverTexts[language]}`;
     scoreText.innerHTML = st;
 
-    let restartTexts = ["Restart", "重新開始", "重新开始", "リスタート"];
-    let restartAsks = ["Start a new game?", "是否重開一局新遊戲？", "是否重开一局新游戏？", "新しいゲームを始める？"];
-    let yesTexts = ["Yes", "是", "是", "はい"];
-    let noTexts = ["No", "否", "否", "いいえ"];
+    if(scoreOnly)return;
+
+    const restartTexts = ["Restart", "重新開始", "重新开始", "リスタート"];
+    const restartAsks = ["Start a new game?", "是否重開一局新遊戲？", "是否重开一局新游戏？", "新しいゲームを始める？"];
+    const yesTexts = ["Yes", "是", "是", "はい"];
+    const noTexts = ["No", "否", "否", "いいえ"];
     restartTitle.innerHTML = restartTexts[language];
     restartAsk.innerHTML = restartAsks[language];
     restartYesBtn.innerHTML = yesTexts[language];
     restartNoBtn.innerHTML = noTexts[language];
+
+    const statsTitles = ["Statistics", "遊玩紀錄", "游玩纪录", "統計情報"];
+    let hs = localStorage.getItem(BESTKEY)?.split(',') ?? ["-","-"];
+    if(hs.length!=2)hs = ["-","-"];
+    for(let i=0;i<2;i++){
+        hs[i] = parseInt(hs[i]);
+        if(!Number.isInteger(hs[i]))hs[i]="-";
+    }
+    let fw = parseInt(localStorage.getItem(FASTKEY));
+    if(!Number.isInteger(fw))fw = "-";
+    let tw = parseInt(localStorage.getItem(WINSKEY));
+    if(!Number.isInteger(tw))tw = 0;
+    let tso = parseInt(localStorage.getItem(TPTSKEY));
+    if(!Number.isInteger(tso))tso = points; else tso += points;
+    const statsTexts = [
+        `
+            High Score: ${hs[0]} (${hs[1]} moves)<br>
+            Fastest Win: ${fw} moves<br>
+            Total Wins: ${tw}<br>
+            Total Score: ${tso}
+        `,
+        `
+            最高分：${hs[0]}（${hs[1]}步）<br>
+            最快勝利：${fw}步<br>
+            總勝利數：${tw}<br>
+            總得分：${tso}
+        `,
+        `
+            最高分：${hs[0]}（${hs[1]}步）<br>
+            最快胜利：${fw}步<br>
+            总胜利数：${tw}<br>
+            总得分：${tso}
+        `,
+        `
+            ハイスコア：${hs[0]}（${hs[1]}手）<br>
+            最速勝利：${fw}手<br>
+            総勝利数：${tw}<br>
+            合計スコア：${tso}
+        `
+    ];
+    statsTitle.innerHTML = statsTitles[language];
+    statsContent.innerHTML = statsTexts[language];
 }
 function restartYes(){
+    let totalpoints = parseInt(localStorage.getItem(TPTSKEY));
+    if(!Number.isInteger(totalpoints))totalpoints = 0;
+    localStorage.setItem(TPTSKEY, totalpoints + points);
     points = 0;
     moves = 0;
     winning = false;
     gameover = false;
     for(i=0;i<WBD;i++)for(j=0;j<HBD;j++)bd[i][j]=rngAnimal();
     updateBoard();
-    UpdateUI();
+    UpdateUI(true);
     saveGame();
 }

@@ -40,6 +40,7 @@
     <link rel="preload" href="sprites/circle.png" as="image">
     <link rel="preload" href="sprites/selected.png" as="image">
     <link rel="preload" href="sprites/redcircle.png" as="image">
+    <link rel="preload" href="sprites/ctmvictory.png" as="image">
     <style>
         #board {
             display: grid;
@@ -245,8 +246,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <div id="statsContent"></div>
-                    <div style="height: 32rem;"><canvas id="BDChart" width="250" height="400"></canvas></div>
+                    <div id="statsContent">stats</div>
                 </div>
 
                 </div>
@@ -286,7 +286,7 @@
                                     data-bs-toggle="modal"
                                     data-bs-target="#helpModal"></i>
                                 <i id="statsButton" class="bi bi-bar-chart-line fs-5"
-                                    role="button"
+                                    role="button" onclick="UpdateUI()"
                                     data-bs-toggle="modal"
                                     data-bs-target="#statsModal"></i>
                                 <!-- <i id="settingsButton" class="bi bi-gear fs-5"
