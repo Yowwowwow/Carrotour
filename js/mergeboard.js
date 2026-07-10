@@ -1,7 +1,7 @@
 const WBD = 5; //board width
 const HBD = 5; //board height
 const MVSC = 16; //how many moves it takes to spawn a silver carrot
-const WINSCORE = 128;
+const WINSCORE = 100;
 const SAVEKEY = "ctmcurr"; //the current game
 const BESTKEY = "ctmbest"; //highest score and how many moves it took
 const WINSKEY = "ctmwins"; //total games won
@@ -370,8 +370,8 @@ function checkGameOver(){
     return true;
 }
 function animateMove(a, b, x, y){
-    piece = pc[a][b];
-    target = sq[x][y];
+    const piece = pc[a][b];
+    const target = sq[x][y];
     const start = piece.getBoundingClientRect();
     const end = target.getBoundingClientRect();
     const clone = piece.cloneNode(true);
@@ -384,9 +384,11 @@ function animateMove(a, b, x, y){
     clone.style.transition = "all 0.2236s ease";
     clone.style.zIndex = "999";
     piece.src = BLANK;
-    requestAnimationFrame(() => {
-        clone.style.left = `${end.left}px`;
-        clone.style.top = `${end.top}px`;
+    requestAnimationFrame(()=>{
+        requestAnimationFrame(() => {
+            clone.style.left = `${end.left}px`;
+            clone.style.top = `${end.top}px`;
+        });
     });
     clone.addEventListener("transitionend", () => {
         clone.remove();
@@ -500,10 +502,10 @@ function UpdateUI(scoreOnly=false){
     const helpTitles = ["How to Play","遊戲規則","游戏规则","遊び方"];
     const helpContents = [
         `
-            Merge animals, eat carrots, get 128 points to win!<br>
+            Merge animals, eat carrots, get ${WINSCORE} points to win!<br>
             If you merge two identical animals except ${Pic(RABBIT)} and ${Pic(CAT)}, they turn into a ${Pic(CARROT)} if their move doesn't contain the number 3, or a ${Pic(GCARR)} if it does! Each ${Pic(CARROT)} grants 1 point when eaten, and each ${Pic(GCARR)} grants 4.<br>
             Other merges create an animal whose move is the sum of the two animals you use. However, if a number higher than 3 appears in that animal's move, it becomes a ${Pic(MONSTER)} instead! ${Pic(MONSTER)} can't move, and no one can move to it!<br>
-            Additionally, a bonus ${Pic(SCARR)} spawns for every 16 moves you make. It grants 2 points when eaten!<br>
+            Additionally, a bonus ${Pic(SCARR)} spawns for every ${MVSC} moves you make. It grants 2 points when eaten!<br>
             How the animals move:<br>
             ${MVPic("01")} Rabbit: (0,1)<br>
             ${MVPic("11")} Cat: (1,1)<br>
@@ -516,10 +518,10 @@ function UpdateUI(scoreOnly=false){
             ${MVPic("33")} Gecko: (3,3)
         `,
         `
-            結合動物，吃胡蘿蔔，得到128分以勝利！<br>
+            結合動物，吃胡蘿蔔，得到${WINSCORE}分以勝利！<br>
             若把${Pic(RABBIT)}和${Pic(CAT)}以外的兩隻相同動物結合，只要該動物的走法不含數字3就會合出${Pic(CARROT)}，否則會合出${Pic(GCARR)}！吃到${Pic(CARROT)}可以得1分，而${Pic(GCARR)}則是4分。<br>
             其他結合會合出走法為所使用的兩隻動物走法之和的動物，但若合出的走法含有大於3的數字，則會變成${Pic(MONSTER)}！${Pic(MONSTER)}不能移動，動物也不能移到${Pic(MONSTER)}上！<br>
-            此外，每走16步就會生成一根獎勵${Pic(SCARR)}。若吃到就會得2分！<br>
+            此外，每走${MVSC}步就會生成一根獎勵${Pic(SCARR)}。若吃到就會得2分！<br>
             動物的移動方式：<br>
             ${MVPic("01")} 兔：(0,1)<br>
             ${MVPic("11")} 貓：(1,1)<br>
@@ -532,10 +534,10 @@ function UpdateUI(scoreOnly=false){
             ${MVPic("33")} 守宮：(3,3)
         `,
         `
-            结合动物，吃胡萝卜，得到128分以胜利！<br>
+            结合动物，吃胡萝卜，得到${WINSCORE}分以胜利！<br>
             若把${Pic(RABBIT)}和${Pic(CAT)}以外的两只相同动物结合，只要该动物的走法不含数字3就会合出${Pic(CARROT)}，否则会合出${Pic(GCARR)}！吃到${Pic(CARROT)}可以得1分，而${Pic(GCARR)}则是4分。<br>
             其他结合会合出走法为所使用的两只动物走法之和的动物，但若合出的走法含有大于3的数字，则会变成${Pic(MONSTER)}！${Pic(MONSTER)}不能移动，动物也不能移到${Pic(MONSTER)}上！<br>
-            此外，每走16步就会生成一根奖励${Pic(SCARR)}。若吃到就会得2分！<br>
+            此外，每走${MVSC}步就会生成一根奖励${Pic(SCARR)}。若吃到就会得2分！<br>
             动物的移动方式：<br>
             ${MVPic("01")} 兔：(0,1)<br>
             ${MVPic("11")} 猫：(1,1)<br>
@@ -548,10 +550,10 @@ function UpdateUI(scoreOnly=false){
             ${MVPic("33")} 守宫：(3,3)
         `,
         `
-            動物を合体させて、ニンジンを食べて、128ポイント獲得でWIN！<br>
+            動物を合体させて、ニンジンを食べて、${WINSCORE}ポイント獲得でWIN！<br>
             ${Pic(RABBIT)}と${Pic(CAT)}以外の同じ動物同士を合体させると、その動物の動きに数字の3が含まれていなければ${Pic(CARROT)}、含まれていれば${Pic(GCARR)}になります！${Pic(CARROT)}を食べると1ポイント、${Pic(GCARR)}を食べると4ポイント獲得できます。<br>
             それ以外の合体では、2匹の動きを足し合わせた動きの動物になります。ただし、その動きに3より大きい数字が含まれる場合は、代わりに${Pic(MONSTER)}になります！${Pic(MONSTER)}は動けず、他の動物もそのマスへ移動できません！<br>
-            さらに、16手ごとにボーナスの${Pic(SCARR)}が出現します。食べると2ポイント獲得できます！<br>
+            さらに、${MVSC}手ごとにボーナスの${Pic(SCARR)}が出現します。食べると2ポイント獲得できます！<br>
             動物の動き方：<br>
             ${MVPic("01")} ウサギ：(0,1)<br>
             ${MVPic("11")} ネコ：(1,1)<br>
