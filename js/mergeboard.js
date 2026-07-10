@@ -1,7 +1,7 @@
 const WBD = 5; //board width
 const HBD = 5; //board height
 const MVSC = 16; //how many moves it takes to spawn a silver carrot
-const WINSCORE = 1;
+const WINSCORE = 128;
 const SAVEKEY = "ctmcurr"; //the current game
 const BESTKEY = "ctmbest"; //highest score and how many moves it took
 const WINSKEY = "ctmwins"; //total games won
@@ -19,6 +19,8 @@ const restartYesBtn = document.getElementById("restartYes");
 const restartNoBtn = document.getElementById("restartNo");
 const statsTitle = document.getElementById("statsTitle");
 const statsContent = document.getElementById("statsContent");
+const helpTitle = document.getElementById("helpTitle");
+const helpContent = document.getElementById("helpContent");
 const MAXGUESSES = 10;
 const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","sprites/dog.png","sprites/horse.png","sprites/camel.png","sprites/elephant.png","sprites/giraffe.png","sprites/zebra.png"]
 const BLANK = "sprites/blank.png";
@@ -254,10 +256,12 @@ function squareClicked(x, y, save=true){
 }
 function rngAnimal(x=0, y=0){
     if(moves>0&&moves%MVSC==0)return SCARR;
-    let p3 = 0.25;
+    let p3 = 0;
     if(moves<32)p3 = moves/320;
     else if(moves<64)p3 = 0.1 + (moves-32)/480;
     else if(moves<128)p3 = 0.166666666667 + (moves-64)/768;
+    else if(moves<256)p3 = 0.25 + (moves-128)/256;
+    else p3 = 0.9375 - 0.1875*2**(-(moves-256)/16);
     let tmp = Math.random();
     if((x!=2||y!=2) && tmp<p3){
         let l = [DOG, CAMEL, ZEBRA];
@@ -406,6 +410,9 @@ function animateMove(a, b, x, y){
 function Pic(s){
     return `<img src="${s}" style="height: 1.5rem;">`;
 }
+function MVPic(s){
+    return `<img src="sprites/${s}.png" style="height: 7.5rem; margin: 0.25rem;">`;
+}
 function UpdateUI(scoreOnly=false){
     const scoreTexts = [
         `Score: ${points}&nbsp;&nbsp;&nbsp;Moves: ${moves}`,
@@ -440,7 +447,7 @@ function UpdateUI(scoreOnly=false){
     if(scoreOnly)return;
 
     const restartTexts = ["Restart", "重新開始", "重新开始", "リスタート"];
-    const restartAsks = ["Start a new game?", "是否重開一局新遊戲？", "是否重开一局新游戏？", "新しいゲームを始める？"];
+    const restartAsks = ["Start a new game?", "是否重開一局新遊戲？", "是否重开一局新游戏？", "新しいゲームを始めますか？"];
     const yesTexts = ["Yes", "是", "是", "はい"];
     const noTexts = ["No", "否", "否", "いいえ"];
     restartTitle.innerHTML = restartTexts[language];
@@ -489,6 +496,76 @@ function UpdateUI(scoreOnly=false){
     ];
     statsTitle.innerHTML = statsTitles[language];
     statsContent.innerHTML = statsTexts[language];
+
+    const helpTitles = ["How to Play","遊戲規則","游戏规则","遊び方"];
+    const helpContents = [
+        `
+            Merge animals, eat carrots, get 128 points to win!<br>
+            If you merge two identical animals except ${Pic(RABBIT)} and ${Pic(CAT)}, they turn into a ${Pic(CARROT)} if their move doesn't contain the number 3, or a ${Pic(GCARR)} if it does! Each ${Pic(CARROT)} grants 1 point when eaten, and each ${Pic(GCARR)} grants 4.<br>
+            Other merges create an animal whose move is the sum of the two animals you use. However, if a number higher than 3 appears in that animal's move, it becomes a ${Pic(MONSTER)} instead! ${Pic(MONSTER)} can't move, and no one can move to it!<br>
+            Additionally, a bonus ${Pic(SCARR)} spawns for every 16 moves you make. It grants 2 points when eaten!<br>
+            How the animals move:<br>
+            ${MVPic("01")} Rabbit: (0,1)<br>
+            ${MVPic("11")} Cat: (1,1)<br>
+            ${MVPic("02")} Frog: (0,2)<br>
+            ${MVPic("12")} Horse: (1,2)<br>
+            ${MVPic("22")} Elephant: (2,2)<br>
+            ${MVPic("03")} Dog: (0,3)<br>
+            ${MVPic("13")} Camel: (1,3)<br>
+            ${MVPic("23")} Zebra: (2,3)<br>
+            ${MVPic("33")} Gecko: (3,3)
+        `,
+        `
+            結合動物，吃胡蘿蔔，得到128分以勝利！<br>
+            若把${Pic(RABBIT)}和${Pic(CAT)}以外的兩隻相同動物結合，只要該動物的走法不含數字3就會合出${Pic(CARROT)}，否則會合出${Pic(GCARR)}！吃到${Pic(CARROT)}可以得1分，而${Pic(GCARR)}則是4分。<br>
+            其他結合會合出走法為所使用的兩隻動物走法之和的動物，但若合出的走法含有大於3的數字，則會變成${Pic(MONSTER)}！${Pic(MONSTER)}不能移動，動物也不能移到${Pic(MONSTER)}上！<br>
+            此外，每走16步就會生成一根獎勵${Pic(SCARR)}。若吃到就會得2分！<br>
+            動物的移動方式：<br>
+            ${MVPic("01")} 兔：(0,1)<br>
+            ${MVPic("11")} 貓：(1,1)<br>
+            ${MVPic("02")} 蛙：(0,2)<br>
+            ${MVPic("12")} 馬：(1,2)<br>
+            ${MVPic("22")} 象：(2,2)<br>
+            ${MVPic("03")} 狗：(0,3)<br>
+            ${MVPic("13")} 駱駝：(1,3)<br>
+            ${MVPic("23")} 斑馬：(2,3)<br>
+            ${MVPic("33")} 守宮：(3,3)
+        `,
+        `
+            结合动物，吃胡萝卜，得到128分以胜利！<br>
+            若把${Pic(RABBIT)}和${Pic(CAT)}以外的两只相同动物结合，只要该动物的走法不含数字3就会合出${Pic(CARROT)}，否则会合出${Pic(GCARR)}！吃到${Pic(CARROT)}可以得1分，而${Pic(GCARR)}则是4分。<br>
+            其他结合会合出走法为所使用的两只动物走法之和的动物，但若合出的走法含有大于3的数字，则会变成${Pic(MONSTER)}！${Pic(MONSTER)}不能移动，动物也不能移到${Pic(MONSTER)}上！<br>
+            此外，每走16步就会生成一根奖励${Pic(SCARR)}。若吃到就会得2分！<br>
+            动物的移动方式：<br>
+            ${MVPic("01")} 兔：(0,1)<br>
+            ${MVPic("11")} 猫：(1,1)<br>
+            ${MVPic("02")} 蛙：(0,2)<br>
+            ${MVPic("12")} 马：(1,2)<br>
+            ${MVPic("22")} 象：(2,2)<br>
+            ${MVPic("03")} 狗：(0,3)<br>
+            ${MVPic("13")} 骆驼：(1,3)<br>
+            ${MVPic("23")} 斑马：(2,3)<br>
+            ${MVPic("33")} 守宫：(3,3)
+        `,
+        `
+            動物を合体させて、ニンジンを食べて、128ポイント獲得でWIN！<br>
+            ${Pic(RABBIT)}と${Pic(CAT)}以外の同じ動物同士を合体させると、その動物の動きに数字の3が含まれていなければ${Pic(CARROT)}、含まれていれば${Pic(GCARR)}になります！${Pic(CARROT)}を食べると1ポイント、${Pic(GCARR)}を食べると4ポイント獲得できます。<br>
+            それ以外の合体では、2匹の動きを足し合わせた動きの動物になります。ただし、その動きに3より大きい数字が含まれる場合は、代わりに${Pic(MONSTER)}になります！${Pic(MONSTER)}は動けず、他の動物もそのマスへ移動できません！<br>
+            さらに、16手ごとにボーナスの${Pic(SCARR)}が出現します。食べると2ポイント獲得できます！<br>
+            動物の動き方：<br>
+            ${MVPic("01")} ウサギ：(0,1)<br>
+            ${MVPic("11")} ネコ：(1,1)<br>
+            ${MVPic("02")} カエル：(0,2)<br>
+            ${MVPic("12")} ウマ：(1,2)<br>
+            ${MVPic("22")} ゾウ：(2,2)<br>
+            ${MVPic("03")} イヌ：(0,3)<br>
+            ${MVPic("13")} ラクダ：(1,3)<br>
+            ${MVPic("23")} シマウマ：(2,3)<br>
+            ${MVPic("33")} ヤモリ：(3,3)
+        `
+    ];
+    helpTitle.innerHTML = helpTitles[language];
+    helpContent.innerHTML = helpContents[language];
 }
 function restartYes(){
     let totalpoints = parseInt(localStorage.getItem(TPTSKEY));
