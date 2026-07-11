@@ -40,6 +40,10 @@
     <link rel="preload" href="sprites/circle.png" as="image">
     <link rel="preload" href="sprites/selected.png" as="image">
     <link rel="preload" href="sprites/redcircle.png" as="image">
+    <link rel="preload" href="sprites/ctm10.png" as="image">
+    <link rel="preload" href="sprites/ctm25.png" as="image">
+    <link rel="preload" href="sprites/ctm50.png" as="image">
+    <link rel="preload" href="sprites/ctm75.png" as="image">
     <link rel="preload" href="sprites/ctmvictory.png" as="image">
     <style>
         #board {
@@ -100,7 +104,7 @@
                 opacity: 0;
             }
         }
-        #victory-effect {
+        #victory-effect, #victory-background, #victory-background2{
             position: fixed;
             top: 50%;
             left: 50%;
@@ -110,6 +114,8 @@
             z-index: 99999;
             pointer-events: none;
         }
+        #victory-background {animation: victoryBurst 0.4s linear forwards;}
+        #victory-background2 {animation: victoryBurst 0.8s linear forwards;}
         #victory-effect.show {animation: victoryPopup 1.25s linear forwards;}
         @keyframes victoryPopup {
             0%   { transform: translate(-50%, -50%) scale(0); opacity: 0; }
@@ -118,11 +124,16 @@
             80%  { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
             100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
         }
+        @keyframes victoryBurst {
+            0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+        }
 </style>
 </head>
 <body style="background-color: rgb(235, 233, 230);">
     <div class="h2 fw-bold" id="loading">Loading...</div>
     <div id="app" class="appLoading">
+        <div id="VBGdiv"></div>
         <img src="sprites/ctmvictory.png" id="victory-effect">
         <section>
             <div class="container">

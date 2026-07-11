@@ -2,6 +2,8 @@ const WBD = 5; //board width
 const HBD = 5; //board height
 const MVSC = 16; //how many moves it takes to spawn a silver carrot
 const WINSCORE = 100;
+const MILESTONES = [10, 25, 50, 75, 100];
+const MSIMGS = ["sprites/ctm10.png", "sprites/ctm25.png", "sprites/ctm50.png", "sprites/ctm75.png", "sprites/ctmvictory.png"];
 const SAVEKEY = "ctmcurr"; //the current game
 const BESTKEY = "ctmbest"; //highest score and how many moves it took
 const WINSKEY = "ctmwins"; //total games won
@@ -21,6 +23,7 @@ const statsTitle = document.getElementById("statsTitle");
 const statsContent = document.getElementById("statsContent");
 const helpTitle = document.getElementById("helpTitle");
 const helpContent = document.getElementById("helpContent");
+const VBGdiv = document.getElementById("VBGdiv");
 const MAXGUESSES = 10;
 const animals = ["sprites/rabbit.png","sprites/frog.png","sprites/cat.png","sprites/dog.png","sprites/horse.png","sprites/camel.png","sprites/elephant.png","sprites/giraffe.png","sprites/zebra.png"]
 const BLANK = "sprites/blank.png";
@@ -64,6 +67,7 @@ const ABBR = {
     [SCARR]:"S", "S":SCARR,
     [GCARR]:"O", "O":GCARR
 };
+let msindex = 0; //milestone index
 let winning = false;
 let gameover = false;
 let canselect = true;
@@ -140,6 +144,7 @@ for(let y=0;y<HBD;y++){
 updateBoard();
 if(gotsave){
     if(checkWin())winning = true;
+    for(msindex=0;msindex<MILESTONES.length;msindex++)if(points<MILESTONES[msindex])break;
     if(checkGameOver())gameover = true;
 }
 else{
@@ -348,7 +353,12 @@ function completeMove(a, b, x, y){
     if(winning==false && checkWin()){
         winning = true;
         pluswin = true;
+        VBGdiv.innerHTML = `<img src="sprites/circle.png" id="victory-background"><img src="sprites/circle.png" id="victory-background2">`;
+    }
+    for(;msindex<MILESTONES.length;msindex++){
+        if(points<MILESTONES[msindex])break;
         victoryEffect.classList.remove("show");
+        victoryEffect.src = MSIMGS[msindex];
         void victoryEffect.offsetWidth;
         victoryEffect.classList.add("show");
     }
@@ -575,6 +585,7 @@ function restartYes(){
     localStorage.setItem(TPTSKEY, totalpoints + points);
     points = 0;
     moves = 0;
+    msindex = 0;
     winning = false;
     gameover = false;
     for(i=0;i<WBD;i++)for(j=0;j<HBD;j++)bd[i][j]=rngAnimal();
