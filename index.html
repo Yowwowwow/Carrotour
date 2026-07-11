@@ -96,6 +96,11 @@
                                         <img src="./sprites/ctgicon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
                                         </a>
                                 </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link" id="ctmLink" href="#" target="_blank">
+                                        <img src="./sprites/ctmicon.png" style="width: 24px; vertical-align: middle;" alt=""></i></a>
+                                        </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -290,6 +295,7 @@
           document.getElementById('twitterLink').href = links.twitter
           document.getElementById('navSteamLink').href = links.steam
           document.getElementById('ctgLink').href = links.carrotourguide
+          document.getElementById('ctmLink').href = links.carrotourmerge
           ApplySavedLanguage();
       })
       .catch(error => console.error('Error loading JSON:', error));
