@@ -243,7 +243,7 @@
                     </div>
                     <div class="col-lg-8">
                         <div class="m-lg-0 mt-5">
-                            <p id="ctgText" class="h5 lh-base"><a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Merge">Carrotour-Merge</a>, another spinoff from Carrotour, is a game about merging animals, eating carrots, and getting many points!</p>
+                            <p id="ctmText" class="h5 lh-base"><a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Merge">Carrotour-Merge</a>, another spinoff from Carrotour, is a game about merging animals, eating carrots, and getting many points!</p>
                         </div>
                     </div>
                 </div>
@@ -272,11 +272,17 @@
       let link = {}
       let language = 0
       let ctgTexts = [
-        '<a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>, a spinoff from Carrotour, is a daily puzzle game about finding hidden carrots on the board with the help of clues provided by animals and monsters!',
-        '<a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>是Carrotour 邏蔔巡蘿的衍生作品，是透過動物和怪物們提供的線索來尋找棋盤上隱藏的蘿蔔的每日解謎遊戲！',
-        '<a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>是Carrotour 逻卜巡萝的衍生作品，是透过动物和怪物们提供的线索来寻找棋盘上隐藏的萝卜的每日解谜游戏！',
-        '<a href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>は、Carrotourのスピンオフで、動物やモンスターが与えるヒントを手がかりに、盤面に隠されたニンジンを探し出すデイリーパズルゲーム！'    
+        '<a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>, a spinoff from Carrotour, is a daily puzzle game about finding hidden carrots on the board with the help of clues provided by animals and monsters!',
+        '<a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>是Carrotour 邏蔔巡蘿的衍生作品，是透過動物和怪物們提供的線索來尋找棋盤上隱藏的蘿蔔的每日解謎遊戲！',
+        '<a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>是Carrotour 逻卜巡萝的衍生作品，是透过动物和怪物们提供的线索来寻找棋盘上隐藏的萝卜的每日解谜游戏！',
+        '<a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Guide">Carrotour-Guide</a>は、Carrotourのスピンオフ作品で、動物やモンスターが与えるヒントを手がかりに、盤面に隠されたニンジンを探し出すデイリーパズルゲーム！'    
     ]
+      let ctmTexts = [
+        '<a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Merge">Carrotour-Merge</a>, another spinoff from Carrotour, is a game about merging animals, eating carrots, and getting many points!',
+        '<a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Merge">Carrotour-Merge</a>是Carrotour 邏蔔巡蘿的另一個衍生作品，在此遊戲中要結合動物，吃胡蘿蔔，並取得高分！',
+        '<a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Merge">Carrotour-Merge</a>是Carrotour 逻卜巡萝的另一个衍生作品，在此游戏中要结合动物，吃胡萝卜，并取得高分！',
+        '<a style="color: inherit;" href="https://yowwowwow.github.io/Carrotour/Merge">Carrotour-Merge</a>はCarrotourのもう一つのスピンオフ作品で、動物を合体させたり、ニンジンを食べたりして、たくさんポイントを獲得するゲーム！'
+      ];
       const numberOfLanguages = 4;
       
       fetch('./data/data.json')
@@ -330,6 +336,7 @@
 
       const wishList = document.querySelector('.wishList')
       const ctgText = document.getElementById("ctgText")
+      const ctmText = document.getElementById("ctmText")
 
       // 轮播图
       const carouselTitle = document.querySelector('.carouselTitle')
@@ -377,6 +384,7 @@
           homeTitle.innerHTML = `${homeTexts[newLang].title}`
           homeText.innerHTML = `${homeTexts[newLang].description}`
           ctgText.innerHTML = ctgTexts[newLang]
+          ctmText.innerHTML = ctmTexts[newLang]
 
           // 愿望清单
           wishList.innerHTML = wishListTexts[newLang]
